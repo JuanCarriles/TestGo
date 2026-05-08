@@ -31,7 +31,7 @@ const defaultIcon = `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke
 <section class="relative py-28 bg-background overflow-hidden">
   {/* Background decoration */}
   <div class="absolute top-0 right-0 h-96 w-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-  <div class="absolute bottom-0 left-0 h-96 w-96 bg-secondary/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+  <div class="absolute bottom-0 left-0 h-96 w-96 bg-primary/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
 
   <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-20">
@@ -60,7 +60,7 @@ const defaultIcon = `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke
                 class="h-full w-full object-cover"
                 loading="lazy"
               />
-              <div class="absolute inset-0 bg-gradient-to-t from-text/60 via-text/20 to-transparent"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-dark/60 via-dark/20 to-transparent"></div>
               
               {/* Icon badge floating */}
               <div class="absolute top-4 right-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/90 backdrop-blur-sm text-primary shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
@@ -94,7 +94,7 @@ const defaultIcon = `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke
             </div>
 
             {/* Bottom accent line */}
-            <div class="h-1 bg-gradient-to-r from-primary to-secondary transform scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100"></div>
+            <div class="h-1 bg-gradient-to-r from-primary to-primary/60 transform scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100"></div>
           </a>
         ))}
       </div>
@@ -120,7 +120,7 @@ const defaultIcon = `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke
                 class="h-full w-full object-cover"
                 loading="lazy"
               />
-              <div class="absolute inset-0 bg-gradient-to-t from-text/60 via-text/20 to-transparent"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-dark/60 via-dark/20 to-transparent"></div>
               <div class="absolute top-4 right-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/90 backdrop-blur-sm text-primary shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -141,7 +141,7 @@ const defaultIcon = `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke
                 </svg>
               </div>
             </div>
-            <div class="h-1 bg-gradient-to-r from-primary to-secondary transform scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100"></div>
+            <div class="h-1 bg-gradient-to-r from-primary to-primary/60 transform scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100"></div>
           </a>
         ))}
       </div>

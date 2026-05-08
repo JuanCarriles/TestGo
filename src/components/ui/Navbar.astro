@@ -19,7 +19,7 @@ const turnosUrl = config?.enlaceTurnos || '#';
 
 <header
   id="main-header"
-  class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-background/90 backdrop-blur-xl border-b border-transparent"
+  class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-surface/90 backdrop-blur-xl border-b border-transparent"
 >
   <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Navegación principal">
     <div class="flex items-center justify-between h-20">
@@ -83,7 +83,7 @@ const turnosUrl = config?.enlaceTurnos || '#';
   {/* Mobile Menu */}
   <div
     id="mobile-menu"
-    class="md:hidden hidden bg-background/95 backdrop-blur-xl border-t border-text/5"
+    class="md:hidden hidden bg-surface/95 backdrop-blur-xl border-t border-dark/5"
     role="dialog"
     aria-modal="true"
     aria-label="Menú móvil"
@@ -121,10 +121,10 @@ const turnosUrl = config?.enlaceTurnos || '#';
     // Shadow and border on scroll
     function onScroll() {
       if (window.scrollY > 10) {
-        header?.classList.add('shadow-lg', 'border-text/5');
+        header?.classList.add('shadow-lg', 'border-dark/5');
         header?.classList.remove('border-transparent');
       } else {
-        header?.classList.remove('shadow-lg', 'border-text/5');
+        header?.classList.remove('shadow-lg', 'border-dark/5');
         header?.classList.add('border-transparent');
       }
     }

@@ -62,7 +62,7 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
           {filtered.map((prof) => (
             <div
               key={prof._id}
-              className="group relative flex flex-col rounded-3xl border border-text/5 bg-white overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-primary/10"
+              className="group relative flex flex-col rounded-3xl border border-dark/5 bg-white overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-primary/10"
             >
               {/* Photo */}
               <div className="relative h-72 overflow-hidden">
@@ -80,7 +80,7 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
                     </svg>
                   </div>
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-text/60 via-transparent to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent"></div>
                 {prof.especialidad && (
                   <span className="absolute left-5 top-5 rounded-full bg-white/90 backdrop-blur-sm px-4 py-1.5 text-xs font-semibold text-primary shadow-lg font-body">
                     {prof.especialidad.nombre}
@@ -110,12 +110,12 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
               </div>
 
               {/* Bottom accent line */}
-              <div className="h-1 bg-gradient-to-r from-primary to-secondary transform scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100"></div>
+              <div className="h-1 bg-gradient-to-r from-primary to-primary/60 transform scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100"></div>
             </div>
           ))}
         </div>
       ) : (
-        <div className="rounded-3xl bg-surface/5 py-20 text-center border border-text/5">
+        <div className="rounded-3xl bg-surface/5 py-20 text-center border border-dark/5">
           <svg className="mx-auto h-16 w-16 text-text/10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>

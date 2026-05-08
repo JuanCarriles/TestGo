@@ -58,14 +58,14 @@ const displayProfesionales = profesionales.length > 0 ? profesionales : demoProf
   config={config}
 >
   {/* Hero interno */}
-  <section class="relative bg-text py-32 lg:py-40 overflow-hidden">
+  <section class="relative bg-dark py-32 lg:py-40 overflow-hidden">
     <div class="absolute inset-0">
       <img
         src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=2000"
         alt={especialidad.nombre}
         class="h-full w-full object-cover opacity-10"
       />
-      <div class="absolute inset-0 bg-gradient-to-br from-text via-text to-primary/20"></div>
+      <div class="absolute inset-0 bg-gradient-to-br from-dark via-dark to-primary/20"></div>
     </div>
     <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
       <span class="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-4 font-body">
@@ -102,7 +102,7 @@ const displayProfesionales = profesionales.length > 0 ? profesionales : demoProf
 
       <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {displayProfesionales.map((prof) => (
-          <div class="group relative flex flex-col rounded-3xl border border-text/5 bg-white overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-primary/10">
+          <div class="group relative flex flex-col rounded-3xl border border-dark/5 bg-white overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-primary/10">
             <div class="relative h-72 overflow-hidden">
               {prof.foto?.asset?.url ? (
                 <img
@@ -118,7 +118,7 @@ const displayProfesionales = profesionales.length > 0 ? profesionales : demoProf
                   </svg>
                 </div>
               )}
-              <div class="absolute inset-0 bg-gradient-to-t from-text/60 via-transparent to-transparent"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent"></div>
             </div>
 
             <div class="flex flex-1 flex-col p-8">
@@ -141,7 +141,7 @@ const displayProfesionales = profesionales.length > 0 ? profesionales : demoProf
               </a>
             </div>
 
-            <div class="h-1 bg-gradient-to-r from-primary to-secondary transform scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100"></div>
+            <div class="h-1 bg-gradient-to-r from-primary to-primary/60 transform scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100"></div>
           </div>
         ))}
       </div>

@@ -1,0 +1,139 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { client } from '../../lib/sanity';
+import { queries } from '../../lib/queries';
+import type { Configuracion, Especialidad, Profesional } from '../../types';
+
+export async function getStaticPaths() {
+  const especialidades = await client.fetch<Especialidad[]>(queries.todasEspecialidades).catch(() => []);
+
+  return especialidades.map((esp) => ({
+    params: { slug: esp.slug },
+    props: { especialidad: esp },
+  }));
+}
+
+interface Props {
+  especialidad: Especialidad;
+}
+
+const { especialidad } = Astro.props;
+const { slug } = Astro.params;
+
+const [config, profesionales] = await Promise.all([
+  client.fetch<Configuracion | null>(queries.configuracion).catch(() => null),
+  client.fetch<Profesional[]>(queries.profesionalesByEspecialidad, { slug }).catch(() => []),
+]);
+
+const metaDescription = `Conocé la especialidad de ${especialidad.nombre} en GO Centro Médico. ${especialidad.descripcion.slice(0, 120)}...`;
+---
+
+<Layout
+  title={especialidad.nombre}
+  description={metaDescription}
+  config={config}
+>
+  {/* Hero interno */}
+  <section class="relative bg-text py-24 lg:py-32">
+    <div class="absolute inset-0 bg-gradient-to-br from-text via-text to-primary/20"></div>
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+      <span class="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-primary">
+        <a href="/especialidades" class="hover:underline">Especialidades</a>
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+        <span>{especialidad.nombre}</span>
+      </span>
+      <h1 class="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+        {especialidad.nombre}
+      </h1>
+    </div>
+  </section>
+
+  {/* Description */}
+  <section class="py-16 bg-background">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-lg leading-relaxed text-text/70">
+        {especialidad.descripcion}
+      </p>
+    </div>
+  </section>
+
+  {/* Profesionales asociados */}
+  <section class="py-24 bg-surface/5">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <span class="text-sm font-semibold uppercase tracking-wider text-primary">Equipo</span>
+        <h2 class="mt-3 text-3xl font-bold tracking-tight text-text sm:text-4xl">
+          Profesionales en {especialidad.nombre}
+        </h2>
+      </div>
+
+      {profesionales.length > 0 ? (
+        <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {profesionales.map((prof) => (
+            <div class="group flex flex-col rounded-2xl border border-text/5 bg-background overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/10">
+              {/* Photo */}
+              <div class="relative aspect-[4/3] overflow-hidden bg-surface/10">
+                {prof.foto?.asset?.url ? (
+                  <img
+                    src={prof.foto.asset.url}
+                    alt={prof.foto.alt || prof.nombre}
+                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-surface/20 to-primary/5">
+                    <svg class="h-16 w-16 text-surface/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                  </div>
+                )}
+              </div>
+
+              {/* Content */}
+              <div class="flex flex-1 flex-col p-6">
+                <h3 class="text-lg font-semibold text-text group-hover:text-primary transition-colors duration-300">
+                  {prof.nombre}
+                </h3>
+                <p class="mt-2 text-sm leading-relaxed text-text/60 line-clamp-3 flex-1">
+                  {prof.biografia}
+                </p>
+                <a
+                  href={prof.enlaceAgenda}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="mt-5 inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                >
+                  <svg class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  </svg>
+                  Agendar Turno
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-12">
+          <p class="text-text/40">Próximamente actualizaremos los profesionales de esta especialidad.</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  {/* CTA Back */}
+  <section class="py-16 bg-background">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+      <a
+        href="/especialidades"
+        class="inline-flex items-center justify-center rounded-full border-2 border-text/10 px-8 py-3.5 text-base font-semibold text-text transition-all duration-300 hover:border-primary hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+      >
+        <svg class="mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        Ver todas las especialidades
+      </a>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,78 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import '../styles/global.css';
+import type { SeoProps, Configuracion } from '../types';
+import Navbar from '../components/ui/Navbar.astro';
+import Footer from '../components/ui/Footer.astro';
+import WhatsAppButton from '../components/ui/WhatsAppButton.astro';
+import { client } from '../lib/sanity';
+import { queries } from '../lib/queries';
+
+interface Props extends SeoProps {
+  config?: Configuracion | null;
+}
+
+const { title, description, image, pathname, config: propConfig } = Astro.props;
+
+const config: Configuracion | null = propConfig ?? (await client.fetch(queries.configuracion).catch(() => null));
+
+const canonical = pathname
+  ? `https://gocentromedico.com${pathname}`
+  : Astro.url.href;
+
+const siteTitle = config?.metaTitle || 'GO Centro Médico';
+const pageTitle = title ? `${title} | ${siteTitle}` : siteTitle;
+const metaDescription = description || config?.metaDescription || '';
+const ogImage = image || '/og-default.jpg';
+---
+
+<!doctype html>
+<html lang="es-AR" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={metaDescription} />
+    <link rel="canonical" href={canonical} />
+
+    {/* Open Graph */}
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="es_AR" />
+
+    {/* Twitter */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonical} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={metaDescription} />
+    <meta name="twitter:image" content={ogImage} />
+
+    {/* Favicon */}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    {/* Preconnect Inter */}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <ClientRouter />
+  </head>
+
+  <body class="min-h-screen flex flex-col bg-background text-text antialiased">
+    <Navbar config={config} />
+
+    <main id="main-content" class="flex-1" tabindex="-1">
+      <slot />
+    </main>
+
+    <Footer config={config} />
+    <WhatsAppButton whatsapp={config?.whatsapp} />
+  </body>
+</html>

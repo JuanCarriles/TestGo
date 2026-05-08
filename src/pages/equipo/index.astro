@@ -1,0 +1,66 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import TeamFilters from '../../components/react/TeamFilters';
+import { client } from '../../lib/sanity';
+import { queries } from '../../lib/queries';
+import type { Configuracion, Profesional, Especialidad } from '../../types';
+
+const [config, profesionalesRaw, especialidades] = await Promise.all([
+  client.fetch<Configuracion | null>(queries.configuracion).catch(() => null),
+  client.fetch<Profesional[]>(queries.todosProfesionales).catch(() => []),
+  client.fetch<Especialidad[]>(queries.todasEspecialidades).catch(() => []),
+]);
+
+// Helper para resolver URLs de Sanity en el servidor
+function getSanityUrl(assetUrl: string | undefined): string | undefined {
+  if (!assetUrl) return undefined;
+  return assetUrl;
+}
+
+// Preparar datos con URLs resueltas para el cliente React
+const profesionales = profesionalesRaw.map((prof) => ({
+  ...prof,
+  foto: prof.foto
+    ? {
+        ...prof.foto,
+        asset: prof.foto.asset
+          ? {
+              ...prof.foto.asset,
+              url: getSanityUrl(prof.foto.asset.url) || '',
+            }
+          : undefined,
+      }
+    : undefined,
+}));
+---
+
+<Layout
+  title="Nuestro Equipo"
+  description="Conocé al equipo médico de GO Centro Médico. Especialistas de excelencia en diversas áreas de la salud."
+  config={config}
+>
+  {/* Hero interno */}
+  <section class="relative bg-text py-24 lg:py-32">
+    <div class="absolute inset-0 bg-gradient-to-br from-text via-text to-primary/20"></div>
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+      <span class="text-sm font-semibold uppercase tracking-wider text-primary">Profesionales</span>
+      <h1 class="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+        Nuestro <span class="text-primary">Equipo Médico</span>
+      </h1>
+      <p class="mx-auto mt-6 max-w-2xl text-lg text-white/70 leading-relaxed">
+        Un equipo multidisciplinario de excelencia, comprometido con tu salud y bienestar.
+      </p>
+    </div>
+  </section>
+
+  {/* Filters + Grid */}
+  <section class="py-24 bg-background">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <TeamFilters
+        profesionales={profesionales}
+        especialidades={especialidades}
+        client:load
+      />
+    </div>
+  </section>
+</Layout>

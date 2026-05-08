@@ -1,0 +1,34 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HeroSection from '../components/sections/HeroSection.astro';
+import EspecialidadesGrid from '../components/sections/EspecialidadesGrid.astro';
+import PorQueElegirnos from '../components/sections/PorQueElegirnos.astro';
+import ObrasSociales from '../components/sections/ObrasSociales.astro';
+import Testimonios from '../components/sections/Testimonios.astro';
+import ContactoSection from '../components/sections/ContactoSection.astro';
+import { client } from '../lib/sanity';
+import { queries } from '../lib/queries';
+import type { Configuracion, Especialidad, ObraSocial, Resena } from '../types';
+
+const [config, especialidades, obrasSociales, resenas] = await Promise.all([
+  client.fetch<Configuracion | null>(queries.configuracion).catch(() => null),
+  client.fetch<Especialidad[]>(queries.todasEspecialidades).catch(() => []),
+  client.fetch<ObraSocial[]>(queries.todasObrasSociales).catch(() => []),
+  client.fetch<Resena[]>(queries.todasResenasAprobadas).catch(() => []),
+]);
+
+const metaDescription = config?.metaDescription || 'GO Centro Médico - Excelencia médica con atención personalizada las 24 horas. Reservá tu turno online con los mejores especialistas.';
+---
+
+<Layout
+  title="Inicio"
+  description={metaDescription}
+  config={config}
+>
+  <HeroSection config={config} />
+  <EspecialidadesGrid especialidades={especialidades} />
+  <PorQueElegirnos />
+  <ObrasSociales obrasSociales={obrasSociales} />
+  <Testimonios resenas={resenas} />
+  <ContactoSection config={config} />
+</Layout>

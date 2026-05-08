@@ -10,57 +10,123 @@ const { config } = Astro.props;
 const turnosUrl = config?.enlaceTurnos || '#';
 ---
 
-<section class="relative flex min-h-[90vh] items-center justify-center overflow-hidden bg-text">
-  {/* Background pattern */}
-  <div class="absolute inset-0 bg-gradient-to-br from-text via-text/95 to-primary/30"></div>
-  <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 40px 40px;"></div>
+<section class="relative min-h-screen flex items-center overflow-hidden bg-text">
+  {/* Background image with overlay */}
+  <div class="absolute inset-0">
+    <img
+      src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=2000"
+      alt="Equipo médico profesional"
+      class="h-full w-full object-cover"
+    />
+    <div class="absolute inset-0 bg-gradient-to-r from-text via-text/90 to-text/60"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-text/80 via-transparent to-text/40"></div>
+  </div>
 
-  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-32 text-center">
-    <span class="inline-block rounded-full bg-primary/20 px-4 py-1.5 text-sm font-medium text-primary mb-6">
-      Atención médica 24/7
-    </span>
-    <h1 class="text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
-      Tu salud,<br />
-      <span class="text-primary">nuestra prioridad</span>
-    </h1>
-    <p class="mx-auto mt-8 max-w-2xl text-xl leading-relaxed text-white/80">
-      Atención médica de alta gama con los mejores profesionales y tecnología de vanguardia.
-      Agenda tu consulta de forma rápida y segura.
-    </p>
-    <div class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
-      <a
-        href={turnosUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-text"
-      >
-        <svg class="mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-        </svg>
-        Reservar Turno
-      </a>
-      <a
-        href="/especialidades"
-        class="inline-flex items-center justify-center rounded-full border-2 border-white/30 px-8 py-4 text-lg font-semibold text-white transition-all duration-300 hover:border-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-text"
-      >
-        Ver Especialidades
-        <svg class="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-        </svg>
-      </a>
+  {/* Decorative elements */}
+  <div class="absolute top-20 right-20 h-64 w-64 rounded-full bg-primary/10 blur-3xl"></div>
+  <div class="absolute bottom-20 left-10 h-48 w-48 rounded-full bg-secondary/10 blur-3xl"></div>
+
+  {/* Noise texture */}
+  <div class="absolute inset-0 noise-overlay opacity-50"></div>
+
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-32 lg:py-40">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      {/* Content */}
+      <div class="text-left">
+        <span class="animate-fade-up inline-block rounded-full bg-white/10 backdrop-blur-sm border border-white/20 px-5 py-2 text-sm font-medium text-primary mb-8 font-body">
+          Atención médica 24/7
+        </span>
+        
+        <h1 class="animate-fade-up delay-100 text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl xl:text-8xl font-display leading-[0.95]">
+          Tu salud,<br />
+          <span class="text-gradient">nuestra prioridad</span>
+        </h1>
+        
+        <p class="animate-fade-up delay-200 mx-auto mt-8 max-w-xl text-xl leading-relaxed text-white/70 font-body font-light">
+          Atención médica de alta gama con los mejores profesionales y tecnología de vanguardia. Agenda tu consulta de forma rápida y segura.
+        </p>
+        
+        <div class="animate-fade-up delay-300 mt-12 flex flex-col sm:flex-row items-start gap-4">
+          <a
+            href={turnosUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-500 hover:bg-primary/90 hover:shadow-glow hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-text font-body"
+          >
+            <svg class="mr-2 h-5 w-5 transition-transform duration-300 group-hover:rotate-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            Reservar Turno
+          </a>
+          <a
+            href="/especialidades"
+            class="group inline-flex items-center justify-center rounded-full border border-white/30 px-8 py-4 text-lg font-medium text-white transition-all duration-500 hover:border-white hover:bg-white/10 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-text font-body"
+          >
+            Ver Especialidades
+            <svg class="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      {/* Right side - floating card */}
+      <div class="hidden lg:block relative">
+        <div class="animate-fade-up delay-500 relative">
+          {/* Floating image card */}
+          <div class="relative rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+            <img
+              src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&q=80&w=800"
+              alt="Consulta médica"
+              class="h-[500px] w-full object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-text/60 via-transparent to-transparent"></div>
+            
+            {/* Floating badge */}
+            <div class="absolute bottom-6 left-6 right-6">
+              <div class="rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 p-5">
+                <div class="flex items-center gap-4">
+                  <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary/80 text-white">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="text-white font-semibold font-body">Turnos Online</p>
+                    <p class="text-white/60 text-sm font-body">Atención inmediata garantizada</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Decorative floating elements */}
+          <div class="absolute -top-6 -right-6 h-24 w-24 rounded-2xl bg-secondary/20 backdrop-blur-sm border border-secondary/30 flex items-center justify-center animate-float">
+            <svg class="h-10 w-10 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+          </div>
+          
+          <div class="absolute -bottom-4 -left-4 h-20 w-20 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30 flex items-center justify-center animate-float" style="animation-delay: 1s;">
+            <svg class="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          </div>
+        </div>
+      </div>
     </div>
 
     {/* Stats */}
-    <div class="mt-20 grid grid-cols-2 gap-8 sm:grid-cols-4">
+    <div class="animate-fade-up delay-700 mt-20 grid grid-cols-2 gap-8 sm:grid-cols-4 border-t border-white/10 pt-12">
       {[
         { number: '+50', label: 'Especialistas' },
         { number: '+20', label: 'Especialidades' },
         { number: '24/7', label: 'Atención' },
         { number: '+10k', label: 'Pacientes' },
       ].map((stat) => (
-        <div class="flex flex-col items-center">
-          <span class="text-3xl font-bold text-primary sm:text-4xl">{stat.number}</span>
-          <span class="mt-1 text-sm text-white/60">{stat.label}</span>
+        <div class="flex flex-col items-center lg:items-start">
+          <span class="text-4xl font-bold text-primary sm:text-5xl font-display">{stat.number}</span>
+          <span class="mt-2 text-sm text-white/50 font-body tracking-wide uppercase">{stat.label}</span>
         </div>
       ))}
     </div>
@@ -68,8 +134,11 @@ const turnosUrl = config?.enlaceTurnos || '#';
 
   {/* Scroll indicator */}
   <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-    <svg class="h-6 w-6 text-white/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-    </svg>
+    <div class="flex flex-col items-center gap-2">
+      <span class="text-xs text-white/40 uppercase tracking-widest font-body">Scroll</span>
+      <svg class="h-5 w-5 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+      </svg>
+    </div>
   </div>
 </section>

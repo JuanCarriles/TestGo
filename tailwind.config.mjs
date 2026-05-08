@@ -12,7 +12,12 @@ export default {
         text: '#1A2A44',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        body: ['"Outfit"', 'system-ui', 'sans-serif'],
+      },
+      animation: {
+        'float': 'float 3s ease-in-out infinite',
+        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
       },
     },
   },

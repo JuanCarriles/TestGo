@@ -8,58 +8,142 @@ interface Props {
 
 const { especialidades } = Astro.props;
 
-const defaultIcon = `<svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>`;
+// Placeholder images for specialties - using medical themed unsplash images
+const placeholderImages: Record<string, string> = {
+  'default': 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&q=80&w=600',
+  'cardiologia': 'https://images.unsplash.com/photo-1628348070889-cb656235b4eb?auto=format&fit=crop&q=80&w=600',
+  'dermatologia': 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=600',
+  'pediatria': 'https://images.unsplash.com/photo-1581056771107-24ca5f033842?auto=format&fit=crop&q=80&w=600',
+  'ginecologia': 'https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&q=80&w=600',
+  'traumatologia': 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=600',
+  'neurologia': 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&q=80&w=600',
+  'oftalmologia': 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=600',
+  'odontologia': 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=600',
+};
+
+function getImageForSlug(slug: string): string {
+  return placeholderImages[slug] || placeholderImages['default'];
+}
+
+const defaultIcon = `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>`;
 ---
 
-<section class="py-24 bg-background">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16">
-      <span class="text-sm font-semibold uppercase tracking-wider text-primary">Nuestros Servicios</span>
-      <h2 class="mt-3 text-3xl font-bold tracking-tight text-text sm:text-4xl">
-        Especialidades Médicas
+<section class="relative py-28 bg-background overflow-hidden">
+  {/* Background decoration */}
+  <div class="absolute top-0 right-0 h-96 w-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+  <div class="absolute bottom-0 left-0 h-96 w-96 bg-secondary/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-20">
+      <span class="inline-block text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-4 font-body">Nuestros Servicios</span>
+      <h2 class="text-5xl font-bold tracking-tight text-text sm:text-6xl font-display">
+        Especialidades <span class="text-gradient">Médicas</span>
       </h2>
-      <p class="mt-4 text-lg text-text/60 max-w-2xl mx-auto">
+      <p class="mt-6 text-lg text-text/50 max-w-2xl mx-auto font-body font-light leading-relaxed">
         Contamos con un equipo multidisciplinario de excelencia para cuidar de tu salud y la de tu familia.
       </p>
     </div>
 
     {especialidades.length > 0 ? (
-      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {especialidades.map((esp) => (
+      <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {especialidades.map((esp, index) => (
           <a
             href={`/especialidades/${esp.slug}`}
-            class="group relative flex flex-col rounded-2xl border border-text/5 bg-surface/5 p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:bg-surface/10 hover:border-surface/20 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            class="group card-glow relative flex flex-col rounded-3xl border border-text/5 bg-white overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            style={`animation-delay: ${index * 100}ms`}
           >
-            <div class="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
-              {esp.icono?.asset ? (
-                <img
-                  src={urlFor(esp.icono.asset)}
-                  alt={esp.icono.alt || esp.nombre}
-                  class="h-8 w-8 object-contain"
-                  loading="lazy"
-                />
-              ) : (
-                <Fragment set:html={defaultIcon} />
-              )}
+            {/* Image area */}
+            <div class="relative h-56 overflow-hidden img-zoom">
+              <img
+                src={getImageForSlug(esp.slug)}
+                alt={esp.nombre}
+                class="h-full w-full object-cover"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-text/60 via-text/20 to-transparent"></div>
+              
+              {/* Icon badge floating */}
+              <div class="absolute top-4 right-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/90 backdrop-blur-sm text-primary shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
+                {esp.icono?.asset ? (
+                  <img
+                    src={urlFor(esp.icono.asset)}
+                    alt={esp.icono.alt || esp.nombre}
+                    class="h-6 w-6 object-contain"
+                    loading="lazy"
+                  />
+                ) : (
+                  <Fragment set:html={defaultIcon} />
+                )}
+              </div>
             </div>
-            <h3 class="text-xl font-semibold text-text group-hover:text-primary transition-colors duration-300">
-              {esp.nombre}
-            </h3>
-            <p class="mt-3 text-sm leading-relaxed text-text/60 line-clamp-3">
-              {esp.descripcion}
-            </p>
-            <div class="mt-6 flex items-center text-sm font-medium text-primary">
-              <span>Ver más</span>
-              <svg class="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
+
+            {/* Content */}
+            <div class="flex flex-col flex-1 p-8">
+              <h3 class="text-2xl font-semibold text-text group-hover:text-primary transition-colors duration-500 font-display">
+                {esp.nombre}
+              </h3>
+              <p class="mt-3 text-sm leading-relaxed text-text/50 line-clamp-3 font-body font-light flex-1">
+                {esp.descripcion}
+              </p>
+              <div class="mt-6 flex items-center text-sm font-semibold text-primary font-body">
+                <span>Explorar especialidad</span>
+                <svg class="ml-2 h-4 w-4 transition-transform duration-500 group-hover:translate-x-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </div>
             </div>
+
+            {/* Bottom accent line */}
+            <div class="h-1 bg-gradient-to-r from-primary to-secondary transform scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100"></div>
           </a>
         ))}
       </div>
     ) : (
-      <div class="text-center py-12">
-        <p class="text-text/40">Próximamente cargaremos nuestras especialidades.</p>
+      <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Demo cards when no data */}
+        {[
+          { nombre: 'Cardiología', slug: 'cardiologia', desc: 'Diagnóstico y tratamiento de enfermedades del corazón y sistema cardiovascular con tecnología de última generación.' },
+          { nombre: 'Dermatología', slug: 'dermatologia', desc: 'Cuidado integral de la piel, tratamientos estéticos y detección temprana de patologías cutáneas.' },
+          { nombre: 'Pediatría', slug: 'pediatria', desc: 'Atención especializada para bebés, niños y adolescentes con un enfoque cálido y humano.' },
+          { nombre: 'Ginecología', slug: 'ginecologia', desc: 'Salud integral de la mujer con profesionales de excelencia y tecnología avanzada.' },
+          { nombre: 'Traumatología', slug: 'traumatologia', desc: 'Tratamiento de lesiones deportivas, fracturas y patologías del sistema músculo-esquelético.' },
+          { nombre: 'Neurología', slug: 'neurologia', desc: 'Diagnóstico y tratamiento de trastornos del sistema nervioso con equipamiento de vanguardia.' },
+        ].map((esp, index) => (
+          <a
+            href="#"
+            class="group card-glow relative flex flex-col rounded-3xl border border-text/5 bg-white overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          >
+            <div class="relative h-56 overflow-hidden img-zoom">
+              <img
+                src={getImageForSlug(esp.slug)}
+                alt={esp.nombre}
+                class="h-full w-full object-cover"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-text/60 via-text/20 to-transparent"></div>
+              <div class="absolute top-4 right-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/90 backdrop-blur-sm text-primary shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </div>
+            </div>
+            <div class="flex flex-col flex-1 p-8">
+              <h3 class="text-2xl font-semibold text-text group-hover:text-primary transition-colors duration-500 font-display">
+                {esp.nombre}
+              </h3>
+              <p class="mt-3 text-sm leading-relaxed text-text/50 line-clamp-3 font-body font-light flex-1">
+                {esp.desc}
+              </p>
+              <div class="mt-6 flex items-center text-sm font-semibold text-primary font-body">
+                <span>Explorar especialidad</span>
+                <svg class="ml-2 h-4 w-4 transition-transform duration-500 group-hover:translate-x-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </div>
+            </div>
+            <div class="h-1 bg-gradient-to-r from-primary to-secondary transform scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100"></div>
+          </a>
+        ))}
       </div>
     )}
   </div>

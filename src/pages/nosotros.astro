@@ -24,15 +24,6 @@ const valores = [
     description: 'Escuchamos, comprendemos y acompañamos a nuestros pacientes en cada etapa.',
   },
 ];
-
-const galeria = [
-  { alt: 'Recepción del centro médico', titulo: 'Recepción' },
-  { alt: 'Sala de espera premium', titulo: 'Sala de Espera' },
-  { alt: 'Consultorio equipado', titulo: 'Consultorios' },
-  { alt: 'Equipamiento médico avanzado', titulo: 'Tecnología' },
-  { alt: 'Área de rehabilitación', titulo: 'Rehabilitación' },
-  { alt: 'Estacionamiento cubierto', titulo: 'Accesos' },
-];
 ---
 
 <Layout
@@ -41,26 +32,49 @@ const galeria = [
   config={config}
 >
   {/* Hero interno */}
-  <section class="relative bg-text py-24 lg:py-32">
-    <div class="absolute inset-0 bg-gradient-to-br from-text via-text to-primary/20"></div>
+  <section class="relative bg-text py-32 lg:py-40 overflow-hidden">
+    <div class="absolute inset-0">
+      <img
+        src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=2000"
+        alt="Fondo"
+        class="h-full w-full object-cover opacity-10"
+      />
+      <div class="absolute inset-0 bg-gradient-to-br from-text via-text to-primary/20"></div>
+    </div>
     <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-      <span class="text-sm font-semibold uppercase tracking-wider text-primary">Sobre Nosotros</span>
-      <h1 class="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-        Una historia de <span class="text-primary">excelencia médica</span>
+      <span class="inline-block text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-4 font-body">Sobre Nosotros</span>
+      <h1 class="text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl font-display leading-tight">
+        Una historia de <span class="text-gradient">excelencia médica</span>
       </h1>
     </div>
   </section>
 
   {/* Historia */}
-  <section class="py-24 bg-background">
+  <section class="py-28 bg-background overflow-hidden">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 gap-16 lg:grid-cols-2 items-center">
+      <div class="grid grid-cols-1 gap-20 lg:grid-cols-2 items-center">
+        <div class="relative">
+          <div class="relative rounded-3xl overflow-hidden shadow-2xl">
+            <img
+              src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=800"
+              alt="Instalaciones"
+              class="h-[600px] w-full object-cover"
+            />
+          </div>
+          {/* Floating badge */}
+          <div class="absolute -bottom-8 -right-8 rounded-2xl bg-white shadow-xl border border-text/5 p-6">
+            <p class="text-5xl font-bold text-primary font-display">15+</p>
+            <p class="text-sm text-text/50 font-body mt-1">Años de trayectoria</p>
+          </div>
+          <div class="absolute -top-6 -left-6 h-32 w-32 rounded-full bg-secondary/10 -z-10"></div>
+        </div>
+
         <div>
-          <span class="text-sm font-semibold uppercase tracking-wider text-primary">Nuestra Historia</span>
-          <h2 class="mt-3 text-3xl font-bold tracking-tight text-text sm:text-4xl">
-            Más de una década cuidando de la comunidad
+          <span class="inline-block text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-4 font-body">Nuestra Historia</span>
+          <h2 class="text-5xl font-bold tracking-tight text-text font-display leading-tight">
+            Más de una década <span class="text-gradient">cuidando</span> de la comunidad
           </h2>
-          <div class="mt-6 space-y-4 text-base leading-relaxed text-text/70">
+          <div class="mt-8 space-y-6 text-base leading-relaxed text-text/60 font-body font-light">
             <p>
               GO Centro Médico nació con una visión clara: ofrecer atención médica de alta calidad, accesible y humana.
               Desde nuestros inicios, nos propusimos crear un espacio donde la tecnología de vanguardia se encuentre con
@@ -68,57 +82,44 @@ const galeria = [
             </p>
             <p>
               A lo largo de los años, fuimos creciendo y ampliando nuestras especialidades, incorporando profesionales
-              de excelencia y equipamiento médico de última generación. Hoy somos referentes en la zona, atendiendo a
-              miles de pacientes que confían en nosotros para cuidar de su salud y la de sus familias.
+              de excelencia y equipamiento médico de última generación.
             </p>
             <p>
               Nuestro compromiso con la comunidad va más allá de la consulta médica. Participamos activamente en
-              campañas de prevención, charlas educativas y programas de salud integral para promover el bienestar
-              colectivo.
+              campañas de prevención, charlas educativas y programas de salud integral.
             </p>
           </div>
-        </div>
-        <div class="relative">
-          <div class="aspect-[4/3] rounded-2xl bg-surface/10 overflow-hidden">
-            <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-surface/20 to-primary/5">
-              <svg class="h-24 w-24 text-surface/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-            </div>
-          </div>
-          <div class="absolute -bottom-6 -left-6 h-32 w-32 rounded-2xl bg-primary/10 -z-10"></div>
-          <div class="absolute -top-6 -right-6 h-32 w-32 rounded-2xl bg-secondary/10 -z-10"></div>
         </div>
       </div>
     </div>
   </section>
 
   {/* Misión, Visión */}
-  <section class="py-24 bg-surface/5">
+  <section class="py-28 bg-surface/5 overflow-hidden">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
-        <div class="rounded-2xl bg-background p-10 shadow-sm border border-text/5">
-          <div class="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <div class="group rounded-3xl bg-white p-12 shadow-sm border border-text/5 transition-all duration-500 hover:shadow-xl hover:-translate-y-2">
+          <div class="mb-8 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-all duration-500 group-hover:bg-primary group-hover:text-white group-hover:shadow-glow">
+            <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <h3 class="text-2xl font-bold text-text">Misión</h3>
-          <p class="mt-4 text-base leading-relaxed text-text/60">
+          <h3 class="text-3xl font-bold text-text font-display">Misión</h3>
+          <p class="mt-6 text-base leading-relaxed text-text/50 font-body font-light">
             Brindar atención médica integral de excelencia, combinando tecnología de vanguardia con un equipo humano
             altamente calificado y comprometido. Priorizamos el bienestar de nuestros pacientes mediante un servicio
             accesible, personalizado y eficiente, promoviendo la prevención y el cuidado continuo de la salud.
           </p>
         </div>
-        <div class="rounded-2xl bg-background p-10 shadow-sm border border-text/5">
-          <div class="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-secondary/10 text-secondary">
-            <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <div class="group rounded-3xl bg-white p-12 shadow-sm border border-text/5 transition-all duration-500 hover:shadow-xl hover:-translate-y-2">
+          <div class="mb-8 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-secondary/10 text-secondary transition-all duration-500 group-hover:bg-secondary group-hover:text-white group-hover:shadow-glow-secondary">
+            <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
           </div>
-          <h3 class="text-2xl font-bold text-text">Visión</h3>
-          <p class="mt-4 text-base leading-relaxed text-text/60">
+          <h3 class="text-3xl font-bold text-text font-display">Visión</h3>
+          <p class="mt-6 text-base leading-relaxed text-text/50 font-body font-light">
             Ser el centro médico de referencia en la región, reconocido por la calidad de nuestros servicios,
             la innovación constante y la satisfacción de nuestros pacientes. Aspiramos a expandir nuestra cobertura
             y especialidades, manteniendo siempre los más altos estándares de excelencia médica y humana.
@@ -129,24 +130,24 @@ const galeria = [
   </section>
 
   {/* Valores */}
-  <section class="py-24 bg-background">
+  <section class="py-28 bg-background overflow-hidden">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <span class="text-sm font-semibold uppercase tracking-wider text-primary">Principios</span>
-        <h2 class="mt-3 text-3xl font-bold tracking-tight text-text sm:text-4xl">
-          Nuestros Valores
+      <div class="text-center mb-20">
+        <span class="inline-block text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-4 font-body">Principios</span>
+        <h2 class="text-5xl font-bold tracking-tight text-text sm:text-6xl font-display">
+          Nuestros <span class="text-gradient">Valores</span>
         </h2>
-        <p class="mt-4 text-lg text-text/60 max-w-2xl mx-auto">
+        <p class="mt-6 text-lg text-text/50 max-w-2xl mx-auto font-body font-light">
           Los pilares que guían cada decisión y acción en GO Centro Médico.
         </p>
       </div>
       <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
         {valores.map((valor) => (
-          <div class="group rounded-2xl bg-surface/5 p-8 text-center border border-text/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-primary/10">
-            <h3 class="text-xl font-semibold text-text group-hover:text-primary transition-colors duration-300">
+          <div class="group rounded-3xl bg-surface/5 p-10 text-center border border-text/5 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-primary/10 hover:bg-white">
+            <h3 class="text-2xl font-semibold text-text group-hover:text-primary transition-colors duration-500 font-display">
               {valor.title}
             </h3>
-            <p class="mt-4 text-sm leading-relaxed text-text/60">
+            <p class="mt-4 text-sm leading-relaxed text-text/50 font-body font-light">
               {valor.description}
             </p>
           </div>
@@ -156,62 +157,35 @@ const galeria = [
   </section>
 
   {/* Galería */}
-  <section class="py-24 bg-surface/5">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <span class="text-sm font-semibold uppercase tracking-wider text-primary">Instalaciones</span>
-        <h2 class="mt-3 text-3xl font-bold tracking-tight text-text sm:text-4xl">
-          Conocé nuestras instalaciones
+  <section class="py-28 bg-text overflow-hidden">
+    <div class="absolute inset-0 noise-overlay opacity-20"></div>
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-20">
+        <span class="inline-block text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-4 font-body">Instalaciones</span>
+        <h2 class="text-5xl font-bold tracking-tight text-white sm:text-6xl font-display">
+          Conocé nuestras <span class="text-gradient">instalaciones</span>
         </h2>
-        <p class="mt-4 text-lg text-text/60 max-w-2xl mx-auto">
-          Espacios diseñados para tu confort y bienestar, con estándares internacionales de calidad.
-        </p>
       </div>
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {galeria.map((item) => (
-          <div class="group relative aspect-[4/3] overflow-hidden rounded-2xl bg-surface/10">
-            <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-surface/20 to-primary/5 transition-transform duration-500 group-hover:scale-105">
-              <svg class="h-16 w-16 text-surface/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-            </div>
-            <div class="absolute inset-0 flex items-end bg-gradient-to-t from-text/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-              <div class="p-6">
-                <p class="text-sm font-semibold text-white">{item.titulo}</p>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  {/* Certificaciones y Convenios */}
-  <section class="py-24 bg-background">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <span class="text-sm font-semibold uppercase tracking-wider text-primary">Reconocimientos</span>
-        <h2 class="mt-3 text-3xl font-bold tracking-tight text-text sm:text-4xl">
-          Certificaciones y Convenios
-        </h2>
-        <p class="mt-4 text-lg text-text/60 max-w-2xl mx-auto">
-          Respaldados por las principales instituciones de salud del país.
-        </p>
-      </div>
-      <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
         {[
-          { title: 'Ministerio de Salud', desc: 'Centro médico habilitado y regulado bajo normativas nacionales de salud.' },
-          { title: 'Cámara de Clínicas Privadas', desc: 'Miembro activo comprometido con la excelencia en salud privada.' },
-          { title: 'ISO 9001:2015', desc: 'Certificación internacional en sistemas de gestión de calidad.' },
-        ].map((cert) => (
-          <div class="rounded-2xl bg-surface/5 p-8 border border-text/5 text-center">
-            <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-secondary/10 text-secondary">
-              <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+          { src: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=600', titulo: 'Recepción' },
+          { src: 'https://images.unsplash.com/photo-1581056771107-24ca5f033842?auto=format&fit=crop&q=80&w=600', titulo: 'Sala de Espera' },
+          { src: 'https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&q=80&w=600', titulo: 'Consultorios' },
+          { src: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=600', titulo: 'Tecnología' },
+          { src: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=600', titulo: 'Equipamiento' },
+          { src: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&q=80&w=600', titulo: 'Diagnóstico' },
+        ].map((item) => (
+          <div class="group relative aspect-[4/3] overflow-hidden rounded-3xl">
+            <img
+              src={item.src}
+              alt={item.titulo}
+              class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-text/80 via-text/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
+            <div class="absolute inset-0 flex items-end p-6 opacity-0 translate-y-4 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
+              <p class="text-xl font-semibold text-white font-display">{item.titulo}</p>
             </div>
-            <h3 class="text-lg font-semibold text-text">{cert.title}</h3>
-            <p class="mt-2 text-sm text-text/60">{cert.desc}</p>
           </div>
         ))}
       </div>

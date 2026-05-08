@@ -3,9 +3,9 @@ import react from '@astrojs/react';
 import sanity from '@sanity/astro';
 import { defineConfig } from 'astro/config';
 
-// En Node.js (build-time) usamos process.env
-const projectId = process.env.PUBLIC_SANITY_PROJECT_ID || process.env.SANITY_STUDIO_PROJECT_ID || 'your-project-id';
-const dataset = process.env.PUBLIC_SANITY_DATASET || process.env.SANITY_STUDIO_DATASET || 'production';
+// Astro inyecta PUBLIC_* en import.meta.env (disponible en config)
+const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID || import.meta.env.SANITY_STUDIO_PROJECT_ID || 'your-project-id';
+const dataset = import.meta.env.PUBLIC_SANITY_DATASET || import.meta.env.SANITY_STUDIO_DATASET || 'production';
 
 // https://astro.build/config
 export default defineConfig({

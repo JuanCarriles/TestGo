@@ -1,9 +1,11 @@
 import { createClient } from '@sanity/client';
 import { createImageUrlBuilder } from '@sanity/image-url';
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types';
-import { SANITY_CONFIG } from './sanityConfig';
 
-const { projectId, dataset, apiVersion } = SANITY_CONFIG;
+// En Astro/Vite (runtime del sitio) usamos import.meta.env
+const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID || 'your-project-id';
+const dataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
+const apiVersion = '2024-05-07';
 
 export const client = createClient({
   projectId,

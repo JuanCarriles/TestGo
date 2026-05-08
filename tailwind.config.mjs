@@ -5,11 +5,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#E28B8A',
-        background: '#F5F5F5',
-        surface: '#F4F0EB',
-        text: '#666666',
-        dark: '#2D2D2D',
+        primary: '#E12F6B',
+        secondary: '#49B89B',
+        background: '#FFFFFF',
+        surface: '#ED918A',
+        text: '#1A2A44',
       },
       fontFamily: {
         display: ['"Cormorant Garamond"', 'Georgia', 'serif'],

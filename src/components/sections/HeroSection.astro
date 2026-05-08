@@ -10,7 +10,7 @@ const { config } = Astro.props;
 const turnosUrl = config?.enlaceTurnos || '#';
 ---
 
-<section class="relative min-h-screen flex items-center overflow-hidden bg-dark">
+<section class="relative min-h-screen flex items-center overflow-hidden bg-text">
   {/* Background image with overlay */}
   <div class="absolute inset-0">
     <img
@@ -18,13 +18,13 @@ const turnosUrl = config?.enlaceTurnos || '#';
       alt="Equipo médico profesional"
       class="h-full w-full object-cover"
     />
-    <div class="absolute inset-0 bg-gradient-to-r from-dark via-dark/90 to-dark/60"></div>
-    <div class="absolute inset-0 bg-gradient-to-t from-dark/80 via-transparent to-dark/40"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-text via-text/90 to-text/60"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-text/80 via-transparent to-text/40"></div>
   </div>
 
   {/* Decorative elements */}
   <div class="absolute top-20 right-20 h-64 w-64 rounded-full bg-primary/10 blur-3xl"></div>
-  <div class="absolute bottom-20 left-10 h-48 w-48 rounded-full bg-primary/10 blur-3xl"></div>
+  <div class="absolute bottom-20 left-10 h-48 w-48 rounded-full bg-secondary/10 blur-3xl"></div>
 
   {/* Noise texture */}
   <div class="absolute inset-0 noise-overlay opacity-50"></div>
@@ -51,7 +51,7 @@ const turnosUrl = config?.enlaceTurnos || '#';
             href={turnosUrl}
             target="_blank"
             rel="noopener noreferrer"
-            class="group inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-500 hover:bg-primary/90 hover:shadow-glow hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-dark font-body"
+            class="group inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-500 hover:bg-primary/90 hover:shadow-glow hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-text font-body"
           >
             <svg class="mr-2 h-5 w-5 transition-transform duration-300 group-hover:rotate-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -60,7 +60,7 @@ const turnosUrl = config?.enlaceTurnos || '#';
           </a>
           <a
             href="/especialidades"
-            class="group inline-flex items-center justify-center rounded-full border border-white/30 px-8 py-4 text-lg font-medium text-white transition-all duration-500 hover:border-white hover:bg-white/10 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-dark font-body"
+            class="group inline-flex items-center justify-center rounded-full border border-white/30 px-8 py-4 text-lg font-medium text-white transition-all duration-500 hover:border-white hover:bg-white/10 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-text font-body"
           >
             Ver Especialidades
             <svg class="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -80,7 +80,7 @@ const turnosUrl = config?.enlaceTurnos || '#';
               alt="Consulta médica"
               class="h-[500px] w-full object-cover"
             />
-            <div class="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-text/60 via-transparent to-transparent"></div>
             
             {/* Floating badge */}
             <div class="absolute bottom-6 left-6 right-6">
@@ -101,8 +101,8 @@ const turnosUrl = config?.enlaceTurnos || '#';
           </div>
 
           {/* Decorative floating elements */}
-          <div class="absolute -top-6 -right-6 h-24 w-24 rounded-2xl bg-surface/20 backdrop-blur-sm border border-primary/30 flex items-center justify-center animate-float">
-            <svg class="h-10 w-10 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div class="absolute -top-6 -right-6 h-24 w-24 rounded-2xl bg-secondary/20 backdrop-blur-sm border border-secondary/30 flex items-center justify-center animate-float">
+            <svg class="h-10 w-10 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
             </svg>
           </div>

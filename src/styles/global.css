@@ -4,14 +4,6 @@
 
 @layer base {
   :root {
-    /* Nueva paleta de colores */
-    --color-primary: #E28B8A;
-    --color-background: #F5F5F5;
-    --color-surface: #F4F0EB;
-    --color-text: #666666;
-    --color-white: #FFFFFF;
-    --color-dark: #2D2D2D;
-
     --font-display: 'Cormorant Garamond', Georgia, serif;
     --font-body: 'Outfit', system-ui, sans-serif;
     
@@ -20,7 +12,8 @@
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-    --shadow-glow: 0 0 40px -10px rgba(226, 139, 138, 0.3);
+    --shadow-glow: 0 0 40px -10px rgba(225, 47, 107, 0.3);
+    --shadow-glow-secondary: 0 0 40px -10px rgba(73, 184, 155, 0.3);
     
     /* Animation timing */
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -91,7 +84,7 @@
     position: absolute;
     inset: -1px;
     border-radius: inherit;
-    background: linear-gradient(135deg, rgba(226, 139, 138, 0.15), rgba(244, 240, 235, 0.15));
+    background: linear-gradient(135deg, rgba(225, 47, 107, 0.15), rgba(73, 184, 155, 0.15));
     opacity: 0;
     transition: opacity 0.4s var(--ease-out-expo);
     z-index: -1;
@@ -121,7 +114,7 @@
 
   /* Gradient text */
   .text-gradient {
-    background: linear-gradient(135deg, #E28B8A, #F5F5F5);
+    background: linear-gradient(135deg, #E12F6B, #ED918A);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -229,9 +222,9 @@
 
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 20px -5px rgba(226, 139, 138, 0.3);
+    box-shadow: 0 0 20px -5px rgba(225, 47, 107, 0.3);
   }
   50% {
-    box-shadow: 0 0 40px -5px rgba(226, 139, 138, 0.5);
+    box-shadow: 0 0 40px -5px rgba(225, 47, 107, 0.5);
   }
 }

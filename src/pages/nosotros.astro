@@ -2,27 +2,64 @@
 import Layout from '../layouts/Layout.astro';
 import { client } from '../lib/sanity';
 import { queries } from '../lib/queries';
-import type { Configuracion } from '../types';
+import type { Configuracion, NosotrosPage } from '../types';
 
-const config = await client.fetch<Configuracion | null>(queries.configuracion).catch(() => null);
+const [config, nosotros] = await Promise.all([
+  client.fetch<Configuracion | null>(queries.configuracion).catch(() => null),
+  client.fetch<NosotrosPage | null>(queries.nosotrosPage).catch(() => null),
+]);
 
-const valores = [
-  {
-    title: 'Excelencia',
-    description: 'Buscamos la perfección en cada diagnóstico, tratamiento y experiencia de atención.',
-  },
-  {
-    title: 'Compromiso',
-    description: 'Nos dedicamos con pasión y responsabilidad a la salud y bienestar de cada paciente.',
-  },
-  {
-    title: 'Innovación',
-    description: 'Incorporamos constantemente tecnología de vanguardia y métodos actualizados.',
-  },
-  {
-    title: 'Empatía',
-    description: 'Escuchamos, comprendemos y acompañamos a nuestros pacientes en cada etapa.',
-  },
+// ── Defaults ──
+const hero = nosotros?.hero;
+const heroBadge = hero?.badge || 'Sobre Nosotros';
+const heroTitulo = hero?.titulo || 'Una historia de excelencia médica';
+const heroDestacado = hero?.tituloDestacado || 'excelencia médica';
+const heroImagen = hero?.imagenFondo?.asset?.url || 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=2000';
+const heroAlt = hero?.imagenFondo?.alt || 'Fondo';
+
+const historia = nosotros?.historia;
+const histBadge = historia?.badge || 'Nuestra Historia';
+const histTitulo = historia?.titulo || 'Más de una década cuidando a la comunidad';
+const histDestacado = historia?.tituloDestacado || 'cuidando a la comunidad';
+const histImagen = historia?.imagen?.asset?.url || 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=800';
+const histAlt = historia?.imagen?.alt || 'Instalaciones';
+const histParrafos = historia?.parrafos || [
+  'GO Centro Médico nació con una visión clara: ofrecer atención médica de alta calidad, accesible y humana. Desde nuestros inicios, nos propusimos crear un espacio donde la tecnología de vanguardia se encuentre con el trato personalizado que cada paciente merece.',
+  'A lo largo de los años, fuimos creciendo y ampliando nuestras especialidades, incorporando profesionales de excelencia y equipamiento médico de última generación.',
+  'Nuestro compromiso con la comunidad va más allá de la consulta médica. Participamos activamente en campañas de prevención, charlas educativas y programas de salud integral.',
+];
+const histTarjetaNumero = historia?.tarjetaFlotante?.numero || '15+';
+const histTarjetaEtiqueta = historia?.tarjetaFlotante?.etiqueta || 'Años de trayectoria';
+
+const mv = nosotros?.misionVision;
+const misionTitulo = mv?.mision?.titulo || 'Misión';
+const misionDesc = mv?.mision?.descripcion || 'Brindar atención médica integral de excelencia, combinando tecnología de vanguardia con un equipo humano altamente calificado y comprometido. Priorizamos el bienestar de nuestros pacientes mediante un servicio accesible, personalizado y eficiente, promoviendo la prevención y el cuidado continuo de la salud.';
+const visionTitulo = mv?.vision?.titulo || 'Visión';
+const visionDesc = mv?.vision?.descripcion || 'Ser el centro médico de referencia en la región, reconocido por la calidad de nuestros servicios, la innovación constante y la satisfacción de nuestros pacientes. Aspiramos a expandir nuestra cobertura y especialidades, manteniendo siempre los más altos estándares de excelencia médica y humana.';
+
+const valores = nosotros?.valores;
+const valBadge = valores?.badge || 'Principios';
+const valTitulo = valores?.titulo || 'Nuestros Valores';
+const valDestacado = valores?.tituloDestacado || 'Valores';
+const valDesc = valores?.descripcion || 'Los pilares que guían cada decisión y acción en GO Centro Médico.';
+const valItems = valores?.items || [
+  { titulo: 'Excelencia', descripcion: 'Buscamos la perfección en cada diagnóstico, tratamiento y experiencia de atención.' },
+  { titulo: 'Compromiso', descripcion: 'Nos dedicamos con pasión y responsabilidad a la salud y bienestar de cada paciente.' },
+  { titulo: 'Innovación', descripcion: 'Incorporamos constantemente tecnología de vanguardia y métodos actualizados.' },
+  { titulo: 'Empatía', descripcion: 'Escuchamos, comprendemos y acompañamos a nuestros pacientes en cada etapa.' },
+];
+
+const galeria = nosotros?.galeria;
+const galBadge = galeria?.badge || 'Instalaciones';
+const galTitulo = galeria?.titulo || 'Conocé nuestras instalaciones';
+const galDestacado = galeria?.tituloDestacado || 'instalaciones';
+const galImagenes = galeria?.imagenes || [
+  { imagen: { asset: { url: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=600' } }, titulo: 'Recepción' },
+  { imagen: { asset: { url: 'https://images.unsplash.com/photo-1581056771107-24ca5f033842?auto=format&fit=crop&q=80&w=600' } }, titulo: 'Sala de Espera' },
+  { imagen: { asset: { url: 'https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&q=80&w=600' } }, titulo: 'Consultorios' },
+  { imagen: { asset: { url: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=600' } }, titulo: 'Tecnología' },
+  { imagen: { asset: { url: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=600' } }, titulo: 'Equipamiento' },
+  { imagen: { asset: { url: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&q=80&w=600' } }, titulo: 'Diagnóstico' },
 ];
 ---
 
@@ -32,62 +69,52 @@ const valores = [
   config={config}
 >
   {/* Hero interno */}
-  <section class="relative bg-text py-32 lg:py-40 overflow-hidden">
+  <section class="relative bg-text py-20 sm:py-28 lg:py-40 overflow-hidden">
     <div class="absolute inset-0">
       <img
-        src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=2000"
-        alt="Fondo"
-        class="h-full w-full object-cover opacity-10"
+        src={heroImagen}
+        alt={heroAlt}
+        class="h-full w-full object-cover opacity-20 md:opacity-15"
       />
-      <div class="absolute inset-0 bg-gradient-to-br from-text via-text to-primary/20"></div>
+      <div class="absolute inset-0 bg-gradient-to-br from-text via-text/90 to-primary/30"></div>
     </div>
     <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-      <span class="inline-block text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-4 font-body">Sobre Nosotros</span>
-      <h1 class="text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl font-display leading-tight">
-        Una historia de <span class="text-gradient">excelencia médica</span>
+      <span class="inline-block text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3 sm:mb-4 font-body">{heroBadge}</span>
+      <h1 class="text-3xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-white font-display leading-tight">
+        {heroTitulo.split(heroDestacado)[0]}<span class="text-gradient">{heroDestacado}</span>{heroTitulo.split(heroDestacado)[1] || ''}
       </h1>
     </div>
   </section>
 
   {/* Historia */}
-  <section class="py-28 bg-background overflow-hidden">
+  <section class="py-16 sm:py-20 lg:py-28 bg-background overflow-hidden">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 gap-20 lg:grid-cols-2 items-center">
-        <div class="relative">
+      <div class="grid grid-cols-1 gap-12 lg:gap-20 lg:grid-cols-2 items-center">
+        <div class="relative order-1 lg:order-none">
           <div class="relative rounded-3xl overflow-hidden shadow-2xl">
             <img
-              src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=800"
-              alt="Instalaciones"
-              class="h-[600px] w-full object-cover"
+              src={histImagen}
+              alt={histAlt}
+              class="h-72 sm:h-96 lg:h-[600px] w-full object-cover"
             />
           </div>
           {/* Floating badge */}
-          <div class="absolute -bottom-8 -right-8 rounded-2xl bg-white shadow-xl border border-text/5 p-6">
-            <p class="text-5xl font-bold text-primary font-display">15+</p>
-            <p class="text-sm text-text/50 font-body mt-1">Años de trayectoria</p>
+          <div class="absolute -bottom-4 -right-2 sm:-bottom-6 sm:-right-6 lg:-bottom-8 lg:-right-8 rounded-2xl bg-white shadow-xl border border-text/5 p-4 sm:p-5 lg:p-6">
+            <p class="text-3xl sm:text-4xl lg:text-5xl font-bold text-primary font-display">{histTarjetaNumero}</p>
+            <p class="text-xs sm:text-sm text-text/50 font-body mt-1">{histTarjetaEtiqueta}</p>
           </div>
-          <div class="absolute -top-6 -left-6 h-32 w-32 rounded-full bg-secondary/10 -z-10"></div>
+          <div class="absolute -top-4 -left-4 sm:-top-6 sm:-left-6 h-20 w-20 sm:h-28 sm:w-28 lg:h-32 lg:w-32 rounded-full bg-secondary/10 -z-10"></div>
         </div>
 
-        <div>
-          <span class="inline-block text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-4 font-body">Nuestra Historia</span>
-          <h2 class="text-5xl font-bold tracking-tight text-text font-display leading-tight">
-            Más de una década <span class="text-gradient">cuidando</span> de la comunidad
+        <div class="order-2 lg:order-none">
+          <span class="inline-block text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3 sm:mb-4 font-body">{histBadge}</span>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-text font-display leading-tight">
+            {histTitulo.split(histDestacado)[0]}<span class="text-gradient">{histDestacado}</span>{histTitulo.split(histDestacado)[1] || ''}
           </h2>
-          <div class="mt-8 space-y-6 text-base leading-relaxed text-text/60 font-body font-light">
-            <p>
-              GO Centro Médico nació con una visión clara: ofrecer atención médica de alta calidad, accesible y humana.
-              Desde nuestros inicios, nos propusimos crear un espacio donde la tecnología de vanguardia se encuentre con
-              el trato personalizado que cada paciente merece.
-            </p>
-            <p>
-              A lo largo de los años, fuimos creciendo y ampliando nuestras especialidades, incorporando profesionales
-              de excelencia y equipamiento médico de última generación.
-            </p>
-            <p>
-              Nuestro compromiso con la comunidad va más allá de la consulta médica. Participamos activamente en
-              campañas de prevención, charlas educativas y programas de salud integral.
-            </p>
+          <div class="mt-6 lg:mt-8 space-y-4 sm:space-y-6 text-sm sm:text-base leading-relaxed text-text/60 font-body font-light">
+            {histParrafos.map((parrafo) => (
+              <p>{parrafo}</p>
+            ))}
           </div>
         </div>
       </div>
@@ -95,34 +122,30 @@ const valores = [
   </section>
 
   {/* Misión, Visión */}
-  <section class="py-28 bg-surface/5 overflow-hidden">
+  <section class="py-16 sm:py-20 lg:py-28 bg-surface/5 overflow-hidden">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
-        <div class="group rounded-3xl bg-white p-12 shadow-sm border border-text/5 transition-all duration-500 hover:shadow-xl hover:-translate-y-2">
-          <div class="mb-8 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-all duration-500 group-hover:bg-primary group-hover:text-white group-hover:shadow-glow">
-            <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+      <div class="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-2">
+        <div class="group rounded-3xl bg-white p-8 sm:p-10 lg:p-12 shadow-sm border border-text/5 transition-all duration-500 hover:shadow-xl hover:-translate-y-2">
+          <div class="mb-6 sm:mb-8 inline-flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-all duration-500 group-hover:bg-primary group-hover:text-white group-hover:shadow-glow">
+            <svg class="h-7 w-7 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
-          <h3 class="text-3xl font-bold text-text font-display">Misión</h3>
-          <p class="mt-6 text-base leading-relaxed text-text/50 font-body font-light">
-            Brindar atención médica integral de excelencia, combinando tecnología de vanguardia con un equipo humano
-            altamente calificado y comprometido. Priorizamos el bienestar de nuestros pacientes mediante un servicio
-            accesible, personalizado y eficiente, promoviendo la prevención y el cuidado continuo de la salud.
+          <h3 class="text-2xl sm:text-3xl font-bold text-text font-display">{misionTitulo}</h3>
+          <p class="mt-4 sm:mt-6 text-sm sm:text-base leading-relaxed text-text/50 font-body font-light">
+            {misionDesc}
           </p>
         </div>
-        <div class="group rounded-3xl bg-white p-12 shadow-sm border border-text/5 transition-all duration-500 hover:shadow-xl hover:-translate-y-2">
-          <div class="mb-8 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-secondary/10 text-secondary transition-all duration-500 group-hover:bg-secondary group-hover:text-white group-hover:shadow-glow-secondary">
-            <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <div class="group rounded-3xl bg-white p-8 sm:p-10 lg:p-12 shadow-sm border border-text/5 transition-all duration-500 hover:shadow-xl hover:-translate-y-2">
+          <div class="mb-6 sm:mb-8 inline-flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-secondary/10 text-secondary transition-all duration-500 group-hover:bg-secondary group-hover:text-white group-hover:shadow-glow-secondary">
+            <svg class="h-7 w-7 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
           </div>
-          <h3 class="text-3xl font-bold text-text font-display">Visión</h3>
-          <p class="mt-6 text-base leading-relaxed text-text/50 font-body font-light">
-            Ser el centro médico de referencia en la región, reconocido por la calidad de nuestros servicios,
-            la innovación constante y la satisfacción de nuestros pacientes. Aspiramos a expandir nuestra cobertura
-            y especialidades, manteniendo siempre los más altos estándares de excelencia médica y humana.
+          <h3 class="text-2xl sm:text-3xl font-bold text-text font-display">{visionTitulo}</h3>
+          <p class="mt-4 sm:mt-6 text-sm sm:text-base leading-relaxed text-text/50 font-body font-light">
+            {visionDesc}
           </p>
         </div>
       </div>
@@ -130,25 +153,25 @@ const valores = [
   </section>
 
   {/* Valores */}
-  <section class="py-28 bg-background overflow-hidden">
+  <section class="py-16 sm:py-20 lg:py-28 bg-background overflow-hidden">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-20">
-        <span class="inline-block text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-4 font-body">Principios</span>
-        <h2 class="text-5xl font-bold tracking-tight text-text sm:text-6xl font-display">
-          Nuestros <span class="text-gradient">Valores</span>
+      <div class="text-center mb-12 sm:mb-16 lg:mb-20">
+        <span class="inline-block text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3 sm:mb-4 font-body">{valBadge}</span>
+        <h2 class="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-text font-display">
+          {valTitulo.split(valDestacado)[0]}<span class="text-gradient">{valDestacado}</span>{valTitulo.split(valDestacado)[1] || ''}
         </h2>
-        <p class="mt-6 text-lg text-text/50 max-w-2xl mx-auto font-body font-light">
-          Los pilares que guían cada decisión y acción en GO Centro Médico.
+        <p class="mt-4 sm:mt-6 text-base sm:text-lg text-text/50 max-w-2xl mx-auto font-body font-light px-4 sm:px-0">
+          {valDesc}
         </p>
       </div>
-      <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-        {valores.map((valor) => (
-          <div class="group rounded-3xl bg-surface/5 p-10 text-center border border-text/5 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-primary/10 hover:bg-white">
-            <h3 class="text-2xl font-semibold text-text group-hover:text-primary transition-colors duration-500 font-display">
-              {valor.title}
+      <div class="grid grid-cols-1 gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        {valItems.map((valor) => (
+          <div class="group rounded-3xl bg-surface/5 p-8 sm:p-10 text-center border border-text/5 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-primary/10 hover:bg-white">
+            <h3 class="text-xl sm:text-2xl font-semibold text-text group-hover:text-primary transition-colors duration-500 font-display">
+              {valor.titulo}
             </h3>
-            <p class="mt-4 text-sm leading-relaxed text-text/50 font-body font-light">
-              {valor.description}
+            <p class="mt-3 sm:mt-4 text-sm leading-relaxed text-text/50 font-body font-light">
+              {valor.descripcion}
             </p>
           </div>
         ))}
@@ -157,34 +180,27 @@ const valores = [
   </section>
 
   {/* Galería */}
-  <section class="py-28 bg-text overflow-hidden">
+  <section class="py-16 sm:py-20 lg:py-28 bg-text overflow-hidden">
     <div class="absolute inset-0 noise-overlay opacity-20"></div>
     <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-20">
-        <span class="inline-block text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-4 font-body">Instalaciones</span>
-        <h2 class="text-5xl font-bold tracking-tight text-white sm:text-6xl font-display">
-          Conocé nuestras <span class="text-gradient">instalaciones</span>
+      <div class="text-center mb-12 sm:mb-16 lg:mb-20">
+        <span class="inline-block text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3 sm:mb-4 font-body">{galBadge}</span>
+        <h2 class="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white font-display">
+          {galTitulo.split(galDestacado)[0]}<span class="text-gradient">{galDestacado}</span>{galTitulo.split(galDestacado)[1] || ''}
         </h2>
       </div>
-      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {[
-          { src: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=600', titulo: 'Recepción' },
-          { src: 'https://images.unsplash.com/photo-1581056771107-24ca5f033842?auto=format&fit=crop&q=80&w=600', titulo: 'Sala de Espera' },
-          { src: 'https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&q=80&w=600', titulo: 'Consultorios' },
-          { src: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=600', titulo: 'Tecnología' },
-          { src: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=600', titulo: 'Equipamiento' },
-          { src: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&q=80&w=600', titulo: 'Diagnóstico' },
-        ].map((item) => (
-          <div class="group relative aspect-[4/3] overflow-hidden rounded-3xl">
+      <div class="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {galImagenes.map((item) => (
+          <div class="group relative aspect-[4/3] overflow-hidden rounded-2xl sm:rounded-3xl">
             <img
-              src={item.src}
-              alt={item.titulo}
+              src={item.imagen?.asset?.url || 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=600'}
+              alt={item.imagen?.alt || item.titulo}
               class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
               loading="lazy"
             />
             <div class="absolute inset-0 bg-gradient-to-t from-text/80 via-text/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
-            <div class="absolute inset-0 flex items-end p-6 opacity-0 translate-y-4 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
-              <p class="text-xl font-semibold text-white font-display">{item.titulo}</p>
+            <div class="absolute inset-0 flex items-end p-4 sm:p-6 opacity-0 translate-y-4 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
+              <p class="text-lg sm:text-xl font-semibold text-white font-display">{item.titulo}</p>
             </div>
           </div>
         ))}

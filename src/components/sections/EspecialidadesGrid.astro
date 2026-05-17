@@ -34,12 +34,12 @@ const defaultIcon = `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke
   <div class="absolute bottom-0 left-0 h-96 w-96 bg-secondary/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
 
   <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-20">
+    <div class="text-center mb-12 md:mb-20">
       <span class="inline-block text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-4 font-body">Nuestros Servicios</span>
-      <h2 class="text-5xl font-bold tracking-tight text-text sm:text-6xl font-display">
+      <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-text sm:text-4xl lg:text-6xl font-display">
         Especialidades <span class="text-gradient">Médicas</span>
       </h2>
-      <p class="mt-6 text-lg text-text/50 max-w-2xl mx-auto font-body font-light leading-relaxed">
+      <p class="mt-4 md:mt-6 text-base md:text-lg text-text/50 max-w-2xl mx-auto font-body font-light leading-relaxed">
         Contamos con un equipo multidisciplinario de excelencia para cuidar de tu salud y la de tu familia.
       </p>
     </div>
@@ -55,8 +55,8 @@ const defaultIcon = `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke
             {/* Image area */}
             <div class="relative h-56 overflow-hidden img-zoom">
               <img
-                src={getImageForSlug(esp.slug)}
-                alt={esp.nombre}
+                src={esp.icono?.asset?.url || getImageForSlug(esp.slug)}
+                alt={esp.icono?.alt || esp.nombre}
                 class="h-full w-full object-cover"
                 loading="lazy"
               />
@@ -64,16 +64,7 @@ const defaultIcon = `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke
               
               {/* Icon badge floating */}
               <div class="absolute top-4 right-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/90 backdrop-blur-sm text-primary shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
-                {esp.icono?.asset ? (
-                  <img
-                    src={urlFor(esp.icono.asset)}
-                    alt={esp.icono.alt || esp.nombre}
-                    class="h-6 w-6 object-contain"
-                    loading="lazy"
-                  />
-                ) : (
-                  <Fragment set:html={defaultIcon} />
-                )}
+                <Fragment set:html={defaultIcon} />
               </div>
             </div>
 

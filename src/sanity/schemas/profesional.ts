@@ -68,12 +68,31 @@ export default defineType({
       initialValue: false,
       description: 'Marcar para mostrar en la sección de equipo de la home',
     }),
+    defineField({
+      name: 'facebook',
+      title: 'Facebook',
+      type: 'url',
+      description: 'Enlace al perfil de Facebook del profesional (opcional)',
+    }),
+    defineField({
+      name: 'instagram',
+      title: 'Instagram',
+      type: 'url',
+      description: 'Enlace al perfil de Instagram del profesional (opcional)',
+    }),
   ],
   preview: {
     select: {
       title: 'nombre',
-      subtitle: 'especialidad.nombre',
+      especialidadNombre: 'especialidad.nombre',
       media: 'foto',
+    },
+    prepare({ title, especialidadNombre, media }) {
+      return {
+        title: title || 'Sin nombre',
+        subtitle: especialidadNombre || 'Sin especialidad',
+        media,
+      };
     },
   },
 });

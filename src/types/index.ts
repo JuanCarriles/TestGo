@@ -32,26 +32,8 @@ export interface Profesional {
   enlaceAgenda: string;
   biografia: string;
   destacado?: boolean;
-}
-
-/**
- * Obra Social
- */
-export interface ObraSocial {
-  _id: string;
-  nombre: string;
-  logo?: SanityImage;
-}
-
-/**
- * Reseña de paciente
- */
-export interface Resena {
-  _id: string;
-  nombre: string;
-  texto: string;
-  estrellas: number;
-  fecha?: string;
+  facebook?: string;
+  instagram?: string;
 }
 
 /**
@@ -77,6 +59,138 @@ export interface Configuracion {
   metaTitle: string;
   metaDescription: string;
   redesSociales?: RedSocial[];
+}
+
+/**
+ * Feature de "Por qué elegirnos"
+ */
+export interface Feature {
+  icono: string;
+  titulo: string;
+  descripcion: string;
+}
+
+/**
+ * Testimonio de paciente dentro de homePage
+ */
+export interface Testimonio {
+  nombre: string;
+  texto: string;
+  estrellas: number;
+  fecha?: string;
+}
+
+/**
+ * Obra Social dentro de homePage
+ */
+export interface ObraSocial {
+  nombre: string;
+  logo?: SanityImage;
+}
+
+/**
+ * Contenido editable de la Página de Inicio
+ */
+export interface HomePage {
+  _id: string;
+  hero: {
+    imagenFondo?: SanityImage;
+    badge: string;
+    titulo: string;
+    tituloDestacado: string;
+    descripcion: string;
+    ctaPrimario: {
+      texto: string;
+      usarEnlaceTurnos: boolean;
+      enlacePersonalizado?: string;
+    };
+    ctaSecundario: {
+      texto: string;
+      enlace: string;
+    };
+    imagenTarjeta?: SanityImage;
+    estadisticas: {
+      numero: string;
+      etiqueta: string;
+    }[];
+  };
+  porQueElegirnos: {
+    imagen?: SanityImage;
+    badge: string;
+    titulo: string;
+    tituloDestacado: string;
+    descripcion: string;
+    features: Feature[];
+    tarjetaFlotante: {
+      numero: string;
+      etiqueta: string;
+    };
+  };
+  testimonios?: Testimonio[];
+  obrasSociales?: ObraSocial[];
+}
+
+/**
+ * Valor de la página Nosotros
+ */
+export interface Valor {
+  titulo: string;
+  descripcion: string;
+}
+
+/**
+ * Imagen de galería
+ */
+export interface ImagenGaleria {
+  imagen?: SanityImage;
+  titulo: string;
+}
+
+/**
+ * Contenido editable de la Página Nosotros
+ */
+export interface NosotrosPage {
+  _id: string;
+  hero: {
+    badge: string;
+    titulo: string;
+    tituloDestacado: string;
+    imagenFondo?: SanityImage;
+  };
+  historia: {
+    imagen?: SanityImage;
+    badge: string;
+    titulo: string;
+    tituloDestacado: string;
+    parrafos: string[];
+    tarjetaFlotante: {
+      numero: string;
+      etiqueta: string;
+    };
+  };
+  misionVision: {
+    mision: {
+      titulo: string;
+      descripcion: string;
+    };
+    vision: {
+      titulo: string;
+      descripcion: string;
+    };
+  };
+  valores: {
+    badge: string;
+    titulo: string;
+    tituloDestacado: string;
+    descripcion: string;
+    items: Valor[];
+  };
+  galeria: {
+    badge: string;
+    titulo: string;
+    tituloDestacado: string;
+    imagenes: ImagenGaleria[];
+  };
 }
 
 /**

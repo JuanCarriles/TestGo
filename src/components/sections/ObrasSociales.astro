@@ -1,45 +1,47 @@
 ---
-import type { ObraSocial } from '../../types';
+import type { HomePage } from '../../types';
 import { urlFor } from '../../lib/sanity';
 
 interface Props {
-  obrasSociales: ObraSocial[];
+  homePage: HomePage | null;
 }
 
-const { obrasSociales } = Astro.props;
+const { homePage } = Astro.props;
 
 // Demo logos when no data
 const demoObras = [
-  { nombre: 'OSDE', _id: '1' },
-  { nombre: 'Swiss Medical', _id: '2' },
-  { nombre: 'Galeno', _id: '3' },
-  { nombre: 'Medifé', _id: '4' },
-  { nombre: 'OMINT', _id: '5' },
-  { nombre: 'Medicus', _id: '6' },
-  { nombre: 'Sancor Salud', _id: '7' },
-  { nombre: 'Luis Pasteur', _id: '8' },
+  { nombre: 'OSDE' },
+  { nombre: 'Swiss Medical' },
+  { nombre: 'Galeno' },
+  { nombre: 'Medifé' },
+  { nombre: 'OMINT' },
+  { nombre: 'Medicus' },
+  { nombre: 'Sancor Salud' },
+  { nombre: 'Luis Pasteur' },
 ];
 
-const displayObras = obrasSociales.length > 0 ? obrasSociales : demoObras;
+const obras = homePage?.obrasSociales?.length
+  ? homePage.obrasSociales
+  : demoObras;
 ---
 
-<section class="relative py-28 bg-background overflow-hidden">
+<section class="relative py-16 md:py-28 bg-background overflow-hidden">
   {/* Decorative gradient */}
-  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] bg-primary/5 rounded-full blur-3xl"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[400px] w-[400px] md:h-[600px] md:w-[600px] bg-primary/5 rounded-full blur-3xl"></div>
 
   <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-20">
-      <span class="inline-block text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-4 font-body">Cobertura</span>
-      <h2 class="text-5xl font-bold tracking-tight text-text sm:text-6xl font-display">
+    <div class="text-center mb-12 md:mb-20">
+      <span class="inline-block text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3 md:mb-4 font-body">Cobertura</span>
+      <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-text sm:text-4xl lg:text-6xl font-display">
         Obras Sociales <span class="text-gradient">Aceptadas</span>
       </h2>
-      <p class="mt-6 text-lg text-text/50 max-w-2xl mx-auto font-body font-light">
+      <p class="mt-4 md:mt-6 text-base md:text-lg text-text/50 max-w-2xl mx-auto font-body font-light">
         Trabajamos con las principales obras sociales y prepagas del país para tu tranquilidad.
       </p>
     </div>
 
-    <div class="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4">
-      {displayObras.map((obra, index) => (
+    <div class="grid grid-cols-2 gap-3 md:gap-6 sm:grid-cols-3 md:grid-cols-4">
+      {obras.map((obra, index) => (
         <div class="group relative flex flex-col items-center justify-center rounded-3xl bg-surface/5 border border-text/5 p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-primary/10 hover:bg-white">
           {obra.logo?.asset ? (
             <img

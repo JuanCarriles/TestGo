@@ -22,7 +22,7 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
   return (
     <div>
       {/* Filters */}
-      <div className="mb-12 flex flex-col gap-4 sm:flex-row">
+      <div className="mb-8 md:mb-12 flex flex-col gap-3 md:gap-4 sm:flex-row">
         <div className="relative flex-1">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
             <svg className="h-5 w-5 text-text/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -34,13 +34,13 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
             placeholder="Buscar por nombre..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-2xl border border-text/10 bg-white py-3.5 pl-12 pr-4 text-sm text-text placeholder:text-text/30 transition-all duration-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 font-body"
+            className="w-full rounded-2xl border border-text/10 bg-white py-3 pl-10 md:py-3.5 md:pl-12 pr-4 text-sm text-text placeholder:text-text/30 transition-all duration-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 font-body"
           />
         </div>
         <select
           value={selectedEspecialidad}
           onChange={(e) => setSelectedEspecialidad(e.target.value)}
-          className="rounded-2xl border border-text/10 bg-white py-3.5 px-5 text-sm text-text transition-all duration-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 sm:w-72 font-body"
+          className="rounded-2xl border border-text/10 bg-white py-3 md:py-3.5 px-4 md:px-5 text-sm text-text transition-all duration-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 w-full sm:w-72 font-body"
         >
           <option value="">Todas las especialidades</option>
           {especialidades.map((esp) => (
@@ -96,17 +96,29 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
                 <p className="mt-3 text-sm leading-relaxed text-text/50 line-clamp-3 flex-1 font-body font-light">
                   {prof.biografia}
                 </p>
-                <a
-                  href={prof.enlaceAgenda}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-6 inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-md transition-all duration-500 hover:bg-primary/90 hover:shadow-glow hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 font-body"
-                >
-                  <svg className="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  Agendar Turno
-                </a>
+                <div className="mt-6 flex flex-col gap-3">
+                  <a
+                    href={`/equipo/${prof.slug}`}
+                    className="inline-flex items-center justify-center rounded-full border border-primary px-6 py-3 text-sm font-semibold text-primary transition-all duration-500 hover:bg-primary hover:text-white hover:shadow-glow focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 font-body"
+                  >
+                    <svg className="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    Ver Perfil
+                  </a>
+                  <a
+                    href={prof.enlaceAgenda}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-md transition-all duration-500 hover:bg-primary/90 hover:shadow-glow hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 font-body"
+                  >
+                    <svg className="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    Agendar Turno
+                  </a>
+                </div>
               </div>
 
               {/* Bottom accent line */}

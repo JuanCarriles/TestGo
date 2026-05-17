@@ -74,8 +74,8 @@ const displayEspecialidades = especialidades.length > 0 ? especialidades : demoE
           >
             <div class="relative h-56 overflow-hidden img-zoom">
               <img
-                src={getImageForSlug(esp.slug)}
-                alt={esp.nombre}
+                src={esp.icono?.asset?.url || getImageForSlug(esp.slug)}
+                alt={esp.icono?.alt || esp.nombre}
                 class="h-full w-full object-cover"
                 loading="lazy"
               />

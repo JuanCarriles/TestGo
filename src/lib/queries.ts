@@ -125,28 +125,133 @@ export const queries = {
       "slug": slug.current
     },
     enlaceAgenda,
-    biografia
+    biografia,
+    facebook,
+    instagram
   }`,
 
-  // ── Obras Sociales ──
-  todasObrasSociales: `*[_type == "obraSocial" && activa == true] | order(nombre asc){
+  // ── Página de Inicio ──
+  homePage: `*[_type == "homePage"][0]{
     _id,
-    nombre,
-    logo{
-      asset->{
-        _id,
-        url
+    hero{
+      imagenFondo{
+        asset->{_id,url},
+        alt
       },
-      alt
+      badge,
+      titulo,
+      tituloDestacado,
+      descripcion,
+      ctaPrimario{
+        texto,
+        usarEnlaceTurnos,
+        enlacePersonalizado
+      },
+      ctaSecundario{
+        texto,
+        enlace
+      },
+      imagenTarjeta{
+        asset->{_id,url},
+        alt
+      },
+      estadisticas[]{
+        numero,
+        etiqueta
+      }
+    },
+    porQueElegirnos{
+      imagen{
+        asset->{_id,url},
+        alt
+      },
+      badge,
+      titulo,
+      tituloDestacado,
+      descripcion,
+      features[]{
+        icono,
+        titulo,
+        descripcion
+      },
+      tarjetaFlotante{
+        numero,
+        etiqueta
+      }
+    },
+    testimonios[]{
+      nombre,
+      texto,
+      estrellas,
+      fecha
+    },
+    obrasSociales[]{
+      nombre,
+      logo{
+        asset->{_id,url},
+        alt
+      }
     }
   }`,
 
-  // ── Reseñas ──
-  todasResenasAprobadas: `*[_type == "resena" && aprobada == true] | order(fecha desc){
+  // ── Página Nosotros ──
+  nosotrosPage: `*[_type == "nosotrosPage"][0]{
     _id,
-    nombre,
-    texto,
-    estrellas,
-    fecha
+    hero{
+      badge,
+      titulo,
+      tituloDestacado,
+      imagenFondo{
+        asset->{_id,url},
+        alt
+      }
+    },
+    historia{
+      imagen{
+        asset->{_id,url},
+        alt
+      },
+      badge,
+      titulo,
+      tituloDestacado,
+      parrafos,
+      tarjetaFlotante{
+        numero,
+        etiqueta
+      }
+    },
+    misionVision{
+      mision{
+        titulo,
+        descripcion
+      },
+      vision{
+        titulo,
+        descripcion
+      }
+    },
+    valores{
+      badge,
+      titulo,
+      tituloDestacado,
+      descripcion,
+      items[]{
+        titulo,
+        descripcion
+      }
+    },
+    galeria{
+      badge,
+      titulo,
+      tituloDestacado,
+      imagenes[]{
+        imagen{
+          asset->{_id,url},
+          alt
+        },
+        titulo
+      }
+    }
   }`,
+
 } as const;

@@ -8,13 +8,12 @@ import Testimonios from '../components/sections/Testimonios.astro';
 import ContactoSection from '../components/sections/ContactoSection.astro';
 import { client } from '../lib/sanity';
 import { queries } from '../lib/queries';
-import type { Configuracion, Especialidad, ObraSocial, Resena } from '../types';
+import type { Configuracion, Especialidad, HomePage } from '../types';
 
-const [config, especialidades, obrasSociales, resenas] = await Promise.all([
+const [config, homePage, especialidades] = await Promise.all([
   client.fetch<Configuracion | null>(queries.configuracion).catch(() => null),
+  client.fetch<HomePage | null>(queries.homePage).catch(() => null),
   client.fetch<Especialidad[]>(queries.todasEspecialidades).catch(() => []),
-  client.fetch<ObraSocial[]>(queries.todasObrasSociales).catch(() => []),
-  client.fetch<Resena[]>(queries.todasResenasAprobadas).catch(() => []),
 ]);
 
 const metaDescription = config?.metaDescription || 'GO Centro Médico - Excelencia médica con atención personalizada las 24 horas. Reservá tu turno online con los mejores especialistas.';
@@ -25,10 +24,10 @@ const metaDescription = config?.metaDescription || 'GO Centro Médico - Excelenc
   description={metaDescription}
   config={config}
 >
-  <HeroSection config={config} />
+  <HeroSection config={config} homePage={homePage} />
   <EspecialidadesGrid especialidades={especialidades} />
-  <PorQueElegirnos />
-  <ObrasSociales obrasSociales={obrasSociales} />
-  <Testimonios resenas={resenas} />
+  <PorQueElegirnos homePage={homePage} />
+  <ObrasSociales homePage={homePage} />
+  <Testimonios homePage={homePage} />
   <ContactoSection config={config} />
 </Layout>

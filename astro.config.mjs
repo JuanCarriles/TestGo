@@ -11,6 +11,11 @@ const dataset = import.meta.env.PUBLIC_SANITY_DATASET || import.meta.env.SANITY_
 export default defineConfig({
   site: 'https://gocentromedico.com',
   output: 'static',
+  vite: {
+    optimizeDeps: {
+      include: ['sanity', 'react', 'react-dom'],
+    },
+  },
   integrations: [
     react(),
     sanity({

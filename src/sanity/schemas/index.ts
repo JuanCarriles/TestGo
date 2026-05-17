@@ -2,14 +2,14 @@ import type { SchemaTypeDefinition } from 'sanity';
 
 import configuracion from './configuracion';
 import especialidad from './especialidad';
-import obraSocial from './obraSocial';
+import homePage from './homePage';
+import nosotrosPage from './nosotrosPage';
 import profesional from './profesional';
-import resena from './resena';
 
 export const schemaTypes: SchemaTypeDefinition[] = [
   configuracion,
+  homePage,
   especialidad,
   profesional,
-  obraSocial,
-  resena,
+  nosotrosPage,
 ];

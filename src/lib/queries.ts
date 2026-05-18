@@ -155,6 +155,10 @@ export const queries = {
         asset->{_id,url},
         alt
       },
+      imagenesTarjeta[]{
+        asset->{_id,url},
+        alt
+      },
       estadisticas[]{
         numero,
         etiqueta
@@ -252,6 +256,18 @@ export const queries = {
         titulo
       }
     }
+  }`,
+
+  // ── Instagram Reels ──
+  instagramReels: `*[_type == "instagramReel"] | order(orden asc, _createdAt desc){
+    _id,
+    titulo,
+    url,
+    thumbnail{
+      asset->{_id,url},
+      alt
+    },
+    orden
   }`,
 
 } as const;

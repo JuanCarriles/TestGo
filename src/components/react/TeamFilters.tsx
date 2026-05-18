@@ -70,7 +70,7 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
                   <img
                     src={prof.foto.asset.url}
                     alt={prof.foto.alt || prof.nombre}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
                     loading="lazy"
                   />
                 ) : (

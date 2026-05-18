@@ -109,6 +109,7 @@ export interface HomePage {
       enlace: string;
     };
     imagenTarjeta?: SanityImage;
+    imagenesTarjeta?: SanityImage[];
     estadisticas: {
       numero: string;
       etiqueta: string;
@@ -201,4 +202,15 @@ export interface SeoProps {
   description: string;
   image?: string;
   pathname?: string;
+}
+
+/**
+ * Reel de Instagram para el carrusel
+ */
+export interface InstagramReel {
+  _id: string;
+  titulo: string;
+  url: string;
+  thumbnail?: SanityImage;
+  orden?: number;
 }

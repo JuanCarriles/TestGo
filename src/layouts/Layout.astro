@@ -74,5 +74,91 @@ const ogImage = image || '/og-default.jpg';
 
     <Footer config={config} />
     <WhatsAppButton whatsapp={config?.whatsapp} />
+
+    <script is:inline>
+      (function () {
+        function initAnimations() {
+          // ── Scroll reveal ──
+          var reveals = document.querySelectorAll('[data-reveal]');
+          if (reveals.length === 0) return;
+
+          var revealObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                var el = entry.target;
+                var dir = el.getAttribute('data-reveal');
+                var cls = 'reveal';
+                if (dir === 'up') cls = 'reveal-up';
+                if (dir === 'left') cls = 'reveal-left';
+                if (dir === 'right') cls = 'reveal-right';
+                if (dir === 'fade') cls = 'reveal';
+                el.classList.add(cls);
+                // Small delay to allow the class transition to register before adding is-visible
+                requestAnimationFrame(function () {
+                  requestAnimationFrame(function () {
+                    el.classList.add('is-visible');
+                  });
+                });
+                revealObserver.unobserve(el);
+              }
+            });
+          }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+          reveals.forEach(function (el) { revealObserver.observe(el); });
+
+          // ── Counter animation ──
+          var counters = document.querySelectorAll('[data-counter]');
+          var counted = new WeakSet();
+
+          var counterObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting && !counted.has(entry.target)) {
+                counted.add(entry.target);
+                animateCounter(entry.target);
+              }
+            });
+          }, { threshold: 0.5 });
+
+          counters.forEach(function (el) { counterObserver.observe(el); });
+
+          function animateCounter(el) {
+            var targetText = el.getAttribute('data-counter');
+            var prefix = '';
+            var suffix = '';
+            var numeric = targetText.replace(/[^0-9.]/g, '');
+            var target = parseFloat(numeric) || 0;
+
+            if (targetText.indexOf('+') === 0) prefix = '+';
+            if (targetText.indexOf('+') > 0) prefix = '+';
+            if (targetText.indexOf('k') > -1 || targetText.indexOf('K') > -1) suffix = 'k';
+            if (targetText.indexOf('/') > -1) {
+              // handles 24/7 style: just animate the first number, keep rest as suffix
+              var parts = targetText.split('/');
+              numeric = parts[0].replace(/[^0-9.]/g, '');
+              target = parseFloat(numeric) || 0;
+              suffix = '/' + (parts[1] || '');
+            }
+
+            var duration = 2000;
+            var start = performance.now();
+
+            function step(now) {
+              var progress = Math.min((now - start) / duration, 1);
+              var eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+              var current = Math.round(eased * target);
+              el.textContent = prefix + current + suffix;
+              if (progress < 1) requestAnimationFrame(step);
+              else el.textContent = targetText; // ensure final exact text
+            }
+            requestAnimationFrame(step);
+          }
+        }
+
+        document.addEventListener('astro:page-load', initAnimations);
+        // Also run immediately on first load (before event fires sometimes)
+        if (document.readyState !== 'loading') initAnimations();
+        else document.addEventListener('DOMContentLoaded', initAnimations);
+      })();
+    </script>
   </body>
 </html>

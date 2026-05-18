@@ -1,4 +1,5 @@
 ---
+import HeroImageCarousel from '../../components/react/HeroImageCarousel';
 import type { Configuracion, HomePage } from '../../types';
 interface Props {
   config: Configuracion | null;
@@ -18,8 +19,8 @@ const descripcion = hero?.descripcion || 'Atención médica de alta gama con los
 
 const ctaPrimarioTexto = hero?.ctaPrimario?.texto || 'Reservar Turno';
 const ctaPrimarioEnlace = hero?.ctaPrimario?.usarEnlaceTurnos !== false
-  ? turnosUrl
-  : (hero?.ctaPrimario?.enlacePersonalizado || turnosUrl);
+  ? '/equipo'
+  : (hero?.ctaPrimario?.enlacePersonalizado || '/equipo');
 
 const ctaSecundarioTexto = hero?.ctaSecundario?.texto || 'Ver Especialidades';
 const ctaSecundarioEnlace = hero?.ctaSecundario?.enlace || '/especialidades';
@@ -35,9 +36,6 @@ const estadisticas = hero?.estadisticas?.length
 
 const imagenFondoUrl = hero?.imagenFondo?.asset?.url || 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=2000';
 const imagenFondoAlt = hero?.imagenFondo?.alt || 'Equipo médico profesional';
-
-const imagenTarjetaUrl = hero?.imagenTarjeta?.asset?.url || 'https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&q=80&w=800';
-const imagenTarjetaAlt = hero?.imagenTarjeta?.alt || 'Consulta médica';
 
 // Process title: supports both actual newlines and literal \n
 const tituloLineas = titulo.split(/\n|\\n/);
@@ -76,7 +74,7 @@ const lineasProcesadas = tituloLineas.map((linea) => ({
 }));
 ---
 
-<section class="relative min-h-[85vh] md:min-h-screen flex items-center overflow-hidden bg-text">
+<section data-reveal="fade" class="relative min-h-[85vh] md:min-h-screen flex items-center overflow-hidden bg-text">
   {/* Background image with overlay */}
   <div class="absolute inset-0">
     <img
@@ -123,8 +121,6 @@ const lineasProcesadas = tituloLineas.map((linea) => ({
         <div class="animate-fade-up delay-300 mt-6 md:mt-12 flex flex-col sm:flex-row items-stretch sm:items-start gap-3 md:gap-4">
           <a
             href={ctaPrimarioEnlace}
-            target={ctaPrimarioEnlace.startsWith('http') ? '_blank' : undefined}
-            rel={ctaPrimarioEnlace.startsWith('http') ? 'noopener noreferrer' : undefined}
             class="group inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 md:px-8 md:py-4 text-base md:text-lg font-semibold text-white shadow-lg transition-all duration-500 hover:bg-primary/90 hover:shadow-glow hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-text font-body"
           >
             <svg class="mr-2 h-5 w-5 transition-transform duration-300 group-hover:rotate-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -144,48 +140,26 @@ const lineasProcesadas = tituloLineas.map((linea) => ({
         </div>
       </div>
 
-      {/* Right side - floating card */}
-      <div class="hidden lg:block relative">
-        <div class="animate-fade-up delay-500 relative">
-          {/* Floating image card */}
-          <div class="relative rounded-3xl overflow-hidden shadow-2xl border border-white/10">
-            <img
-              src={imagenTarjetaUrl}
-              alt={imagenTarjetaAlt}
-              class="h-[400px] xl:h-[500px] w-full object-cover"
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-text/60 via-transparent to-transparent"></div>
-            
-            {/* Floating badge */}
-            <div class="absolute bottom-4 md:bottom-6 left-4 md:left-6 right-4 md:right-6">
-              <div class="rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 p-4 md:p-5">
-                <div class="flex items-center gap-3 md:gap-4">
-                  <div class="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-primary/80 text-white">
-                    <svg class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p class="text-white font-semibold font-body text-sm md:text-base">Turnos Online</p>
-                    <p class="text-white/60 text-xs md:text-sm font-body">Atención inmediata garantizada</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+      {/* Right side - floating carousel card */}
+      <div class="hidden lg:block relative animate-fade-up delay-500">
+        <HeroImageCarousel
+          images={hero?.imagenesTarjeta || []}
+          fallbackImage={hero?.imagenTarjeta}
+          fallbackAlt={hero?.imagenTarjeta?.alt || 'Consulta médica'}
+          client:load
+        />
 
-          {/* Decorative floating elements */}
-          <div class="absolute -top-6 -right-6 h-20 w-20 md:h-24 md:w-24 rounded-2xl bg-secondary/20 backdrop-blur-sm border border-secondary/30 flex items-center justify-center animate-float">
-            <svg class="h-8 w-8 md:h-10 md:w-10 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-            </svg>
-          </div>
-          
-          <div class="absolute -bottom-4 -left-4 h-16 w-16 md:h-20 md:w-20 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30 flex items-center justify-center animate-float" style="animation-delay: 1s;">
-            <svg class="h-6 w-6 md:h-8 md:w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-          </div>
+        {/* Decorative floating elements */}
+        <div class="absolute -top-6 -right-6 h-20 w-20 md:h-24 md:w-24 rounded-2xl bg-secondary/20 backdrop-blur-sm border border-secondary/30 flex items-center justify-center animate-float">
+          <svg class="h-8 w-8 md:h-10 md:w-10 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+        </div>
+
+        <div class="absolute -bottom-4 -left-4 h-16 w-16 md:h-20 md:w-20 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30 flex items-center justify-center animate-float" style="animation-delay: 1s;">
+          <svg class="h-6 w-6 md:h-8 md:w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
         </div>
       </div>
     </div>
@@ -194,7 +168,7 @@ const lineasProcesadas = tituloLineas.map((linea) => ({
     <div class="animate-fade-up delay-700 mt-12 md:mt-20 grid grid-cols-2 gap-4 md:gap-8 sm:grid-cols-4 border-t border-white/10 pt-8 md:pt-12">
       {estadisticas.map((stat) => (
         <div class="flex flex-col items-center lg:items-start">
-          <span class="text-3xl md:text-4xl font-bold text-primary sm:text-5xl font-display">{stat.numero}</span>
+          <span data-counter={stat.numero} class="text-3xl md:text-4xl font-bold text-primary sm:text-5xl font-display">0</span>
           <span class="mt-1 md:mt-2 text-xs md:text-sm text-white/50 font-body tracking-wide uppercase">{stat.etiqueta}</span>
         </div>
       ))}

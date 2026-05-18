@@ -6,17 +6,20 @@ import PorQueElegirnos from '../components/sections/PorQueElegirnos.astro';
 import ObrasSociales from '../components/sections/ObrasSociales.astro';
 import Testimonios from '../components/sections/Testimonios.astro';
 import ContactoSection from '../components/sections/ContactoSection.astro';
+import InstagramReelsCarousel from '../components/react/InstagramReelsCarousel';
 import { client } from '../lib/sanity';
 import { queries } from '../lib/queries';
-import type { Configuracion, Especialidad, HomePage } from '../types';
+import type { Configuracion, Especialidad, HomePage, InstagramReel } from '../types';
 
-const [config, homePage, especialidades] = await Promise.all([
+const [config, homePage, especialidades, instagramReels] = await Promise.all([
   client.fetch<Configuracion | null>(queries.configuracion).catch(() => null),
   client.fetch<HomePage | null>(queries.homePage).catch(() => null),
   client.fetch<Especialidad[]>(queries.todasEspecialidades).catch(() => []),
+  client.fetch<InstagramReel[]>(queries.instagramReels).catch(() => []),
 ]);
 
 const metaDescription = config?.metaDescription || 'GO Centro Médico - Excelencia médica con atención personalizada las 24 horas. Reservá tu turno online con los mejores especialistas.';
+const instagramUrl = config?.redesSociales?.find((r) => r.nombre === 'instagram')?.url || '';
 ---
 
 <Layout
@@ -28,6 +31,9 @@ const metaDescription = config?.metaDescription || 'GO Centro Médico - Excelenc
   <EspecialidadesGrid especialidades={especialidades} />
   <PorQueElegirnos homePage={homePage} />
   <ObrasSociales homePage={homePage} />
+  {instagramReels.length > 0 && (
+    <InstagramReelsCarousel reels={instagramReels} instagramUrl={instagramUrl} client:load />
+  )}
   <Testimonios homePage={homePage} />
   <ContactoSection config={config} />
 </Layout>

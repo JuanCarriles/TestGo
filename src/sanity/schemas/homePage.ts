@@ -124,7 +124,7 @@ export default defineType({
         }),
         defineField({
           name: 'imagenTarjeta',
-          title: 'Imagen de la tarjeta lateral',
+          title: 'Imagen de la tarjeta lateral (Legacy)',
           type: 'image',
           options: { hotspot: true },
           fields: [
@@ -136,6 +136,28 @@ export default defineType({
             }),
           ],
           description: 'Imagen que aparece en la tarjeta flotante del lado derecho del Hero. Recomendado: 800x1000px.',
+          hidden: ({ parent }) => !!parent?.imagenesTarjeta?.length,
+        }),
+        defineField({
+          name: 'imagenesTarjeta',
+          title: 'Imágenes del carrusel lateral',
+          type: 'array',
+          description: 'Varias imágenes para el carrusel de la tarjeta lateral del Hero. Si cargás imágenes acá, se usará el carrusel en vez de la imagen única.',
+          of: [
+            {
+              type: 'image',
+              options: { hotspot: true },
+              fields: [
+                defineField({
+                  name: 'alt',
+                  title: 'Texto alternativo',
+                  type: 'string',
+                  validation: (Rule) => Rule.required(),
+                }),
+              ],
+            },
+          ],
+          validation: (Rule) => Rule.max(6),
         }),
         defineField({
           name: 'estadisticas',

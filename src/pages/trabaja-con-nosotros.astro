@@ -1,0 +1,250 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { client } from '../lib/sanity';
+import { queries } from '../lib/queries';
+import type { Configuracion } from '../types';
+
+const config = await client.fetch<Configuracion | null>(queries.configuracion).catch(() => null);
+const contactEmail = config?.email || 'rrhh@gocentromedico.com';
+
+const stats = [
+  { numero: '+50', etiqueta: 'Profesionales médicos' },
+  { numero: '+20', etiqueta: 'Especialidades' },
+  { numero: '15+', etiqueta: 'Años de trayectoria' },
+  { numero: '24/7', etiqueta: 'Atención integral' },
+];
+---
+
+<Layout
+  title="Trabajá con nosotros"
+  description="¿Querés formar parte de GO Centro Médico? Completá el formulario y envianos tu CV."
+  config={config}
+>
+  {/* Hero */}
+  <section class="relative bg-text py-32 lg:py-40 overflow-hidden">
+    <div class="absolute inset-0">
+      <img
+        src="https://images.unsplash.com/photo-1581056771107-24ca5f033842?auto=format&fit=crop&q=80&w=2000"
+        alt="Equipo médico"
+        class="h-full w-full object-cover opacity-15"
+      />
+      <div class="absolute inset-0 bg-gradient-to-br from-text via-text/90 to-primary/20"></div>
+    </div>
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+      <span class="inline-block text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-4 font-body">Carrera médica</span>
+      <h1 class="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-white font-display leading-tight">
+        Trabajá con nosotros
+      </h1>
+    </div>
+  </section>
+
+  {/* Stats */}
+  <section class="py-12 sm:py-16 bg-surface/5 border-b border-text/5">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 gap-8 md:grid-cols-4 text-center">
+        {stats.map((stat) => (
+          <div>
+            <p class="text-3xl sm:text-4xl font-bold text-primary font-display">{stat.numero}</p>
+            <p class="mt-2 text-xs sm:text-sm uppercase tracking-wider text-text/50 font-body">{stat.etiqueta}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* Form section */}
+  <section class="py-16 sm:py-20 lg:py-28 bg-background overflow-hidden">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 gap-12 lg:gap-20 lg:grid-cols-2 items-start">
+        {/* Left: Info */}
+        <div class="lg:sticky lg:top-28">
+          <span class="inline-block text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3 sm:mb-4 font-body">Sé parte</span>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-text font-display leading-tight">
+            ¡Sumate a <span class="text-gradient">nuestro equipo!</span>
+          </h2>
+          <p class="mt-6 text-base sm:text-lg leading-relaxed text-text/60 font-body font-light">
+            Si querés ser parte de la familia de GO Centro Médico, completá el formulario adjunto y envianos tu CV. Estamos buscando profesionales comprometidos con la excelencia y el trato humano.
+          </p>
+          <p class="mt-4 text-base sm:text-lg leading-relaxed text-text/60 font-body font-light">
+            También podés enviarnos un correo directamente a
+            <a href={`mailto:${contactEmail}`} class="text-primary underline underline-offset-4 hover:text-primary/80 transition-colors font-medium">{contactEmail}</a>.
+          </p>
+
+          {/* Decorative circle */}
+          <div class="hidden lg:block absolute -bottom-8 -left-8 h-32 w-32 rounded-full bg-secondary/10 -z-10"></div>
+        </div>
+
+        {/* Right: Form */}
+        <div class="rounded-3xl bg-white p-6 sm:p-8 lg:p-10 shadow-xl border border-text/5">
+          <form
+            id="work-form"
+            class="space-y-5 sm:space-y-6"
+            onsubmit="event.preventDefault(); document.getElementById('form-success').classList.remove('hidden'); this.reset();"
+          >
+            {/* Nombre y Apellido */}
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <div>
+                <label for="nombres" class="block text-xs sm:text-sm font-semibold uppercase tracking-wider text-text/70 mb-1.5 sm:mb-2 font-body">
+                  Nombre/s <span class="text-primary">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="nombres"
+                  name="nombres"
+                  required
+                  class="w-full rounded-xl border border-text/10 bg-white px-4 py-2.5 sm:py-3 text-sm text-text placeholder:text-text/30 transition-all duration-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 font-body"
+                  placeholder="Ej: María"
+                />
+              </div>
+              <div>
+                <label for="apellidos" class="block text-xs sm:text-sm font-semibold uppercase tracking-wider text-text/70 mb-1.5 sm:mb-2 font-body">
+                  Apellido/s <span class="text-primary">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="apellidos"
+                  name="apellidos"
+                  required
+                  class="w-full rounded-xl border border-text/10 bg-white px-4 py-2.5 sm:py-3 text-sm text-text placeholder:text-text/30 transition-all duration-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 font-body"
+                  placeholder="Ej: González"
+                />
+              </div>
+            </div>
+
+            {/* Celular y Email */}
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <div>
+                <label for="celular" class="block text-xs sm:text-sm font-semibold uppercase tracking-wider text-text/70 mb-1.5 sm:mb-2 font-body">
+                  Celular <span class="text-primary">*</span>
+                </label>
+                <input
+                  type="tel"
+                  id="celular"
+                  name="celular"
+                  required
+                  class="w-full rounded-xl border border-text/10 bg-white px-4 py-2.5 sm:py-3 text-sm text-text placeholder:text-text/30 transition-all duration-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 font-body"
+                  placeholder="Ej: 011 2345-6789"
+                />
+              </div>
+              <div>
+                <label for="email" class="block text-xs sm:text-sm font-semibold uppercase tracking-wider text-text/70 mb-1.5 sm:mb-2 font-body">
+                  Correo electrónico <span class="text-primary">*</span>
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  class="w-full rounded-xl border border-text/10 bg-white px-4 py-2.5 sm:py-3 text-sm text-text placeholder:text-text/30 transition-all duration-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 font-body"
+                  placeholder="Ej: nombre@email.com"
+                />
+              </div>
+            </div>
+
+            {/* Fecha de nacimiento y Área */}
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <div>
+                <label for="fechaNacimiento" class="block text-xs sm:text-sm font-semibold uppercase tracking-wider text-text/70 mb-1.5 sm:mb-2 font-body">
+                  Fecha de nacimiento <span class="text-primary">*</span>
+                </label>
+                <input
+                  type="date"
+                  id="fechaNacimiento"
+                  name="fechaNacimiento"
+                  required
+                  class="w-full rounded-xl border border-text/10 bg-white px-4 py-2.5 sm:py-3 text-sm text-text placeholder:text-text/30 transition-all duration-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 font-body"
+                />
+              </div>
+              <div>
+                <label for="area" class="block text-xs sm:text-sm font-semibold uppercase tracking-wider text-text/70 mb-1.5 sm:mb-2 font-body">
+                  Área de interés <span class="text-primary">*</span>
+                </label>
+                <select
+                  id="area"
+                  name="area"
+                  required
+                  class="w-full rounded-xl border border-text/10 bg-white px-4 py-2.5 sm:py-3 text-sm text-text transition-all duration-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 font-body appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20fill%3D%27none%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20stroke%3D%27%236B7280%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%20stroke-width%3D%271.5%27%20d%3D%27M6%208l4%204%204-4%27%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem_1.25rem] bg-[right_0.75rem_center] bg-no-repeat pr-10"
+                >
+                  <option value="">Seleccioná un área</option>
+                  <option value="medicina-general">Medicina general</option>
+                  <option value="especialista-medico">Especialista médico</option>
+                  <option value="enfermeria">Enfermería</option>
+                  <option value="imagenes">Diagnóstico por imágenes</option>
+                  <option value="laboratorio">Laboratorio</option>
+                  <option value="administracion">Administración</option>
+                  <option value="recepcion">Recepción</option>
+                  <option value="otro">Otro</option>
+                </select>
+              </div>
+            </div>
+
+            {/* CV */}
+            <div>
+              <label for="cv" class="block text-xs sm:text-sm font-semibold uppercase tracking-wider text-text/70 mb-1.5 sm:mb-2 font-body">
+                Adjuntar currículum vitae <span class="text-primary">*</span>
+              </label>
+              <div class="relative">
+                <input
+                  type="file"
+                  id="cv"
+                  name="cv"
+                  accept=".pdf,.doc,.docx,.xls,.xlsx"
+                  required
+                  class="w-full rounded-xl border border-dashed border-text/20 bg-surface/5 px-4 py-6 sm:py-8 text-sm text-text transition-all duration-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 font-body file:mr-4 file:rounded-full file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-primary/90 cursor-pointer"
+                />
+              </div>
+              <p class="mt-2 text-xs text-text/40 font-body">Peso máximo 20MB. Preferentemente en PDF.</p>
+            </div>
+
+            {/* LinkedIn */}
+            <div>
+              <label for="linkedin" class="block text-xs sm:text-sm font-semibold uppercase tracking-wider text-text/70 mb-1.5 sm:mb-2 font-body">
+                Perfil LinkedIn <span class="text-text/40 normal-case tracking-normal font-normal">(opcional)</span>
+              </label>
+              <input
+                type="url"
+                id="linkedin"
+                name="linkedin"
+                class="w-full rounded-xl border border-text/10 bg-white px-4 py-2.5 sm:py-3 text-sm text-text placeholder:text-text/30 transition-all duration-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 font-body"
+                placeholder="https://linkedin.com/in/tu-perfil"
+              />
+            </div>
+
+            {/* Comentarios */}
+            <div>
+              <label for="comentarios" class="block text-xs sm:text-sm font-semibold uppercase tracking-wider text-text/70 mb-1.5 sm:mb-2 font-body">
+                Comentario o aclaración <span class="text-text/40 normal-case tracking-normal font-normal">(opcional)</span>
+              </label>
+              <textarea
+                id="comentarios"
+                name="comentarios"
+                rows={4}
+                maxlength="500"
+                class="w-full rounded-xl border border-text/10 bg-white px-4 py-2.5 sm:py-3 text-sm text-text placeholder:text-text/30 transition-all duration-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 font-body resize-y"
+                placeholder="Contanos por qué querés sumarte al equipo..."
+              ></textarea>
+              <p class="mt-1.5 text-xs text-text/40 font-body">0 de 500 caracteres máximos.</p>
+            </div>
+
+            {/* Success message (hidden by default) */}
+            <div id="form-success" class="hidden rounded-xl bg-secondary/10 border border-secondary/20 p-4 text-center">
+              <p class="text-sm font-semibold text-secondary font-body">¡Gracias por tu interés!</p>
+              <p class="text-xs text-text/60 mt-1 font-body">Nos pondremos en contacto a la brevedad.</p>
+            </div>
+
+            {/* Submit */}
+            <button
+              type="submit"
+              class="w-full sm:w-auto inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold text-white shadow-lg transition-all duration-500 hover:bg-primary/90 hover:shadow-glow hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 font-body"
+            >
+              Enviar mensaje
+              <svg class="ml-2 h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

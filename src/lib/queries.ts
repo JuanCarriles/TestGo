@@ -270,4 +270,4 @@ export const queries = {
     orden
   }`,
 
-} as const;
+};

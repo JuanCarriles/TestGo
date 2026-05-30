@@ -68,9 +68,15 @@ export const queries = {
       nombre,
       "slug": slug.current
     },
+    especialidades[]->{
+      _id,
+      nombre,
+      "slug": slug.current
+    },
     enlaceAgenda,
     biografia,
-    destacado
+    destacado,
+    whatsapp
   }`,
 
   profesionalesDestacados: `*[_type == "profesional" && destacado == true] | order(nombre asc){
@@ -89,11 +95,17 @@ export const queries = {
       nombre,
       "slug": slug.current
     },
+    especialidades[]->{
+      _id,
+      nombre,
+      "slug": slug.current
+    },
     enlaceAgenda,
-    biografia
+    biografia,
+    whatsapp
   }`,
 
-  profesionalesByEspecialidad: `*[_type == "profesional" && especialidad->slug.current == $slug] | order(nombre asc){
+  profesionalesByEspecialidad: `*[_type == "profesional" && (($slug in especialidades[]->slug.current) || (count(especialidades) == 0 && especialidad->slug.current == $slug))] | order(nombre asc){
     _id,
     nombre,
     "slug": slug.current,
@@ -109,8 +121,14 @@ export const queries = {
       nombre,
       "slug": slug.current
     },
+    especialidades[]->{
+      _id,
+      nombre,
+      "slug": slug.current
+    },
     enlaceAgenda,
-    biografia
+    biografia,
+    whatsapp
   }`,
 
   profesionalBySlug: `*[_type == "profesional" && slug.current == $slug][0]{
@@ -129,10 +147,16 @@ export const queries = {
       nombre,
       "slug": slug.current
     },
+    especialidades[]->{
+      _id,
+      nombre,
+      "slug": slug.current
+    },
     enlaceAgenda,
     biografia,
     facebook,
-    instagram
+    instagram,
+    whatsapp
   }`,
 
   // ── Página de Inicio ──

@@ -29,11 +29,13 @@ export interface Profesional {
   slug: string;
   foto?: SanityImage;
   especialidad?: Pick<Especialidad, '_id' | 'nombre' | 'slug'>;
+  especialidades?: Pick<Especialidad, '_id' | 'nombre' | 'slug'>[];
   enlaceAgenda: string;
   biografia: string;
   destacado?: boolean;
   facebook?: string;
   instagram?: string;
+  whatsapp?: string;
 }
 
 /**

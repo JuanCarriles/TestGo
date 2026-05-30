@@ -79,7 +79,10 @@ const metaDescription = `Conocé la especialidad de ${especialidad.nombre} en GO
 
       <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {profesionales.map((prof) => (
-          <div class="group relative flex flex-col rounded-3xl border border-text/5 bg-white overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-primary/10">
+          <div
+            class="doctor-card group relative flex flex-col rounded-3xl border border-text/5 bg-white overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-primary/10 cursor-pointer"
+            data-href={`/equipo/${prof.slug}`}
+          >
             <div class="relative h-72 overflow-hidden">
               {prof.foto?.asset?.url ? (
                 <img
@@ -97,9 +100,16 @@ const metaDescription = `Conocé la especialidad de ${especialidad.nombre} en GO
               )}
               <div class="absolute inset-0 bg-gradient-to-t from-text/60 via-transparent to-transparent"></div>
               {prof.especialidad && (
-                <span class="absolute left-5 top-5 rounded-full bg-white/90 backdrop-blur-sm px-4 py-1.5 text-xs font-semibold text-primary shadow-lg font-body">
-                  {prof.especialidad.nombre}
-                </span>
+                <div class="absolute left-5 top-5 flex flex-wrap gap-2">
+                  {(prof.especialidades && prof.especialidades.length > 0
+                    ? prof.especialidades
+                    : prof.especialidad ? [prof.especialidad] : []
+                  ).map((esp) => (
+                    <span class="rounded-full bg-white/90 backdrop-blur-sm px-4 py-1.5 text-xs font-semibold text-primary shadow-lg font-body">
+                      {esp.nombre}
+                    </span>
+                  ))}
+                </div>
               )}
             </div>
 
@@ -157,4 +167,18 @@ const metaDescription = `Conocé la especialidad de ${especialidad.nombre} en GO
       </a>
     </div>
   </section>
+
+  <script is:inline>
+    function initDoctorCards() {
+      document.querySelectorAll('.doctor-card').forEach(function(card) {
+        card.addEventListener('click', function(e) {
+          if (e.target.closest('a') || e.target.closest('button')) return;
+          var href = card.getAttribute('data-href');
+          if (href) window.location.href = href;
+        });
+      });
+    }
+    initDoctorCards();
+    document.addEventListener('astro:page-load', initDoctorCards);
+  </script>
 </Layout>

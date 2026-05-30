@@ -11,7 +11,6 @@ const currentYear = new Date().getFullYear();
 
 const footerLinks = [
   { href: '/', label: 'Inicio' },
-  { href: '/especialidades', label: 'Especialidades' },
   { href: '/equipo', label: 'Nuestro Equipo' },
   { href: '/nosotros', label: 'Nosotros' },
   { href: '/trabaja-con-nosotros', label: 'Trabajá con nosotros' },
@@ -35,9 +34,17 @@ const socialIcons: Record<string, string> = {
       {/* Brand */}
       <div class="space-y-6">
         <a href="/" class="inline-flex items-center gap-3 transition-opacity duration-300 hover:opacity-80">
-          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white font-bold text-lg font-display">
-            GO
-          </div>
+          {config?.logo?.asset?.url ? (
+            <img
+              src={config.logo.asset.url}
+              alt={config.logo.alt || 'Logo'}
+              class="h-10 w-auto max-w-[120px] object-contain"
+            />
+          ) : (
+            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white font-bold text-lg font-display">
+              GO
+            </div>
+          )}
           <span class="text-xl font-semibold text-white font-display tracking-tight">Centro Médico</span>
         </a>
         <p class="text-sm leading-relaxed text-white/50 font-body font-light">

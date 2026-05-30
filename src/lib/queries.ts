@@ -2,8 +2,13 @@ export const queries = {
   // ── Configuración Global ──
   configuracion: `*[_type == "configuracion"][0]{
     _id,
+    logo{
+      asset->{_id,url},
+      alt
+    },
     whatsapp,
     enlaceTurnos,
+    enlaceReservarTurno,
     email,
     telefono,
     direccion,

@@ -1,9 +1,9 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import TeamFilters from '../../components/react/TeamFilters';
-import { client } from '../../lib/sanity';
-import { queries } from '../../lib/queries';
-import type { Configuracion, Profesional, Especialidad } from '../../types';
+import Layout from "../../layouts/Layout.astro";
+import TeamFilters from "../../components/react/TeamFilters";
+import { client } from "../../lib/sanity";
+import { queries } from "../../lib/queries";
+import type { Configuracion, Profesional, Especialidad } from "../../types";
 
 const [config, profesionalesRaw, especialidades] = await Promise.all([
   client.fetch<Configuracion | null>(queries.configuracion).catch(() => null),
@@ -14,75 +14,116 @@ const [config, profesionalesRaw, especialidades] = await Promise.all([
 // Demo professionals when no data
 const demoProfesionales: Profesional[] = [
   {
-    _id: '1',
-    nombre: 'Dra. Ana Martínez',
-    slug: 'ana-martinez',
-    foto: { asset: { _id: '', url: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=400' }, alt: 'Dra. Ana Martínez' },
-    especialidad: { _id: '1', nombre: 'Cardiología', slug: 'cardiologia' },
-    enlaceAgenda: '#',
-    biografia: 'Especialista en cardiología intervencionista con más de 15 años de experiencia. Formada en la Universidad de Buenos Aires.',
+    _id: "1",
+    nombre: "Dra. Ana Martínez",
+    slug: "ana-martinez",
+    foto: {
+      asset: {
+        _id: "",
+        url: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=400",
+      },
+      alt: "Dra. Ana Martínez",
+    },
+    especialidad: { _id: "1", nombre: "Cardiología", slug: "cardiologia" },
+    enlaceAgenda: "#",
+    biografia:
+      "Especialista en cardiología intervencionista con más de 15 años de experiencia. Formada en la Universidad de Buenos Aires.",
   },
   {
-    _id: '2',
-    nombre: 'Dr. Carlos Rodríguez',
-    slug: 'carlos-rodriguez',
-    foto: { asset: { _id: '', url: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=400' }, alt: 'Dr. Carlos Rodríguez' },
-    especialidad: { _id: '2', nombre: 'Traumatología', slug: 'traumatologia' },
-    enlaceAgenda: '#',
-    biografia: 'Cirujano ortopédico especializado en artroscopia y cirugía deportiva. Ex médico de selecciones nacionales.',
+    _id: "2",
+    nombre: "Dr. Carlos Rodríguez",
+    slug: "carlos-rodriguez",
+    foto: {
+      asset: {
+        _id: "",
+        url: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=400",
+      },
+      alt: "Dr. Carlos Rodríguez",
+    },
+    especialidad: { _id: "2", nombre: "Traumatología", slug: "traumatologia" },
+    enlaceAgenda: "#",
+    biografia:
+      "Cirujano ortopédico especializado en artroscopia y cirugía deportiva. Ex médico de selecciones nacionales.",
   },
   {
-    _id: '3',
-    nombre: 'Dra. Laura Fernández',
-    slug: 'laura-fernandez',
-    foto: { asset: { _id: '', url: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&q=80&w=400' }, alt: 'Dra. Laura Fernández' },
-    especialidad: { _id: '3', nombre: 'Dermatología', slug: 'dermatologia' },
-    enlaceAgenda: '#',
-    biografia: 'Dermatóloga con enfoque en dermatología estética y tratamientos láser. Miembro de la Sociedad Argentina de Dermatología.',
+    _id: "3",
+    nombre: "Dra. Laura Fernández",
+    slug: "laura-fernandez",
+    foto: {
+      asset: {
+        _id: "",
+        url: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&q=80&w=400",
+      },
+      alt: "Dra. Laura Fernández",
+    },
+    especialidad: { _id: "3", nombre: "Dermatología", slug: "dermatologia" },
+    enlaceAgenda: "#",
+    biografia:
+      "Dermatóloga con enfoque en dermatología estética y tratamientos láser. Miembro de la Sociedad Argentina de Dermatología.",
   },
   {
-    _id: '4',
-    nombre: 'Dr. Martín López',
-    slug: 'martin-lopez',
-    foto: { asset: { _id: '', url: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400' }, alt: 'Dr. Martín López' },
-    especialidad: { _id: '4', nombre: 'Pediatría', slug: 'pediatria' },
-    enlaceAgenda: '#',
-    biografia: 'Pediatra dedicado con especialización en neonatología. Conocido por su trato cálido y profesional con los más pequeños.',
+    _id: "4",
+    nombre: "Dr. Martín López",
+    slug: "martin-lopez",
+    foto: {
+      asset: {
+        _id: "",
+        url: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400",
+      },
+      alt: "Dr. Martín López",
+    },
+    especialidad: { _id: "4", nombre: "Pediatría", slug: "pediatria" },
+    enlaceAgenda: "#",
+    biografia:
+      "Pediatra dedicado con especialización en neonatología. Conocido por su trato cálido y profesional con los más pequeños.",
   },
   {
-    _id: '5',
-    nombre: 'Dra. Sofía Gómez',
-    slug: 'sofia-gomez',
-    foto: { asset: { _id: '', url: 'https://images.unsplash.com/photo-1651008376811-b90baee60c1f?auto=format&fit=crop&q=80&w=400' }, alt: 'Dra. Sofía Gómez' },
-    especialidad: { _id: '5', nombre: 'Ginecología', slug: 'ginecologia' },
-    enlaceAgenda: '#',
-    biografia: 'Ginecóloga y obstetra con amplia experiencia en salud reproductiva y medicina fetal.',
+    _id: "5",
+    nombre: "Dra. Sofía Gómez",
+    slug: "sofia-gomez",
+    foto: {
+      asset: {
+        _id: "",
+        url: "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?auto=format&fit=crop&q=80&w=400",
+      },
+      alt: "Dra. Sofía Gómez",
+    },
+    especialidad: { _id: "5", nombre: "Ginecología", slug: "ginecologia" },
+    enlaceAgenda: "#",
+    biografia:
+      "Ginecóloga y obstetra con amplia experiencia en salud reproductiva y medicina fetal.",
   },
   {
-    _id: '6',
-    nombre: 'Dr. Pablo Silva',
-    slug: 'pablo-silva',
-    foto: { asset: { _id: '', url: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=400' }, alt: 'Dr. Pablo Silva' },
-    especialidad: { _id: '6', nombre: 'Neurología', slug: 'neurologia' },
-    enlaceAgenda: '#',
-    biografia: 'Neurólogo especializado en trastornos del movimiento y epilepsia. Investigador activo en neurociencias.',
+    _id: "6",
+    nombre: "Dr. Pablo Silva",
+    slug: "pablo-silva",
+    foto: {
+      asset: {
+        _id: "",
+        url: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=400",
+      },
+      alt: "Dr. Pablo Silva",
+    },
+    especialidad: { _id: "6", nombre: "Neurología", slug: "neurologia" },
+    enlaceAgenda: "#",
+    biografia:
+      "Neurólogo especializado en trastornos del movimiento y epilepsia. Investigador activo en neurociencias.",
   },
 ];
 
-const profesionales = profesionalesRaw.length > 0 ? profesionalesRaw : demoProfesionales;
+const profesionales =
+  profesionalesRaw.length > 0 ? profesionalesRaw : demoProfesionales;
 
 // Preparar datos con URLs
-const profesionalesConUrls = profesionales.map((prof) => ({
+const profesionalesConUrls: Profesional[] = profesionales.map((prof) => ({
   ...prof,
-  foto: prof.foto
+  foto: prof.foto?.asset
     ? {
-        ...prof.foto,
-        asset: prof.foto.asset
-          ? {
-              ...prof.foto.asset,
-              url: prof.foto.asset.url || '',
-            }
-          : undefined,
+        asset: {
+          _id: prof.foto.asset._id,
+          url: prof.foto.asset.url || "",
+        },
+        alt: prof.foto.alt,
       }
     : undefined,
 }));
@@ -101,15 +142,26 @@ const profesionalesConUrls = profesionales.map((prof) => ({
         alt="Equipo médico"
         class="h-full w-full object-cover opacity-10"
       />
-      <div class="absolute inset-0 bg-gradient-to-br from-text via-text to-primary/20"></div>
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-text via-text to-primary/20"
+      >
+      </div>
     </div>
     <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-      <span class="inline-block text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-4 font-body">Profesionales</span>
-      <h1 class="text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl font-display leading-tight">
+      <span
+        class="inline-block text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-4 font-body"
+        >Profesionales</span
+      >
+      <h1
+        class="text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl font-display leading-tight"
+      >
         Nuestro <span class="text-gradient">Equipo Médico</span>
       </h1>
-      <p class="mx-auto mt-6 max-w-2xl text-lg text-white/60 leading-relaxed font-body font-light">
-        Un equipo multidisciplinario de excelencia, comprometido con tu salud y bienestar.
+      <p
+        class="mx-auto mt-6 max-w-2xl text-lg text-white/60 leading-relaxed font-body font-light"
+      >
+        Un equipo multidisciplinario de excelencia, comprometido con tu salud y
+        bienestar.
       </p>
     </div>
   </section>

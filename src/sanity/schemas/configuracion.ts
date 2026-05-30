@@ -6,6 +6,21 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'logo',
+      title: 'Logo de la empresa',
+      type: 'image',
+      description: 'Se usará en el navbar, footer y favicon. Recomendado: formato cuadrado (SVG o PNG con fondo transparente)',
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Texto alternativo',
+          type: 'string',
+          initialValue: 'Logo GO Centro Médico',
+        }),
+      ],
+    }),
+    defineField({
       name: 'whatsapp',
       title: 'WhatsApp para urgencias',
       type: 'string',
@@ -14,10 +29,17 @@ export default defineType({
     }),
     defineField({
       name: 'enlaceTurnos',
-      title: 'Enlace a sistema de turnos',
+      title: 'Enlace a Resultados de Estudios',
       type: 'url',
-      description: 'URL general del sistema de turnos',
+      description: 'URL del portal de resultados de estudios (ej: MedExis)',
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'enlaceReservarTurno',
+      title: 'Enlace para Reservar Turno',
+      type: 'url',
+      description: 'URL a la que lleva el botón "Reservar Turno". Por defecto: /equipo',
+      initialValue: '/equipo',
     }),
     defineField({
       name: 'email',

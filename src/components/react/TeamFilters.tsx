@@ -1,23 +1,64 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { Profesional, Especialidad } from '../../types';
+
+const STORAGE_KEY = 'team-filters';
+
+interface SavedFilters {
+  search: string;
+  especialidad: string;
+}
 
 interface Props {
   profesionales: Profesional[];
   especialidades: Especialidad[];
 }
 
+function getSavedFilters(): SavedFilters {
+  if (typeof window === 'undefined') return { search: '', especialidad: '' };
+  try {
+    const raw = window.sessionStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw) as SavedFilters;
+  } catch { /* ignore */ }
+  return { search: '', especialidad: '' };
+}
+
 export default function TeamFilters({ profesionales, especialidades }: Props) {
-  const [search, setSearch] = useState('');
-  const [selectedEspecialidad, setSelectedEspecialidad] = useState('');
+  const saved = getSavedFilters();
+  const [search, setSearch] = useState(saved.search);
+  const [selectedEspecialidad, setSelectedEspecialidad] = useState(saved.especialidad);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const payload: SavedFilters = { search, especialidad: selectedEspecialidad };
+    window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  }, [search, selectedEspecialidad]);
 
   const filtered = useMemo(() => {
     return profesionales.filter((prof) => {
-      const searchLower = search.toLowerCase();
+      const searchLower = search.toLowerCase().trim();
+      const hasMulti = Array.isArray(prof.especialidades) && prof.especialidades.length > 0;
+
+      const espSlugs = hasMulti
+        ? prof.especialidades.map((e) => e?.slug).filter(Boolean) as string[]
+        : prof.especialidad?.slug
+          ? [prof.especialidad.slug]
+          : [];
+
+      const espNombres = hasMulti
+        ? prof.especialidades.map((e) => e?.nombre?.toLowerCase()).filter(Boolean) as string[]
+        : prof.especialidad?.nombre
+          ? [prof.especialidad.nombre.toLowerCase()]
+          : [];
+
       const matchesSearch =
+        !searchLower ||
         prof.nombre.toLowerCase().includes(searchLower) ||
-        prof.especialidad?.nombre?.toLowerCase().includes(searchLower);
+        espNombres.some((n) => n.includes(searchLower));
+
       const matchesEspecialidad =
-        !selectedEspecialidad || prof.especialidad?.slug === selectedEspecialidad;
+        !selectedEspecialidad ||
+        espSlugs.includes(selectedEspecialidad);
+
       return matchesSearch && matchesEspecialidad;
     });
   }, [profesionales, search, selectedEspecialidad]);
@@ -67,7 +108,15 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
           {filtered.map((prof) => (
             <div
               key={prof._id}
-              className="group relative flex flex-col rounded-3xl border border-text/5 bg-white overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-primary/10"
+              className="group relative flex flex-col rounded-3xl border border-text/5 bg-white overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-primary/10 cursor-pointer"
+              onClick={(e) => {
+                const target = e.target as HTMLElement;
+                if (target.closest('a') || target.closest('button')) return;
+                if (typeof window !== 'undefined') {
+                  window.sessionStorage.setItem('equipo-scroll', String(window.scrollY));
+                }
+                window.location.href = `/equipo/${prof.slug}`;
+              }}
             >
               {/* Photo */}
               <div className="relative h-72 overflow-hidden">
@@ -86,11 +135,19 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
                   </div>
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-text/60 via-transparent to-transparent"></div>
-                {prof.especialidad && (
-                  <span className="absolute left-5 top-5 rounded-full bg-white/90 backdrop-blur-sm px-4 py-1.5 text-xs font-semibold text-primary shadow-lg font-body">
-                    {prof.especialidad.nombre}
-                  </span>
-                )}
+                <div className="absolute left-5 top-5 flex flex-wrap gap-2">
+                  {(prof.especialidades && prof.especialidades.length > 0
+                    ? prof.especialidades
+                    : prof.especialidad ? [prof.especialidad] : []
+                  ).map((esp) => (
+                    <span
+                      key={esp._id}
+                      className="rounded-full bg-white/90 backdrop-blur-sm px-4 py-1.5 text-xs font-semibold text-primary shadow-lg font-body"
+                    >
+                      {esp.nombre}
+                    </span>
+                  ))}
+                </div>
               </div>
 
               {/* Content */}
@@ -104,6 +161,11 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
                 <div className="mt-6 flex flex-col gap-3">
                   <a
                     href={`/equipo/${prof.slug}`}
+                    onClick={() => {
+                      if (typeof window !== 'undefined') {
+                        window.sessionStorage.setItem('equipo-scroll', String(window.scrollY));
+                      }
+                    }}
                     className="inline-flex items-center justify-center rounded-full border border-primary px-6 py-3 text-sm font-semibold text-primary transition-all duration-500 hover:bg-primary hover:text-white hover:shadow-glow focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 font-body"
                   >
                     <svg className="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -141,6 +203,9 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
             onClick={() => {
               setSearch('');
               setSelectedEspecialidad('');
+              if (typeof window !== 'undefined') {
+                window.sessionStorage.removeItem(STORAGE_KEY);
+              }
             }}
             className="mt-4 text-sm font-semibold text-primary hover:underline focus:outline-none font-body"
           >

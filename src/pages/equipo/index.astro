@@ -24,7 +24,7 @@ const demoProfesionales: Profesional[] = [
       },
       alt: "Dra. Ana Martínez",
     },
-    especialidad: { _id: "1", nombre: "Cardiología", slug: "cardiologia" },
+    especialidades: [{ _id: "1", nombre: "Cardiología", slug: "cardiologia" }],
     enlaceAgenda: "#",
     biografia:
       "Especialista en cardiología intervencionista con más de 15 años de experiencia. Formada en la Universidad de Buenos Aires.",
@@ -40,7 +40,7 @@ const demoProfesionales: Profesional[] = [
       },
       alt: "Dr. Carlos Rodríguez",
     },
-    especialidad: { _id: "2", nombre: "Traumatología", slug: "traumatologia" },
+    especialidades: [{ _id: "2", nombre: "Traumatología", slug: "traumatologia" }],
     enlaceAgenda: "#",
     biografia:
       "Cirujano ortopédico especializado en artroscopia y cirugía deportiva. Ex médico de selecciones nacionales.",
@@ -56,7 +56,7 @@ const demoProfesionales: Profesional[] = [
       },
       alt: "Dra. Laura Fernández",
     },
-    especialidad: { _id: "3", nombre: "Dermatología", slug: "dermatologia" },
+    especialidades: [{ _id: "3", nombre: "Dermatología", slug: "dermatologia" }],
     enlaceAgenda: "#",
     biografia:
       "Dermatóloga con enfoque en dermatología estética y tratamientos láser. Miembro de la Sociedad Argentina de Dermatología.",
@@ -72,7 +72,7 @@ const demoProfesionales: Profesional[] = [
       },
       alt: "Dr. Martín López",
     },
-    especialidad: { _id: "4", nombre: "Pediatría", slug: "pediatria" },
+    especialidades: [{ _id: "4", nombre: "Pediatría", slug: "pediatria" }],
     enlaceAgenda: "#",
     biografia:
       "Pediatra dedicado con especialización en neonatología. Conocido por su trato cálido y profesional con los más pequeños.",
@@ -88,7 +88,7 @@ const demoProfesionales: Profesional[] = [
       },
       alt: "Dra. Sofía Gómez",
     },
-    especialidad: { _id: "5", nombre: "Ginecología", slug: "ginecologia" },
+    especialidades: [{ _id: "5", nombre: "Ginecología", slug: "ginecologia" }],
     enlaceAgenda: "#",
     biografia:
       "Ginecóloga y obstetra con amplia experiencia en salud reproductiva y medicina fetal.",
@@ -104,7 +104,7 @@ const demoProfesionales: Profesional[] = [
       },
       alt: "Dr. Pablo Silva",
     },
-    especialidad: { _id: "6", nombre: "Neurología", slug: "neurologia" },
+    especialidades: [{ _id: "6", nombre: "Neurología", slug: "neurologia" }],
     enlaceAgenda: "#",
     biografia:
       "Neurólogo especializado en trastornos del movimiento y epilepsia. Investigador activo en neurociencias.",
@@ -176,4 +176,16 @@ const profesionalesConUrls: Profesional[] = profesionales.map((prof) => ({
       />
     </div>
   </section>
+
+  <script is:inline>
+    function restoreScroll() {
+      if (window.location.pathname !== '/equipo') return;
+      const saved = window.sessionStorage.getItem('equipo-scroll');
+      if (saved) {
+        window.scrollTo({ top: parseInt(saved, 10), behavior: 'instant' });
+        window.sessionStorage.removeItem('equipo-scroll');
+      }
+    }
+    document.addEventListener('astro:page-load', restoreScroll);
+  </script>
 </Layout>

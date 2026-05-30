@@ -41,10 +41,23 @@ export default defineType({
     }),
     defineField({
       name: 'especialidad',
-      title: 'Especialidad',
+      title: 'Especialidad (Legacy)',
       type: 'reference',
       to: [{ type: 'especialidad' }],
-      validation: (Rule) => Rule.required(),
+      hidden: ({ parent }) => Array.isArray(parent?.especialidades) && parent.especialidades.length > 0,
+    }),
+    defineField({
+      name: 'especialidades',
+      title: 'Especialidades',
+      type: 'array',
+      description: 'Seleccioná una o más especialidades para este profesional.',
+      of: [
+        {
+          type: 'reference',
+          to: [{ type: 'especialidad' }],
+        },
+      ],
+      validation: (Rule) => Rule.min(1).max(5),
     }),
     defineField({
       name: 'enlaceAgenda',
@@ -80,17 +93,26 @@ export default defineType({
       type: 'url',
       description: 'Enlace al perfil de Instagram del profesional (opcional)',
     }),
+    defineField({
+      name: 'whatsapp',
+      title: 'WhatsApp',
+      type: 'string',
+      description: 'Número de WhatsApp del profesional con código de país (ej: 5491122334455). Se generará un enlace directo al chat.',
+    }),
   ],
   preview: {
     select: {
       title: 'nombre',
       especialidadNombre: 'especialidad.nombre',
+      especialidades: 'especialidades',
       media: 'foto',
     },
-    prepare({ title, especialidadNombre, media }) {
+    prepare({ title, especialidadNombre, especialidades, media }) {
+      const nombres = (especialidades || []).map((e: any) => e.nombre).filter(Boolean);
+      const sub = nombres.length > 0 ? nombres.join(', ') : (especialidadNombre || 'Sin especialidad');
       return {
         title: title || 'Sin nombre',
-        subtitle: especialidadNombre || 'Sin especialidad',
+        subtitle: sub,
         media,
       };
     },

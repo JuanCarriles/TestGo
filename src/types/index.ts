@@ -49,8 +49,10 @@ export interface RedSocial {
  */
 export interface Configuracion {
   _id: string;
+  logo?: SanityImage;
   whatsapp: string;
   enlaceTurnos: string;
+  enlaceReservarTurno?: string;
   email: string;
   telefono?: string;
   direccion: string;

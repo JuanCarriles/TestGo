@@ -12,7 +12,10 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
 
   const filtered = useMemo(() => {
     return profesionales.filter((prof) => {
-      const matchesSearch = prof.nombre.toLowerCase().includes(search.toLowerCase());
+      const searchLower = search.toLowerCase();
+      const matchesSearch =
+        prof.nombre.toLowerCase().includes(searchLower) ||
+        prof.especialidad?.nombre?.toLowerCase().includes(searchLower);
       const matchesEspecialidad =
         !selectedEspecialidad || prof.especialidad?.slug === selectedEspecialidad;
       return matchesSearch && matchesEspecialidad;
@@ -22,33 +25,35 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
   return (
     <div>
       {/* Filters */}
-      <div className="mb-8 md:mb-12 flex flex-col gap-3 md:gap-4 sm:flex-row">
-        <div className="relative flex-1">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
-            <svg className="h-5 w-5 text-text/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
+      <div className="mb-8 md:mb-12 rounded-3xl bg-white border border-text/10 p-5 md:p-6 shadow-lg shadow-text/5">
+        <div className="flex flex-col gap-3 md:gap-4 sm:flex-row">
+          <div className="relative flex-1">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 md:pl-5">
+              <svg className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <input
+              type="text"
+              placeholder="Buscar por nombre..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full rounded-2xl border-2 border-text/10 bg-surface/5 py-3.5 pl-12 md:pl-14 pr-5 text-base text-text placeholder:text-text/40 transition-all duration-300 focus:border-primary focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary/10 font-body"
+            />
           </div>
-          <input
-            type="text"
-            placeholder="Buscar por nombre..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-2xl border border-text/10 bg-white py-3 pl-10 md:py-3.5 md:pl-12 pr-4 text-sm text-text placeholder:text-text/30 transition-all duration-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 font-body"
-          />
+          <select
+            value={selectedEspecialidad}
+            onChange={(e) => setSelectedEspecialidad(e.target.value)}
+            className="rounded-2xl border-2 border-text/10 bg-surface/5 py-3.5 px-5 md:px-6 text-base text-text transition-all duration-300 focus:border-primary focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary/10 w-full sm:w-80 font-body appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20fill%3D%27none%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20stroke%3D%27%23CB6767%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%20stroke-width%3D%271.5%27%20d%3D%27M6%208l4%204%204-4%27%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem_1.25rem] bg-[right_1rem_center] bg-no-repeat pr-10"
+          >
+            <option value="">Todas las especialidades</option>
+            {especialidades.map((esp) => (
+              <option key={esp._id} value={esp.slug}>
+                {esp.nombre}
+              </option>
+            ))}
+          </select>
         </div>
-        <select
-          value={selectedEspecialidad}
-          onChange={(e) => setSelectedEspecialidad(e.target.value)}
-          className="rounded-2xl border border-text/10 bg-white py-3 md:py-3.5 px-4 md:px-5 text-sm text-text transition-all duration-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 w-full sm:w-72 font-body"
-        >
-          <option value="">Todas las especialidades</option>
-          {especialidades.map((esp) => (
-            <option key={esp._id} value={esp.slug}>
-              {esp.nombre}
-            </option>
-          ))}
-        </select>
       </div>
 
       {/* Results count */}

@@ -24,6 +24,7 @@ const siteTitle = config?.metaTitle || 'GO Centro Médico';
 const pageTitle = title ? `${title} | ${siteTitle}` : siteTitle;
 const metaDescription = description || config?.metaDescription || '';
 const ogImage = image || '/og-default.jpg';
+const faviconUrl = config?.logo?.asset?.url || '/favicon.svg';
 ---
 
 <!doctype html>
@@ -52,7 +53,7 @@ const ogImage = image || '/og-default.jpg';
     <meta name="twitter:image" content={ogImage} />
 
     {/* Favicon */}
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={faviconUrl} />
 
     {/* Preconnect fonts */}
     <link rel="preconnect" href="https://fonts.googleapis.com" />

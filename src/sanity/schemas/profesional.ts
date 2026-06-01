@@ -63,8 +63,7 @@ export default defineType({
       name: 'enlaceAgenda',
       title: 'Enlace a agenda externa',
       type: 'url',
-      description: 'URL del sistema de turnos para este profesional',
-      validation: (Rule) => Rule.required(),
+      description: 'URL del sistema de turnos para este profesional (opcional). Si no se completa y hay WhatsApp, el botón "Reservar Turno" abrirá el chat.',
     }),
     defineField({
       name: 'biografia',

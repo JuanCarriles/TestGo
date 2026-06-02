@@ -4,12 +4,12 @@ import HeroSection from '../components/sections/HeroSection.astro';
 import EspecialidadesGrid from '../components/sections/EspecialidadesGrid.astro';
 import PorQueElegirnos from '../components/sections/PorQueElegirnos.astro';
 import ObrasSociales from '../components/sections/ObrasSociales.astro';
-import Testimonios from '../components/sections/Testimonios.astro';
 import ContactoSection from '../components/sections/ContactoSection.astro';
 import InstagramReelsCarousel from '../components/react/InstagramReelsCarousel';
+import TestimoniosCarousel from '../components/react/TestimoniosCarousel';
 import { client } from '../lib/sanity';
 import { queries } from '../lib/queries';
-import type { Configuracion, Especialidad, HomePage, InstagramReel } from '../types';
+import type { Configuracion, Especialidad, HomePage, InstagramReel, Testimonio } from '../types';
 
 const [config, homePage, especialidades, instagramReels] = await Promise.all([
   client.fetch<Configuracion | null>(queries.configuracion).catch(() => null),
@@ -20,6 +20,15 @@ const [config, homePage, especialidades, instagramReels] = await Promise.all([
 
 const metaDescription = config?.metaDescription || 'GO Centro Médico - Excelencia médica con atención personalizada las 24 horas. Reservá tu turno online con los mejores especialistas.';
 const instagramUrl = config?.redesSociales?.find((r) => r.nombre === 'instagram')?.url || '';
+
+// Demo testimonials when no data
+const demoTestimonios: Testimonio[] = [
+  { nombre: 'María González', texto: 'La atención en GO Centro Médico es excepcional. Desde que llegué me sentí cuidada y escuchada. Los médicos son verdaderos profesionales.', estrellas: 5, fecha: '2024-03-15' },
+  { nombre: 'Carlos Rodríguez', texto: 'Excelente servicio y modernas instalaciones. Pude agendar mi turno online sin problemas y la consulta fue muy completa.', estrellas: 5, fecha: '2024-02-20' },
+  { nombre: 'Laura Martínez', texto: 'Llevé a mis hijos a la pediatría y quedé encantada con el trato. Un equipo humano y profesional que transmite confianza.', estrellas: 5, fecha: '2024-01-10' },
+];
+
+const displayTestimonios = homePage?.testimonios?.length ? homePage.testimonios : demoTestimonios;
 ---
 
 <Layout
@@ -34,6 +43,6 @@ const instagramUrl = config?.redesSociales?.find((r) => r.nombre === 'instagram'
   {instagramReels.length > 0 && (
     <InstagramReelsCarousel reels={instagramReels} instagramUrl={instagramUrl} client:load />
   )}
-  <Testimonios homePage={homePage} />
+  <TestimoniosCarousel testimonios={displayTestimonios} client:load />
   <ContactoSection config={config} />
 </Layout>

@@ -141,6 +141,16 @@
     transform: scale(1.08);
   }
 
+  /* Hide scrollbar for carousels */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
   /* Gradient text */
   .text-gradient {
     background: linear-gradient(135deg, #CB6767, #F6ADAA);

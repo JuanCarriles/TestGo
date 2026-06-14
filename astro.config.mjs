@@ -1,5 +1,6 @@
 // @ts-check
 import react from '@astrojs/react';
+import vercel from '@astrojs/vercel';
 import sanity from '@sanity/astro';
 import { defineConfig } from 'astro/config';
 
@@ -10,7 +11,7 @@ const dataset = import.meta.env.PUBLIC_SANITY_DATASET || import.meta.env.SANITY_
 // https://astro.build/config
 export default defineConfig({
   site: 'https://gocentromedico.com',
-  output: 'static',
+  adapter: vercel(),
   vite: {
     optimizeDeps: {
       include: ['sanity', 'react', 'react-dom'],

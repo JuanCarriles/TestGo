@@ -11,7 +11,7 @@ const dataset = import.meta.env.PUBLIC_SANITY_DATASET || import.meta.env.SANITY_
 // https://astro.build/config
 export default defineConfig({
   site: 'https://gocentromedico.com',
-  output: 'static',
+  output: 'server',
   adapter: vercel(),
   vite: {
     optimizeDeps: {

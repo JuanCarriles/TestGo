@@ -4,6 +4,8 @@ import { client } from "../../lib/sanity";
 import { queries } from "../../lib/queries";
 import type { Configuracion, Profesional } from "../../types";
 
+export const prerender = true;
+
 export async function getStaticPaths() {
   const profesionales = await client
     .fetch<Profesional[]>(queries.todosProfesionales)

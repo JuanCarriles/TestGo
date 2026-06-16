@@ -440,8 +440,15 @@ const stats = [
             body: JSON.stringify(payload),
           });
 
-          const data = await res.json();
-          console.log("[FORM] Respuesta:", data);
+          const contentType = res.headers.get("content-type");
+          let data;
+          if (contentType && contentType.includes("application/json")) {
+            data = await res.json();
+          } else {
+            // Vercel devolvió un error genérico HTML/Texto (ej: 500 A server error has occurred)
+            const textError = await res.text();
+            throw new Error(`Error de servidor (${res.status}): El servidor no pudo procesar la solicitud.`);
+          }
 
           if (!res.ok) {
             throw new Error(data.error || "Error al enviar.");

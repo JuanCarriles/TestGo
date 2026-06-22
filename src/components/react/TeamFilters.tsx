@@ -3,6 +3,17 @@ import type { Profesional, Especialidad } from '../../types';
 
 const STORAGE_KEY = 'team-filters';
 
+/**
+ * Normaliza un texto para búsquedas sin acentos ni diferencias de casing.
+ * Convierte a minúsculas y elimina diacríticos (tildes, etc.).
+ */
+function normalizeText(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
 interface SavedFilters {
   search: string;
   especialidad: string;
@@ -35,25 +46,26 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
 
   const filtered = useMemo(() => {
     return profesionales.filter((prof) => {
-      const searchLower = search.toLowerCase().trim();
+      const searchNormalized = normalizeText(search).trim();
+
       const hasMulti = Array.isArray(prof.especialidades) && prof.especialidades.length > 0;
 
       const espSlugs = hasMulti
-        ? prof.especialidades.map((e) => e?.slug).filter(Boolean) as string[]
+        ? (prof.especialidades || []).map((e) => e?.slug).filter(Boolean) as string[]
         : prof.especialidad?.slug
           ? [prof.especialidad.slug]
           : [];
 
       const espNombres = hasMulti
-        ? prof.especialidades.map((e) => e?.nombre?.toLowerCase()).filter(Boolean) as string[]
+        ? (prof.especialidades || []).map((e) => normalizeText(e?.nombre || '')).filter(Boolean) as string[]
         : prof.especialidad?.nombre
-          ? [prof.especialidad.nombre.toLowerCase()]
+          ? [normalizeText(prof.especialidad.nombre)]
           : [];
 
       const matchesSearch =
-        !searchLower ||
-        prof.nombre.toLowerCase().includes(searchLower) ||
-        espNombres.some((n) => n.includes(searchLower));
+        !searchNormalized ||
+        normalizeText(prof.nombre).includes(searchNormalized) ||
+        espNombres.some((n) => n.includes(searchNormalized));
 
       const matchesEspecialidad =
         !selectedEspecialidad ||

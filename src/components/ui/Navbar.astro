@@ -11,7 +11,7 @@ const navLinks = [
   { href: '/', label: 'Inicio' },
   { href: '/equipo', label: 'Nuestro Equipo' },
   { href: '/nosotros', label: 'Nosotros' },
-  { href: '/trabaja-con-nosotros', label: 'Trabajá con nosotros' },
+  { href: '/trabaja-con-nosotros', label: 'Trabajá en Go' },
 ];
 
 const turnosUrl = config?.enlaceTurnos || '#';
@@ -183,8 +183,8 @@ const reservarTurnoUrl = config?.enlaceReservarTurno || '/equipo';
       }
     }
 
-    // Attach delegated listener once
-    document.body.addEventListener('click', onBodyClick);
+    // Attach delegated listener to document (survives Astro view transitions)
+    document.addEventListener('click', onBodyClick);
 
     // Run on first load and after every Astro transition
     initNavbar();

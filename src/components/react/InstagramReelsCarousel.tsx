@@ -103,11 +103,11 @@ export default function InstagramReelsCarousel({ reels, instagramUrl }: Props) {
               href={reel.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex-shrink-0 w-[260px] sm:w-[280px] lg:w-[300px] snap-start"
+              className="group flex flex-col flex-shrink-0 w-[260px] sm:w-[280px] lg:w-[300px] snap-start"
               style={{ animationDelay: `${idx * 100}ms` }}
             >
               {/* Card */}
-              <div className="relative rounded-2xl overflow-hidden border border-text/5 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-primary/10">
+              <div className="relative flex flex-col flex-1 rounded-2xl overflow-hidden border border-text/5 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-primary/10">
                 {/* Image */}
                 <div className="relative h-[340px] sm:h-[380px] overflow-hidden">
                   {reel.thumbnail?.asset?.url ? (
@@ -142,7 +142,7 @@ export default function InstagramReelsCarousel({ reels, instagramUrl }: Props) {
                 </div>
 
                 {/* Content */}
-                <div className="p-4 sm:p-5">
+                <div className="flex flex-col flex-1 justify-between p-4 sm:p-5">
                   <p className="text-sm font-medium text-text/70 line-clamp-2 font-body leading-relaxed">
                     {reel.titulo}
                   </p>

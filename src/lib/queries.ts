@@ -288,7 +288,7 @@ export const queries = {
   }`,
 
   // ── Instagram Reels ──
-  instagramReels: `*[_type == "instagramReel"] | order(orden asc, _createdAt desc){
+  instagramReels: `*[_type == "instagramReel"] | order(orden desc, _createdAt desc){
     _id,
     titulo,
     url,

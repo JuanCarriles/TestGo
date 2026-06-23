@@ -16,6 +16,10 @@ export const queries = {
     horarios,
     metaTitle,
     metaDescription,
+    ogImage{
+      asset->{_id,url},
+      alt
+    },
     redesSociales[]{
       nombre,
       url
@@ -34,6 +38,15 @@ export const queries = {
         url
       },
       alt
+    },
+    seo{
+      seoTitle,
+      seoDescription,
+      seoImage{
+        asset->{_id,url},
+        alt
+      },
+      noIndex
     }
   }`,
 
@@ -48,6 +61,15 @@ export const queries = {
         url
       },
       alt
+    },
+    seo{
+      seoTitle,
+      seoDescription,
+      seoImage{
+        asset->{_id,url},
+        alt
+      },
+      noIndex
     }
   }`,
 
@@ -76,7 +98,16 @@ export const queries = {
     enlaceAgenda,
     biografia,
     destacado,
-    whatsapp
+    whatsapp,
+    seo{
+      seoTitle,
+      seoDescription,
+      seoImage{
+        asset->{_id,url},
+        alt
+      },
+      noIndex
+    }
   }`,
 
   profesionalesDestacados: `*[_type == "profesional" && destacado == true] | order(nombre asc){
@@ -102,7 +133,16 @@ export const queries = {
     },
     enlaceAgenda,
     biografia,
-    whatsapp
+    whatsapp,
+    seo{
+      seoTitle,
+      seoDescription,
+      seoImage{
+        asset->{_id,url},
+        alt
+      },
+      noIndex
+    }
   }`,
 
   profesionalesByEspecialidad: `*[_type == "profesional" && (($slug in especialidades[]->slug.current) || (count(especialidades) == 0 && especialidad->slug.current == $slug))] | order(nombre asc){
@@ -128,7 +168,16 @@ export const queries = {
     },
     enlaceAgenda,
     biografia,
-    whatsapp
+    whatsapp,
+    seo{
+      seoTitle,
+      seoDescription,
+      seoImage{
+        asset->{_id,url},
+        alt
+      },
+      noIndex
+    }
   }`,
 
   profesionalBySlug: `*[_type == "profesional" && slug.current == $slug][0]{
@@ -156,7 +205,16 @@ export const queries = {
     biografia,
     facebook,
     instagram,
-    whatsapp
+    whatsapp,
+    seo{
+      seoTitle,
+      seoDescription,
+      seoImage{
+        asset->{_id,url},
+        alt
+      },
+      noIndex
+    }
   }`,
 
   // ── Página de Inicio ──
@@ -224,6 +282,15 @@ export const queries = {
         asset->{_id,url},
         alt
       }
+    },
+    seo{
+      seoTitle,
+      seoDescription,
+      seoImage{
+        asset->{_id,url},
+        alt
+      },
+      noIndex
     }
   }`,
 
@@ -284,6 +351,95 @@ export const queries = {
         },
         titulo
       }
+    },
+    seo{
+      seoTitle,
+      seoDescription,
+      seoImage{
+        asset->{_id,url},
+        alt
+      },
+      noIndex
+    }
+  }`,
+
+  // ── Página de Equipo ──
+  equipoPage: `*[_type == "equipoPage"][0]{
+    _id,
+    hero{
+      badge,
+      titulo,
+      tituloDestacado,
+      descripcion,
+      imagenFondo{
+        asset->{_id,url},
+        alt
+      }
+    },
+    seo{
+      seoTitle,
+      seoDescription,
+      seoImage{
+        asset->{_id,url},
+        alt
+      },
+      noIndex
+    }
+  }`,
+
+  // ── Página de Especialidades ──
+  especialidadesPage: `*[_type == "especialidadesPage"][0]{
+    _id,
+    hero{
+      badge,
+      titulo,
+      tituloDestacado,
+      descripcion,
+      imagenFondo{
+        asset->{_id,url},
+        alt
+      }
+    },
+    seo{
+      seoTitle,
+      seoDescription,
+      seoImage{
+        asset->{_id,url},
+        alt
+      },
+      noIndex
+    }
+  }`,
+
+  // ── Página Trabajá con Nosotros ──
+  trabajaConNosotrosPage: `*[_type == "trabajaConNosotrosPage"][0]{
+    _id,
+    hero{
+      badge,
+      titulo,
+      tituloDestacado,
+      descripcion,
+      imagenFondo{
+        asset->{_id,url},
+        alt
+      }
+    },
+    stats[]{
+      numero,
+      etiqueta
+    },
+    formulario{
+      titulo,
+      descripcion
+    },
+    seo{
+      seoTitle,
+      seoDescription,
+      seoImage{
+        asset->{_id,url},
+        alt
+      },
+      noIndex
     }
   }`,
 

@@ -18,6 +18,7 @@ export interface Especialidad {
   slug: string;
   descripcion: string;
   icono?: SanityImage;
+  seo?: Seo;
 }
 
 /**
@@ -36,6 +37,7 @@ export interface Profesional {
   facebook?: string;
   instagram?: string;
   whatsapp?: string;
+  seo?: Seo;
 }
 
 /**
@@ -62,6 +64,7 @@ export interface Configuracion {
   horarios?: string;
   metaTitle: string;
   metaDescription: string;
+  ogImage?: SanityImage;
   redesSociales?: RedSocial[];
 }
 
@@ -133,6 +136,7 @@ export interface HomePage {
   };
   testimonios?: Testimonio[];
   obrasSociales?: ObraSocial[];
+  seo?: Seo;
 }
 
 /**
@@ -196,6 +200,63 @@ export interface NosotrosPage {
     tituloDestacado: string;
     imagenes: ImagenGaleria[];
   };
+  seo?: Seo;
+}
+
+/**
+ * Configuración SEO reutilizable
+ */
+export interface Seo {
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: SanityImage;
+  noIndex?: boolean;
+}
+
+/**
+ * Hero genérico para páginas editables
+ */
+export interface PageHero {
+  badge?: string;
+  titulo?: string;
+  tituloDestacado?: string;
+  descripcion?: string;
+  imagenFondo?: SanityImage;
+}
+
+/**
+ * Contenido editable de la Página de Equipo
+ */
+export interface EquipoPage {
+  _id: string;
+  hero: PageHero;
+  seo?: Seo;
+}
+
+/**
+ * Contenido editable de la Página de Especialidades
+ */
+export interface EspecialidadesPage {
+  _id: string;
+  hero: PageHero;
+  seo?: Seo;
+}
+
+/**
+ * Contenido editable de la Página Trabajá con Nosotros
+ */
+export interface TrabajaConNosotrosPage {
+  _id: string;
+  hero: PageHero;
+  stats?: {
+    numero?: string;
+    etiqueta?: string;
+  }[];
+  formulario?: {
+    titulo?: string;
+    descripcion?: string;
+  };
+  seo?: Seo;
 }
 
 /**

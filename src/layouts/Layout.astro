@@ -10,9 +10,10 @@ import { queries } from '../lib/queries';
 
 interface Props extends SeoProps {
   config?: Configuracion | null;
+  noIndex?: boolean;
 }
 
-const { title, description, image, pathname, config: propConfig } = Astro.props;
+const { title, description, image, pathname, config: propConfig, noIndex } = Astro.props;
 
 const config: Configuracion | null = propConfig ?? (await client.fetch(queries.configuracion).catch(() => null));
 
@@ -23,7 +24,7 @@ const canonical = pathname
 const siteTitle = config?.metaTitle || 'GO Centro Médico';
 const pageTitle = title ? `${title} | ${siteTitle}` : siteTitle;
 const metaDescription = description || config?.metaDescription || '';
-const ogImage = image || '/og-default.jpg';
+const ogImage = image || config?.ogImage?.asset?.url || '/og-default.jpg';
 const faviconUrl = config?.logo?.asset?.url || '/favicon.svg';
 ---
 
@@ -36,6 +37,7 @@ const faviconUrl = config?.logo?.asset?.url || '/favicon.svg';
     <title>{pageTitle}</title>
     <meta name="description" content={metaDescription} />
     <link rel="canonical" href={canonical} />
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
 
     {/* Open Graph */}
     <meta property="og:type" content="website" />

@@ -4,10 +4,15 @@ export default defineType({
   name: 'trabajaConNosotrosPage',
   title: 'Página Trabaja con Nosotros',
   type: 'document',
+  groups: [
+    { name: 'hero', title: 'Hero', default: true },
+    { name: 'seo', title: 'SEO' },
+  ],
   fields: [
     defineField({
       name: 'hero',
       title: 'Hero',
+      group: 'hero',
       type: 'object',
       fields: [
         defineField({
@@ -47,6 +52,7 @@ export default defineType({
               title: 'Texto alternativo',
               type: 'string',
               initialValue: 'Equipo médico',
+              validation: (Rule) => Rule.required(),
             }),
           ],
         }),
@@ -94,6 +100,12 @@ export default defineType({
           initialValue: 'Completá el formulario y nos pondremos en contacto con vos.',
         }),
       ],
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      group: 'seo',
     }),
   ],
   preview: {

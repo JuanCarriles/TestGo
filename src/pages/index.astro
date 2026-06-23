@@ -18,7 +18,10 @@ const [config, homePage, especialidades, instagramReels] = await Promise.all([
   client.fetch<InstagramReel[]>(queries.instagramReels).catch(() => []),
 ]);
 
-const metaDescription = config?.metaDescription || 'GO Centro Médico - Excelencia médica con atención personalizada las 24 horas. Reservá tu turno online con los mejores especialistas.';
+const metaDescription = homePage?.seo?.seoDescription || config?.metaDescription || 'GO Centro Médico - Excelencia médica con atención personalizada las 24 horas. Reservá tu turno online con los mejores especialistas.';
+const metaTitle = homePage?.seo?.seoTitle || 'Inicio';
+const ogImage = homePage?.seo?.seoImage?.asset?.url;
+const noIndex = homePage?.seo?.noIndex || false;
 const instagramUrl = config?.redesSociales?.find((r) => r.nombre === 'instagram')?.url || '';
 
 // Demo testimonials when no data
@@ -32,9 +35,11 @@ const displayTestimonios = homePage?.testimonios?.length ? homePage.testimonios 
 ---
 
 <Layout
-  title="Inicio"
+  title={metaTitle}
   description={metaDescription}
+  image={ogImage}
   config={config}
+  noIndex={noIndex}
 >
   <HeroSection config={config} homePage={homePage} />
   <EspecialidadesGrid especialidades={especialidades} />

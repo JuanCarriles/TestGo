@@ -2,11 +2,12 @@
 import Layout from '../../layouts/Layout.astro';
 import { client } from '../../lib/sanity';
 import { queries } from '../../lib/queries';
-import type { Configuracion, Especialidad } from '../../types';
+import type { Configuracion, Especialidad, EspecialidadesPage } from '../../types';
 
-const [config, especialidades] = await Promise.all([
+const [config, especialidades, especialidadesPage] = await Promise.all([
   client.fetch<Configuracion | null>(queries.configuracion).catch(() => null),
   client.fetch<Especialidad[]>(queries.todasEspecialidades).catch(() => []),
+  client.fetch<EspecialidadesPage | null>(queries.especialidadesPage).catch(() => null),
 ]);
 
 // Placeholder images
@@ -38,9 +39,11 @@ const displayEspecialidades = especialidades.length > 0 ? especialidades : demoE
 ---
 
 <Layout
-  title="Especialidades"
-  description="Conocé todas las especialidades médicas de GO Centro Médico. Atención integral para tu salud y la de tu familia."
+  title={especialidadesPage?.seo?.seoTitle || especialidadesPage?.hero?.titulo || 'Especialidades'}
+  description={especialidadesPage?.seo?.seoDescription || especialidadesPage?.hero?.descripcion || 'Conocé todas las especialidades médicas de GO Centro Médico. Atención integral para tu salud y la de tu familia.'}
+  image={especialidadesPage?.seo?.seoImage?.asset?.url}
   config={config}
+  noIndex={especialidadesPage?.seo?.noIndex || false}
 >
   {/* Hero interno */}
   <section class="relative bg-text py-32 lg:py-40 overflow-hidden">

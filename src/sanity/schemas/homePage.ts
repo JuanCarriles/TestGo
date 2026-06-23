@@ -10,6 +10,7 @@ export default defineType({
     { name: 'porQueElegirnos', title: '¿Por qué elegirnos?' },
     { name: 'testimonios', title: 'Testimonios' },
     { name: 'obrasSociales', title: 'Obras Sociales' },
+    { name: 'seo', title: 'SEO' },
   ],
   fields: [
     // ── HERO ──
@@ -142,7 +143,7 @@ export default defineType({
           name: 'imagenesTarjeta',
           title: 'Imágenes del carrusel lateral',
           type: 'array',
-          description: 'Varias imágenes para el carrusel de la tarjeta lateral del Hero. Si cargás imágenes acá, se usará el carrusel en vez de la imagen única.',
+          description: 'Varias imágenes para el carrusel de la tarjeta lateral del Hero. Si cargás imágenes acá, se usará el carrusel en vez de la imagen única. Recomendado: 800x1000px (ratio 4:5 vertical) por imagen.',
           of: [
             {
               type: 'image',
@@ -428,6 +429,12 @@ export default defineType({
         },
       ],
       validation: (Rule) => Rule.max(12),
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      group: 'seo',
     }),
   ],
   preview: {

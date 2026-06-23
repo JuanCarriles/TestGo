@@ -19,7 +19,17 @@ export default defineType({
         source: 'nombre',
         maxLength: 96,
       },
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) =>
+        Rule.required().custom(async (slug, context) => {
+          if (!slug?.current) return 'El slug es obligatorio';
+          const client = context.getClient({ apiVersion: '2024-05-07' });
+          const id = context.document?._id?.replace('drafts.', '') || '';
+          const existing = await client.fetch(
+            `*[_type == "profesional" && slug.current == $slug && _id != $id && !(_id in path("drafts.**"))][0]`,
+            { slug: slug.current, id }
+          );
+          return existing ? 'Este slug ya existe en otro profesional' : true;
+        }),
     }),
     defineField({
       name: 'foto',
@@ -70,8 +80,8 @@ export default defineType({
       title: 'Biografía breve',
       type: 'text',
       rows: 4,
-      description: 'Máximo 300 caracteres recomendados para tarjetas',
-      validation: (Rule) => Rule.required().max(500),
+      description: 'Mínimo 80 caracteres para SEO. Máximo 300 caracteres recomendados para tarjetas.',
+      validation: (Rule) => Rule.required().min(80).max(500),
     }),
     defineField({
       name: 'destacado',
@@ -97,6 +107,43 @@ export default defineType({
       title: 'WhatsApp',
       type: 'string',
       description: 'Número de WhatsApp del profesional con código de país (ej: 5491122334455). Se generará un enlace directo al chat.',
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'object',
+      description: 'Configuración SEO específica para la página de perfil de este profesional. Si se deja vacío, se usarán valores por defecto.',
+      fields: [
+        defineField({
+          name: 'seoTitle',
+          title: 'SEO Title',
+          type: 'string',
+          description: 'Título para motores de búsqueda. Máx. 60 caracteres.',
+          validation: (Rule) => Rule.max(60),
+        }),
+        defineField({
+          name: 'seoDescription',
+          title: 'SEO Description',
+          type: 'text',
+          rows: 2,
+          description: 'Descripción para motores de búsqueda. Máx. 160 caracteres.',
+          validation: (Rule) => Rule.max(160),
+        }),
+        defineField({
+          name: 'seoImage',
+          title: 'Imagen OG (Open Graph)',
+          type: 'image',
+          description: 'Imagen que aparece al compartir en redes sociales. Recomendado: 1200×630px.',
+          options: { hotspot: true },
+        }),
+        defineField({
+          name: 'noIndex',
+          title: 'No indexar esta página',
+          type: 'boolean',
+          initialValue: false,
+          description: 'Si está activo, Google NO indexará la página de este profesional.',
+        }),
+      ],
     }),
   ],
   preview: {

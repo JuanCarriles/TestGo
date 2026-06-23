@@ -27,13 +27,18 @@ const [config, profesionales] = await Promise.all([
   client.fetch<Profesional[]>(queries.profesionalesByEspecialidad, { slug }).catch(() => []),
 ]);
 
-const metaDescription = `Conocé la especialidad de ${especialidad.nombre} en GO Centro Médico. ${especialidad.descripcion.slice(0, 120)}...`;
+const metaDescription = especialidad.seo?.seoDescription || `Conocé la especialidad de ${especialidad.nombre} en GO Centro Médico. ${especialidad.descripcion.slice(0, 120)}...`;
+const metaTitle = especialidad.seo?.seoTitle || especialidad.nombre;
+const ogImage = especialidad.seo?.seoImage?.asset?.url;
+const noIndex = especialidad.seo?.noIndex || false;
 ---
 
 <Layout
-  title={especialidad.nombre}
+  title={metaTitle}
   description={metaDescription}
+  image={ogImage}
   config={config}
+  noIndex={noIndex}
 >
   {/* Hero interno */}
   <section class="relative bg-text py-32 lg:py-40 overflow-hidden">

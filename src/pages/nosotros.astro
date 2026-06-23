@@ -9,6 +9,8 @@ const [config, nosotros] = await Promise.all([
   client.fetch<NosotrosPage | null>(queries.nosotrosPage).catch(() => null),
 ]);
 
+const seo = nosotros?.seo;
+
 // ── Defaults ──
 const hero = nosotros?.hero;
 const heroBadge = hero?.badge || "Sobre Nosotros";
@@ -146,9 +148,11 @@ const galImagenes: ImagenGaleria[] = galeria?.imagenes || [
 ---
 
 <Layout
-  title="Nosotros"
-  description="Conocé la historia, misión, visión y valores de GO Centro Médico. Más de una década de excelencia en salud."
+  title={seo?.seoTitle || 'Nosotros'}
+  description={seo?.seoDescription || 'Conocé la historia, misión, visión y valores de GO Centro Médico. Más de una década de excelencia en salud.'}
+  image={seo?.seoImage?.asset?.url}
   config={config}
+  noIndex={seo?.noIndex || false}
 >
   {/* Hero interno */}
   <section class="relative bg-text py-20 sm:py-28 lg:py-40 overflow-hidden">

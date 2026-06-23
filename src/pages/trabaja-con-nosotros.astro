@@ -2,11 +2,13 @@
 import Layout from "../layouts/Layout.astro";
 import { client } from "../lib/sanity";
 import { queries } from "../lib/queries";
-import type { Configuracion } from "../types";
+import type { Configuracion, TrabajaConNosotrosPage } from "../types";
 
-const config = await client
-  .fetch<Configuracion | null>(queries.configuracion)
-  .catch(() => null);
+const [config, trabajaPage] = await Promise.all([
+  client.fetch<Configuracion | null>(queries.configuracion).catch(() => null),
+  client.fetch<TrabajaConNosotrosPage | null>(queries.trabajaConNosotrosPage).catch(() => null),
+]);
+
 const contactEmail = config?.email || "gogineco@gmail.com";
 
 const stats = [
@@ -18,9 +20,11 @@ const stats = [
 ---
 
 <Layout
-  title="Trabajá en Go"
-  description="¿Querés formar parte de GO Centro Médico? Completá el formulario y envianos tu CV."
+  title={trabajaPage?.seo?.seoTitle || trabajaPage?.hero?.titulo || 'Trabajá en Go'}
+  description={trabajaPage?.seo?.seoDescription || trabajaPage?.hero?.descripcion || '¿Querés formar parte de GO Centro Médico? Completá el formulario y envianos tu CV.'}
+  image={trabajaPage?.seo?.seoImage?.asset?.url}
   config={config}
+  noIndex={trabajaPage?.seo?.noIndex || false}
 >
   {/* Hero */}
   <section class="relative bg-text py-32 lg:py-40 overflow-hidden">

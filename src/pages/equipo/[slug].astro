@@ -154,9 +154,11 @@ const fotoAlt = prof.foto?.alt || prof.nombre;
 ---
 
 <Layout
-  title={prof.nombre}
-  description={`${prof.nombre} - ${prof.especialidad?.nombre || "Especialista"} en GO Centro Médico. ${prof.biografia}`}
+  title={prof.seo?.seoTitle || prof.nombre}
+  description={prof.seo?.seoDescription || `${prof.nombre} - ${prof.especialidad?.nombre || "Especialista"} en GO Centro Médico. ${prof.biografia}`}
+  image={prof.seo?.seoImage?.asset?.url || prof.foto?.asset?.url}
   config={config}
+  noIndex={prof.seo?.noIndex || false}
 >
   {/* Hero */}
   <section class="relative bg-text py-16 md:py-24 lg:py-32 overflow-hidden">

@@ -17,6 +17,7 @@ export default defineType({
           title: 'Texto alternativo',
           type: 'string',
           initialValue: 'Logo GO Centro Médico',
+          validation: (Rule) => Rule.required(),
         }),
       ],
     }),
@@ -133,6 +134,22 @@ export default defineType({
       rows: 2,
       description: 'Descripción por defecto del sitio',
       validation: (Rule) => Rule.required().max(160),
+    }),
+    defineField({
+      name: 'ogImage',
+      title: 'Imagen Open Graph por defecto',
+      type: 'image',
+      description: 'Imagen que aparece al compartir el sitio en redes sociales (Facebook, WhatsApp, etc.). Recomendado: 1200×630px. Si no se carga, se usa una imagen genérica.',
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Texto alternativo',
+          type: 'string',
+          initialValue: 'GO Centro Médico',
+          validation: (Rule) => Rule.required(),
+        }),
+      ],
     }),
   ],
   preview: {

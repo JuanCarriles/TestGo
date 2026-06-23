@@ -11,6 +11,7 @@ export default defineType({
     { name: 'misionVision', title: 'Misión y Visión' },
     { name: 'valores', title: 'Valores' },
     { name: 'galeria', title: 'Galería' },
+    { name: 'seo', title: 'SEO' },
   ],
   fields: [
     // ── HERO ──
@@ -326,6 +327,12 @@ export default defineType({
           validation: (Rule) => Rule.required().min(1).max(9),
         }),
       ],
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      group: 'seo',
     }),
   ],
   preview: {

@@ -3,12 +3,13 @@ import Layout from "../../layouts/Layout.astro";
 import TeamFilters from "../../components/react/TeamFilters";
 import { client } from "../../lib/sanity";
 import { queries } from "../../lib/queries";
-import type { Configuracion, Profesional, Especialidad } from "../../types";
+import type { Configuracion, Profesional, Especialidad, EquipoPage } from "../../types";
 
-const [config, profesionalesRaw, especialidades] = await Promise.all([
+const [config, profesionalesRaw, especialidades, equipoPage] = await Promise.all([
   client.fetch<Configuracion | null>(queries.configuracion).catch(() => null),
   client.fetch<Profesional[]>(queries.todosProfesionales).catch(() => []),
   client.fetch<Especialidad[]>(queries.todasEspecialidades).catch(() => []),
+  client.fetch<EquipoPage | null>(queries.equipoPage).catch(() => null),
 ]);
 
 // Demo professionals when no data
@@ -130,9 +131,11 @@ const profesionalesConUrls: Profesional[] = profesionales.map((prof) => ({
 ---
 
 <Layout
-  title="Nuestro Equipo"
-  description="Conocé al equipo médico de GO Centro Médico. Especialistas de excelencia en diversas áreas de la salud."
+  title={equipoPage?.seo?.seoTitle || equipoPage?.hero?.titulo || 'Nuestro Equipo'}
+  description={equipoPage?.seo?.seoDescription || equipoPage?.hero?.descripcion || 'Conocé al equipo médico de GO Centro Médico. Especialistas de excelencia en diversas áreas de la salud.'}
+  image={equipoPage?.seo?.seoImage?.asset?.url}
   config={config}
+  noIndex={equipoPage?.seo?.noIndex || false}
 >
   {/* Hero interno */}
   <section class="relative bg-text py-32 lg:py-40 overflow-hidden">

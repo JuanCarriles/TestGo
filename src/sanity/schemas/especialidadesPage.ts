@@ -4,10 +4,15 @@ export default defineType({
   name: 'especialidadesPage',
   title: 'Página de Especialidades',
   type: 'document',
+  groups: [
+    { name: 'hero', title: 'Hero', default: true },
+    { name: 'seo', title: 'SEO' },
+  ],
   fields: [
     defineField({
       name: 'hero',
       title: 'Hero',
+      group: 'hero',
       type: 'object',
       fields: [
         defineField({
@@ -47,10 +52,17 @@ export default defineType({
               title: 'Texto alternativo',
               type: 'string',
               initialValue: 'Especialidades médicas',
+              validation: (Rule) => Rule.required(),
             }),
           ],
         }),
       ],
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      group: 'seo',
     }),
   ],
   preview: {

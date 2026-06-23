@@ -141,8 +141,8 @@ const profesionalesConUrls: Profesional[] = profesionales.map((prof) => ({
   <section class="relative bg-text py-32 lg:py-40 overflow-hidden">
     <div class="absolute inset-0">
       <img
-        src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=2000"
-        alt="Equipo médico"
+        src={equipoPage?.hero?.imagenFondo?.asset?.url || "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=2000"}
+        alt={equipoPage?.hero?.imagenFondo?.alt || "Equipo médico"}
         class="h-full w-full object-cover opacity-10"
       />
       <div
@@ -153,18 +153,17 @@ const profesionalesConUrls: Profesional[] = profesionales.map((prof) => ({
     <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
       <span
         class="inline-block text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-4 font-body"
-        >Profesionales</span
+        >{equipoPage?.hero?.badge || "Profesionales"}</span
       >
       <h1
         class="text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl font-display leading-tight"
       >
-        Nuestro <span class="text-gradient">Equipo Médico</span>
+        {equipoPage?.hero?.titulo || "Nuestro"} <span class="text-gradient">{equipoPage?.hero?.tituloDestacado || "Equipo Médico"}</span>
       </h1>
       <p
         class="mx-auto mt-6 max-w-2xl text-lg text-white/60 leading-relaxed font-body font-light"
       >
-        Un equipo multidisciplinario de excelencia, comprometido con tu salud y
-        bienestar.
+        {equipoPage?.hero?.descripcion || "Un equipo multidisciplinario de excelencia, comprometido con tu salud y bienestar."}
       </p>
     </div>
   </section>

@@ -32,15 +32,52 @@ const demoTestimonios: Testimonio[] = [
 ];
 
 const displayTestimonios = homePage?.testimonios?.length ? homePage.testimonios : demoTestimonios;
+
+// Aggregate rating from testimonials
+const avgRating = displayTestimonios.length > 0
+  ? (displayTestimonios.reduce((sum, t) => sum + (t.estrellas || 5), 0) / displayTestimonios.length)
+  : 5;
+
+// MedicalBusiness schema for the homepage
+const medicalBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": ["MedicalBusiness", "LocalBusiness"],
+  "name": config?.metaTitle || "GO Centro Médico",
+  "description": config?.metaDescription || "Centro médico de excelencia en San Miguel de Tucumán",
+  "url": "https://gocentromedico.com",
+  "logo": config?.logo?.asset?.url,
+  "image": ogImage || config?.ogImage?.asset?.url,
+  "telephone": config?.telefono || config?.whatsapp,
+  "email": config?.email,
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": config?.direccion,
+    "addressLocality": "San Miguel de Tucumán",
+    "addressRegion": "Tucumán",
+    "addressCountry": "AR"
+  },
+  "priceRange": "$$",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": avgRating.toFixed(1),
+    "reviewCount": displayTestimonios.length.toString()
+  }
+};
+
+const cleanBusinessSchema = JSON.parse(JSON.stringify(medicalBusinessSchema));
 ---
 
 <Layout
   title={metaTitle}
   description={metaDescription}
   image={ogImage}
+  imageAlt={homePage?.seo?.seoImage?.alt}
   config={config}
   noIndex={noIndex}
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(cleanBusinessSchema)} />
+  </Fragment>
   <HeroSection config={config} homePage={homePage} />
   <EspecialidadesGrid especialidades={especialidades} />
   <PorQueElegirnos homePage={homePage} />
@@ -49,5 +86,5 @@ const displayTestimonios = homePage?.testimonios?.length ? homePage.testimonios 
     <InstagramReelsCarousel reels={instagramReels} instagramUrl={instagramUrl} client:load />
   )}
   <TestimoniosCarousel testimonios={displayTestimonios} client:load />
-  <ContactoSection config={config} />
+  <ContactoSection homePage={homePage} />
 </Layout>

@@ -11,8 +11,9 @@ const { homePage } = Astro.props;
 const pqe = homePage?.porQueElegirnos;
 
 // Fallbacks
-const imagenUrl = pqe?.imagen?.asset?.url || 'https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&q=80&w=800';
-const imagenAlt = pqe?.imagen?.alt || 'Instalaciones médicas';
+const slides = pqe?.imagenes?.length
+  ? pqe.imagenes
+  : [{ asset: { url: 'https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&q=80&w=800' }, alt: 'Instalaciones médicas' }];
 
 const badge = pqe?.badge || 'Ventajas';
 const titulo = pqe?.titulo || '¿Por qué elegirnos?';
@@ -56,16 +57,39 @@ if (tituloIndex !== -1) {
 
   <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-      {/* Left - Image composition */}
+      {/* Left - Image carousel */}
       <div class="relative">
         <div class="relative">
-          {/* Main image */}
-          <div class="rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl">
-            <img
-              src={imagenUrl}
-              alt={imagenAlt}
-              class="h-[300px] sm:h-[400px] lg:h-[500px] w-full object-cover"
-            />
+          {/* Main carousel */}
+          <div class="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl" id="pqe-carousel">
+            <div class="relative h-[300px] sm:h-[400px] lg:h-[500px] w-full">
+              {slides.map((img, idx) => (
+                <div
+                  class="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+                  style={`opacity: ${idx === 0 ? 1 : 0}`}
+                  data-slide={idx}
+                >
+                  <img
+                    src={img.asset?.url}
+                    alt={img.alt || 'Instalaciones médicas'}
+                    class="h-full w-full object-cover"
+                    loading={idx === 0 ? 'eager' : 'lazy'}
+                  />
+                </div>
+              ))}
+            </div>
+            {/* Dots */}
+            {slides.length > 1 && (
+              <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                {slides.map((_, idx) => (
+                  <button
+                    class={`h-2 rounded-full transition-all duration-300 ${idx === 0 ? 'w-6 bg-white' : 'w-2 bg-white/40 hover:bg-white/60'}`}
+                    aria-label={`Ver imagen ${idx + 1}`}
+                    data-dot={idx}
+                  />
+                ))}
+              </div>
+            )}
           </div>
           
           {/* Floating card */}
@@ -116,4 +140,32 @@ if (tituloIndex !== -1) {
       </div>
     </div>
   </div>
+  <script is:inline>
+    (function () {
+      var carousel = document.getElementById('pqe-carousel');
+      if (!carousel) return;
+      var slides = carousel.querySelectorAll('[data-slide]');
+      var dots = carousel.querySelectorAll('[data-dot]');
+      if (slides.length <= 1) return;
+
+      var active = 0;
+      var total = slides.length;
+
+      function show(idx) {
+        slides[active].style.opacity = '0';
+        if (dots[active]) dots[active].className = 'h-2 rounded-full transition-all duration-300 w-2 bg-white/40 hover:bg-white/60';
+        active = idx;
+        slides[active].style.opacity = '1';
+        if (dots[active]) dots[active].className = 'h-2 rounded-full transition-all duration-300 w-6 bg-white';
+      }
+
+      dots.forEach(function (dot, i) {
+        dot.addEventListener('click', function () { show(i); });
+      });
+
+      setInterval(function () {
+        show((active + 1) % total);
+      }, 5000);
+    })();
+  </script>
 </section>

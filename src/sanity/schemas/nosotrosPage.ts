@@ -67,18 +67,13 @@ export default defineType({
       group: 'historia',
       fields: [
         defineField({
-          name: 'imagen',
-          title: 'Imagen principal',
-          type: 'image',
-          options: { hotspot: true },
-          fields: [
-            defineField({
-              name: 'alt',
-              title: 'Texto alternativo',
-              type: 'string',
-              validation: (Rule) => Rule.required(),
-            }),
-          ],
+          name: 'video',
+          title: 'Video de la historia',
+          type: 'file',
+          description: 'Video que aparece en la sección "Nuestra Historia". Recomendado: formato MP4, máximo 20MB.',
+          options: {
+            accept: 'video/*',
+          },
         }),
         defineField({
           name: 'badge',

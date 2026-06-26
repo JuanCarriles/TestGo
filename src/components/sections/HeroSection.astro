@@ -144,8 +144,6 @@ const lineasProcesadas = tituloLineas.map((linea) => ({
       <div class="hidden lg:block relative animate-fade-up delay-500">
         <HeroImageCarousel
           images={hero?.imagenesTarjeta || []}
-          fallbackImage={hero?.imagenTarjeta}
-          fallbackAlt={hero?.imagenTarjeta?.alt || 'Consulta médica'}
           client:load
         />
 

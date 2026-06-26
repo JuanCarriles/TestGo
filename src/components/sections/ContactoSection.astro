@@ -1,18 +1,44 @@
 ---
-import type { Configuracion } from '../../types';
+import type { HomePage } from '../../types';
+import { getIconoSvg } from './iconos';
 
 interface Props {
-  config: Configuracion | null;
+  homePage: HomePage | null;
 }
 
-const { config } = Astro.props;
+const { homePage } = Astro.props;
 
-const direccion = config?.direccion || '';
-const mapaUrl = config?.mapaUrl || '';
-const telefono = config?.telefono || '';
-const email = config?.email || '';
-const horarios = config?.horarios || 'Lunes a Viernes de 8:00 a 20:00 hs';
-const turnosUrl = config?.enlaceTurnos || '#';
+const contacto = homePage?.contacto;
+
+// Fallbacks
+const badge = contacto?.badge || 'Contacto';
+const titulo = contacto?.titulo || 'Estamos aquí para vos';
+const tituloDestacado = contacto?.tituloDestacado || 'para vos';
+const descripcion = contacto?.descripcion || 'Visitá nuestras instalaciones o contactanos por cualquiera de nuestros canales. Tu salud es nuestra prioridad.';
+const mapaUrl = contacto?.mapaUrl || '';
+const botonTexto = contacto?.botonTexto || 'Reservar Turno';
+const botonEnlace = contacto?.botonEnlace || '/equipo';
+
+const items = contacto?.items?.length
+  ? contacto.items
+  : [
+      { icono: 'location', label: 'Dirección', valor: 'Av. Ejemplo 123, San Miguel de Tucumán', enlace: '' },
+      { icono: 'phone', label: 'Teléfono', valor: '+54 9 381 1234567', enlace: 'tel:+5493811234567' },
+      { icono: 'mail', label: 'Email', valor: 'info@gocentromedico.com', enlace: 'mailto:info@gocentromedico.com' },
+      { icono: 'clock', label: 'Horarios de Atención', valor: 'Lunes a Viernes de 8:00 a 20:00 hs', enlace: '' },
+    ];
+
+// Process title
+const tituloIndex = titulo.indexOf(tituloDestacado);
+let tituloBefore = '';
+let tituloAfter = '';
+
+if (tituloIndex !== -1) {
+  tituloBefore = titulo.slice(0, tituloIndex);
+  tituloAfter = titulo.slice(tituloIndex + tituloDestacado.length);
+} else {
+  tituloBefore = titulo;
+}
 ---
 
 <section data-reveal="right" class="relative py-28 bg-text overflow-hidden">
@@ -29,78 +55,39 @@ const turnosUrl = config?.enlaceTurnos || '#';
     <div class="grid grid-cols-1 gap-10 md:gap-16 lg:grid-cols-2 items-center">
       {/* Contact Info */}
       <div>
-        <span class="inline-block text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3 md:mb-4 font-body">Contacto</span>
+        <span class="inline-block text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3 md:mb-4 font-body">{badge}</span>
         <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-white sm:text-4xl lg:text-6xl font-display leading-tight">
-          Estamos aquí <span class="text-gradient">para vos</span>
+          {tituloBefore && <span>{tituloBefore}</span>}
+          {tituloIndex !== -1 && <span class="text-gradient">{tituloDestacado}</span>}
+          {tituloAfter && <span>{tituloAfter}</span>}
         </h2>
         <p class="mt-4 md:mt-6 text-base md:text-lg text-white/60 leading-relaxed font-body font-light">
-          Visitá nuestras instalaciones o contactanos por cualquiera de nuestros canales. Tu salud es nuestra prioridad.
+          {descripcion}
         </p>
 
         <div class="mt-12 space-y-8">
-          {direccion && (
+          {items.map((item) => (
             <div class="group flex items-start gap-5">
               <div class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-all duration-500 group-hover:bg-primary group-hover:text-white group-hover:shadow-glow">
-                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" set:html={getIconoSvg(item.icono)} />
               </div>
               <div>
-                <h3 class="text-sm font-semibold text-white uppercase tracking-wider font-body">Dirección</h3>
-                <p class="mt-1 text-white/60 font-body">{direccion}</p>
+                <h3 class="text-sm font-semibold text-white uppercase tracking-wider font-body">{item.label}</h3>
+                {item.enlace ? (
+                  <a href={item.enlace} class="mt-1 text-white/60 transition-colors duration-300 hover:text-primary font-body">
+                    {item.valor}
+                  </a>
+                ) : (
+                  <p class="mt-1 text-white/60 font-body">{item.valor}</p>
+                )}
               </div>
             </div>
-          )}
-
-          {telefono && (
-            <div class="group flex items-start gap-5">
-              <div class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-all duration-500 group-hover:bg-primary group-hover:text-white group-hover:shadow-glow">
-                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-sm font-semibold text-white uppercase tracking-wider font-body">Teléfono</h3>
-                <a href={`tel:${telefono}`} class="mt-1 text-white/60 transition-colors duration-300 hover:text-primary font-body">
-                  {telefono}
-                </a>
-              </div>
-            </div>
-          )}
-
-          {email && (
-            <div class="group flex items-start gap-5">
-              <div class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-all duration-500 group-hover:bg-primary group-hover:text-white group-hover:shadow-glow">
-                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-sm font-semibold text-white uppercase tracking-wider font-body">Email</h3>
-                <a href={`mailto:${email}`} class="mt-1 text-white/60 transition-colors duration-300 hover:text-primary font-body">
-                  {email}
-                </a>
-              </div>
-            </div>
-          )}
-
-          <div class="group flex items-start gap-5">
-            <div class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-all duration-500 group-hover:bg-primary group-hover:text-white group-hover:shadow-glow">
-              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div>
-              <h3 class="text-sm font-semibold text-white uppercase tracking-wider font-body">Horarios de Atención</h3>
-              <p class="mt-1 text-white/60 font-body">{horarios}</p>
-            </div>
-          </div>
+          ))}
         </div>
 
         <div class="mt-12">
           <a
-            href={turnosUrl}
+            href={botonEnlace}
             target="_blank"
             rel="noopener noreferrer"
             class="group inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-500 hover:bg-primary/90 hover:shadow-glow hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-text font-body"
@@ -108,7 +95,7 @@ const turnosUrl = config?.enlaceTurnos || '#';
             <svg class="mr-2 h-5 w-5 transition-transform duration-300 group-hover:rotate-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
-            Reservar Turno
+            {botonTexto}
           </a>
         </div>
       </div>

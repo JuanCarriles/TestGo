@@ -42,6 +42,7 @@ const displayEspecialidades = especialidades.length > 0 ? especialidades : demoE
   title={especialidadesPage?.seo?.seoTitle || especialidadesPage?.hero?.titulo || 'Especialidades'}
   description={especialidadesPage?.seo?.seoDescription || especialidadesPage?.hero?.descripcion || 'Conocé todas las especialidades médicas de GO Centro Médico. Atención integral para tu salud y la de tu familia.'}
   image={especialidadesPage?.seo?.seoImage?.asset?.url}
+  imageAlt={especialidadesPage?.seo?.seoImage?.alt}
   config={config}
   noIndex={especialidadesPage?.seo?.noIndex || false}
 >
@@ -49,8 +50,8 @@ const displayEspecialidades = especialidades.length > 0 ? especialidades : demoE
   <section class="relative bg-text py-32 lg:py-40 overflow-hidden">
     <div class="absolute inset-0">
       <img
-        src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=2000"
-        alt="Especialidades médicas"
+        src={especialidadesPage?.hero?.imagenFondo?.asset?.url || "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=2000"}
+        alt={especialidadesPage?.hero?.imagenFondo?.alt || "Especialidades médicas"}
         class="h-full w-full object-cover opacity-10"
       />
       <div class="absolute inset-0 bg-gradient-to-br from-text via-text to-primary/20"></div>

@@ -134,6 +134,7 @@ const profesionalesConUrls: Profesional[] = profesionales.map((prof) => ({
   title={equipoPage?.seo?.seoTitle || equipoPage?.hero?.titulo || 'Nuestro Equipo'}
   description={equipoPage?.seo?.seoDescription || equipoPage?.hero?.descripcion || 'Conocé al equipo médico de GO Centro Médico. Especialistas de excelencia en diversas áreas de la salud.'}
   image={equipoPage?.seo?.seoImage?.asset?.url}
+  imageAlt={equipoPage?.seo?.seoImage?.alt}
   config={config}
   noIndex={equipoPage?.seo?.noIndex || false}
 >

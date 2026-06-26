@@ -50,13 +50,6 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'especialidad',
-      title: 'Especialidad (Legacy)',
-      type: 'reference',
-      to: [{ type: 'especialidad' }],
-      hidden: ({ parent }) => Array.isArray(parent?.especialidades) && parent.especialidades.length > 0,
-    }),
-    defineField({
       name: 'especialidades',
       title: 'Especialidades',
       type: 'array',

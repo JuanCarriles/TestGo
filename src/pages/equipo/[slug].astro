@@ -151,21 +151,101 @@ if (!prof) {
 
 const fotoUrl = prof.foto?.asset?.url || "";
 const fotoAlt = prof.foto?.alt || prof.nombre;
+
+// BreadcrumbList schema
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://gocentromedico.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Equipo",
+      "item": "https://gocentromedico.com/equipo/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": prof.nombre,
+      "item": `https://gocentromedico.com/equipo/${prof.slug}/`
+    }
+  ]
+};
+
+// Build Physician schema markup
+const especialidadesList = (prof.especialidades && prof.especialidades.length > 0
+  ? prof.especialidades
+  : prof.especialidad
+    ? [prof.especialidad]
+  : []
+).map(e => e.nombre);
+
+const sameAsLinks: string[] = [];
+if (prof.whatsapp) sameAsLinks.push(`https://wa.me/${prof.whatsapp}`);
+if (prof.facebook) sameAsLinks.push(prof.facebook);
+if (prof.instagram) sameAsLinks.push(prof.instagram);
+
+const physicianSchema = {
+  "@context": "https://schema.org",
+  "@type": "Physician",
+  "name": prof.nombre,
+  "image": fotoUrl,
+  "description": prof.biografia,
+  "url": `https://gocentromedico.com/equipo/${prof.slug}`,
+  "medicalSpecialty": especialidadesList,
+  "address": config ? {
+    "@type": "PostalAddress",
+    "streetAddress": config.direccion,
+    "addressLocality": "San Miguel de Tucumán",
+    "addressRegion": "Tucumán",
+    "addressCountry": "AR"
+  } : undefined,
+  "telephone": config?.telefono || config?.whatsapp || prof.whatsapp || undefined,
+  "email": config?.email || undefined,
+  "worksFor": config ? {
+    "@type": "MedicalOrganization",
+    "name": config.metaTitle || "GO Centro Médico",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": config.direccion,
+      "addressLocality": "San Miguel de Tucumán",
+      "addressRegion": "Tucumán",
+      "addressCountry": "AR"
+    },
+    "telephone": config.telefono || config.whatsapp || undefined,
+    "email": config.email || undefined,
+  } : undefined,
+  "sameAs": sameAsLinks.length > 0 ? sameAsLinks : undefined,
+};
+
+// Remove undefined keys
+const cleanSchema = JSON.parse(JSON.stringify(physicianSchema));
 ---
 
 <Layout
   title={prof.seo?.seoTitle || prof.nombre}
   description={prof.seo?.seoDescription || `${prof.nombre} - ${prof.especialidad?.nombre || "Especialista"} en GO Centro Médico. ${prof.biografia}`}
   image={prof.seo?.seoImage?.asset?.url || prof.foto?.asset?.url}
+  imageAlt={prof.seo?.seoImage?.alt || prof.foto?.alt}
   config={config}
   noIndex={prof.seo?.noIndex || false}
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(cleanSchema)} />
+  </Fragment>
   {/* Hero */}
   <section class="relative bg-text py-16 md:py-24 lg:py-32 overflow-hidden">
     <div class="absolute inset-0">
       <img
-        src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=2000"
-        alt="Fondo"
+        src={prof.foto?.asset?.url || "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=2000"}
+        alt={prof.foto?.alt || prof.nombre}
         class="h-full w-full object-cover opacity-10"
       />
       <div

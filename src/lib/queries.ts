@@ -145,7 +145,7 @@ export const queries = {
     }
   }`,
 
-  profesionalesByEspecialidad: `*[_type == "profesional" && (($slug in especialidades[]->slug.current) || (count(especialidades) == 0 && especialidad->slug.current == $slug))] | order(nombre asc){
+  profesionalesByEspecialidad: `*[_type == "profesional" && $slug in especialidades[]->slug.current] | order(nombre asc){
     _id,
     nombre,
     "slug": slug.current,
@@ -238,10 +238,6 @@ export const queries = {
         texto,
         enlace
       },
-      imagenTarjeta{
-        asset->{_id,url},
-        alt
-      },
       imagenesTarjeta[]{
         asset->{_id,url},
         alt
@@ -252,7 +248,7 @@ export const queries = {
       }
     },
     porQueElegirnos{
-      imagen{
+      imagenes[]{
         asset->{_id,url},
         alt
       },
@@ -283,6 +279,21 @@ export const queries = {
         alt
       }
     },
+    contacto{
+      badge,
+      titulo,
+      tituloDestacado,
+      descripcion,
+      mapaUrl,
+      botonTexto,
+      botonEnlace,
+      items[]{
+        icono,
+        label,
+        valor,
+        enlace
+      }
+    },
     seo{
       seoTitle,
       seoDescription,
@@ -310,6 +321,9 @@ export const queries = {
       imagen{
         asset->{_id,url},
         alt
+      },
+      video{
+        asset->{_id,url}
       },
       badge,
       titulo,

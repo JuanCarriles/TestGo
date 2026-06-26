@@ -11,9 +11,10 @@ import { queries } from '../lib/queries';
 interface Props extends SeoProps {
   config?: Configuracion | null;
   noIndex?: boolean;
+  imageAlt?: string;
 }
 
-const { title, description, image, pathname, config: propConfig, noIndex } = Astro.props;
+const { title, description, image, imageAlt, pathname, config: propConfig, noIndex } = Astro.props;
 
 const config: Configuracion | null = propConfig ?? (await client.fetch(queries.configuracion).catch(() => null));
 
@@ -25,6 +26,7 @@ const siteTitle = config?.metaTitle || 'GO Centro Médico';
 const pageTitle = title ? `${title} | ${siteTitle}` : siteTitle;
 const metaDescription = description || config?.metaDescription || '';
 const ogImage = image || config?.ogImage?.asset?.url || '/og-default.jpg';
+const ogImageAlt = imageAlt || config?.ogImage?.alt || siteTitle;
 const faviconUrl = config?.logo?.asset?.url || '/favicon.svg';
 ---
 
@@ -45,6 +47,7 @@ const faviconUrl = config?.logo?.asset?.url || '/favicon.svg';
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={metaDescription} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <meta property="og:locale" content="es_AR" />
 
     {/* Twitter */}
@@ -53,6 +56,7 @@ const faviconUrl = config?.logo?.asset?.url || '/favicon.svg';
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={metaDescription} />
     <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
 
     {/* Favicon */}
     <link rel="icon" type="image/svg+xml" href={faviconUrl} />
@@ -65,6 +69,7 @@ const faviconUrl = config?.logo?.asset?.url || '/favicon.svg';
       rel="stylesheet"
     />
 
+    <slot name="head" />
     <ClientRouter />
   </head>
 

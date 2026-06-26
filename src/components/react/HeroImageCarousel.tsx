@@ -3,14 +3,12 @@ import type { SanityImage } from '../../types';
 
 interface Props {
   images: SanityImage[];
-  fallbackImage?: SanityImage;
-  fallbackAlt?: string;
 }
 
-export default function HeroImageCarousel({ images, fallbackImage, fallbackAlt }: Props) {
+export default function HeroImageCarousel({ images }: Props) {
   const [active, setActive] = useState(0);
 
-  const slides = images.length > 0 ? images : fallbackImage ? [fallbackImage] : [];
+  const slides = images.length > 0 ? images : [];
 
   const next = useCallback(() => {
     setActive((prev) => (prev + 1) % slides.length);
@@ -36,7 +34,7 @@ export default function HeroImageCarousel({ images, fallbackImage, fallbackAlt }
           >
             <img
               src={img.asset?.url}
-              alt={img.alt || fallbackAlt || 'Imagen del centro médico'}
+              alt={img.alt || 'Imagen del centro médico'}
               className="h-full w-full object-cover"
               loading={idx === 0 ? 'eager' : 'lazy'}
             />

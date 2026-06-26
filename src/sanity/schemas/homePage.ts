@@ -10,6 +10,7 @@ export default defineType({
     { name: 'porQueElegirnos', title: '¿Por qué elegirnos?' },
     { name: 'testimonios', title: 'Testimonios' },
     { name: 'obrasSociales', title: 'Obras Sociales' },
+    { name: 'contacto', title: 'Contacto' },
     { name: 'seo', title: 'SEO' },
   ],
   fields: [
@@ -124,25 +125,10 @@ export default defineType({
           ],
         }),
         defineField({
-          name: 'imagenTarjeta',
-          title: 'Imagen única lateral (Legacy)',
-          type: 'image',
-          options: { hotspot: true },
-          fields: [
-            defineField({
-              name: 'alt',
-              title: 'Texto alternativo',
-              type: 'string',
-              validation: (Rule) => Rule.required(),
-            }),
-          ],
-          description: 'DEPRECADO: Solo se usa si no hay imágenes en el carrusel de abajo. Preferiblemente usá el carrusel.',
-        }),
-        defineField({
           name: 'imagenesTarjeta',
           title: 'Imágenes del carrusel lateral',
           type: 'array',
-          description: 'Imágenes para la tarjeta lateral del Hero. Si cargás 1 imagen, aparece estática. Si cargás 2 o más, se activa el carrusel automático. Recomendado: 800x1000px (ratio 4:5 vertical). Este campo tiene prioridad sobre la imagen única de arriba.',
+          description: 'Imágenes para la tarjeta lateral del Hero. Si cargás 1 imagen, aparece estática. Si cargás 2 o más, se activa el carrusel automático. Recomendado: 800x1000px (ratio 4:5 vertical).',
           of: [
             {
               type: 'image',
@@ -209,19 +195,25 @@ export default defineType({
       },
       fields: [
         defineField({
-          name: 'imagen',
-          title: 'Imagen principal',
-          type: 'image',
-          options: { hotspot: true },
-          fields: [
-            defineField({
-              name: 'alt',
-              title: 'Texto alternativo',
-              type: 'string',
-              validation: (Rule) => Rule.required(),
-            }),
+          name: 'imagenes',
+          title: 'Imágenes del carrusel lateral',
+          type: 'array',
+          description: 'Varias imágenes para el carrusel de la sección "Por qué elegirnos". Si cargás 1 imagen, aparece estática. Si cargás 2 o más, se activa el carrusel automático. Recomendado: 800x1000px (ratio 4:5 vertical).',
+          of: [
+            {
+              type: 'image',
+              options: { hotspot: true },
+              fields: [
+                defineField({
+                  name: 'alt',
+                  title: 'Texto alternativo',
+                  type: 'string',
+                  validation: (Rule) => Rule.required(),
+                }),
+              ],
+            },
           ],
-          description: 'Imagen grande del lado izquierdo. Recomendado: 800x1000px.',
+          validation: (Rule) => Rule.max(6),
         }),
         defineField({
           name: 'badge',
@@ -428,6 +420,120 @@ export default defineType({
         },
       ],
       validation: (Rule) => Rule.max(12),
+    }),
+    defineField({
+      name: 'contacto',
+      title: 'Sección de Contacto',
+      type: 'object',
+      group: 'contacto',
+      fields: [
+        defineField({
+          name: 'badge',
+          title: 'Etiqueta superior',
+          type: 'string',
+          validation: (Rule) => Rule.required().max(30),
+          initialValue: 'Contacto',
+        }),
+        defineField({
+          name: 'titulo',
+          title: 'Título',
+          type: 'string',
+          validation: (Rule) => Rule.required().max(80),
+          initialValue: 'Estamos aquí para vos',
+        }),
+        defineField({
+          name: 'tituloDestacado',
+          title: 'Parte destacada del título',
+          type: 'string',
+          validation: (Rule) => Rule.required(),
+          initialValue: 'para vos',
+        }),
+        defineField({
+          name: 'descripcion',
+          title: 'Descripción',
+          type: 'text',
+          rows: 3,
+          validation: (Rule) => Rule.required().max(300),
+          initialValue: 'Visitá nuestras instalaciones o contactanos por cualquiera de nuestros canales. Tu salud es nuestra prioridad.',
+        }),
+        defineField({
+          name: 'mapaUrl',
+          title: 'URL del mapa (Google Maps Embed)',
+          type: 'url',
+          description: 'Copiar la URL de embed desde Google Maps: Compartir → Incorporar un mapa → Copiar HTML → pegar solo la URL del src',
+        }),
+        defineField({
+          name: 'botonTexto',
+          title: 'Texto del botón',
+          type: 'string',
+          validation: (Rule) => Rule.required().max(30),
+          initialValue: 'Reservar Turno',
+        }),
+        defineField({
+          name: 'botonEnlace',
+          title: 'Enlace del botón',
+          type: 'url',
+          description: 'URL a la que lleva el botón (ej: /equipo o enlace externo de turnos)',
+        }),
+        defineField({
+          name: 'items',
+          title: 'Datos de contacto',
+          type: 'array',
+          description: 'Agregá todos los datos de contacto que quieras mostrar (teléfono, email, dirección, horarios, WhatsApp, etc.). El cliente puede agregar, quitar o reordenar items.',
+          of: [
+            {
+              type: 'object',
+              name: 'itemContacto',
+              fields: [
+                defineField({
+                  name: 'icono',
+                  title: 'Icono',
+                  type: 'string',
+                  options: {
+                    list: [
+                      { title: 'Ubicación / Mapa', value: 'location' },
+                      { title: 'Teléfono', value: 'phone' },
+                      { title: 'Email / Correo', value: 'mail' },
+                      { title: 'Reloj / Horarios', value: 'clock' },
+                      { title: 'WhatsApp', value: 'whatsapp' },
+                      { title: 'Edificio / Instalaciones', value: 'building' },
+                      { title: 'Escudo / Seguros', value: 'shield' },
+                      { title: 'Corazón / Salud', value: 'heart' },
+                    ],
+                  },
+                  validation: (Rule) => Rule.required(),
+                }),
+                defineField({
+                  name: 'label',
+                  title: 'Título del dato',
+                  type: 'string',
+                  description: 'Ej: Dirección, Teléfono, Email, Horarios, WhatsApp',
+                  validation: (Rule) => Rule.required().max(50),
+                }),
+                defineField({
+                  name: 'valor',
+                  title: 'Valor / Texto a mostrar',
+                  type: 'string',
+                  description: 'Ej: Av. Siempre Viva 123, +54 9 381 1234567, info@ejemplo.com',
+                  validation: (Rule) => Rule.required(),
+                }),
+                defineField({
+                  name: 'enlace',
+                  title: 'Enlace (opcional)',
+                  type: 'string',
+                  description: 'Si el item es clickeable, agregá el enlace. Ejemplos: tel:+543811234567, mailto:info@ejemplo.com, https://wa.me/...',
+                }),
+              ],
+              preview: {
+                select: {
+                  title: 'label',
+                  subtitle: 'valor',
+                },
+              },
+            },
+          ],
+        }),
+      ],
     }),
     defineField({
       name: 'seo',

@@ -26,10 +26,7 @@ const histBadge = historia?.badge || "Nuestra Historia";
 const histTitulo =
   historia?.titulo || "Más de una década cuidando a la comunidad";
 const histDestacado = historia?.tituloDestacado || "cuidando a la comunidad";
-const histImagen =
-  historia?.imagen?.asset?.url ||
-  "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=800";
-const histAlt = historia?.imagen?.alt || "Instalaciones";
+const histVideoUrl = historia?.video?.asset?.url;
 const histParrafos = historia?.parrafos || [
   "GO Centro Médico nació con una visión clara: ofrecer atención médica de alta calidad, accesible y humana. Desde nuestros inicios, nos propusimos crear un espacio donde la tecnología de vanguardia se encuentre con el trato personalizado que cada paciente merece.",
   "A lo largo de los años, fuimos creciendo y ampliando nuestras especialidades, incorporando profesionales de excelencia y equipamiento médico de última generación.",
@@ -151,6 +148,7 @@ const galImagenes: ImagenGaleria[] = galeria?.imagenes || [
   title={seo?.seoTitle || 'Nosotros'}
   description={seo?.seoDescription || 'Conocé la historia, misión, visión y valores de GO Centro Médico. Más de una década de excelencia en salud.'}
   image={seo?.seoImage?.asset?.url}
+  imageAlt={seo?.seoImage?.alt}
   config={config}
   noIndex={seo?.noIndex || false}
 >
@@ -190,11 +188,22 @@ const galImagenes: ImagenGaleria[] = galeria?.imagenes || [
       >
         <div class="relative order-1 lg:order-none">
           <div class="relative rounded-3xl overflow-hidden shadow-2xl">
-            <img
-              src={histImagen}
-              alt={histAlt}
-              class="h-72 sm:h-96 lg:h-[600px] w-full object-cover"
-            />
+            {histVideoUrl ? (
+              <video
+                src={histVideoUrl}
+                autoplay
+                muted
+                loop
+                playsinline
+                class="aspect-[4/3] w-full object-cover"
+              />
+            ) : (
+              <img
+                src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=800"
+                alt="Instalaciones"
+                class="aspect-[4/3] w-full object-cover"
+              />
+            )}
           </div>
           {/* Floating badge */}
           <div

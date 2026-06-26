@@ -115,7 +115,6 @@ export interface HomePage {
       texto: string;
       enlace: string;
     };
-    imagenTarjeta?: SanityImage;
     imagenesTarjeta?: SanityImage[];
     estadisticas: {
       numero: string;
@@ -123,7 +122,7 @@ export interface HomePage {
     }[];
   };
   porQueElegirnos: {
-    imagen?: SanityImage;
+    imagenes?: SanityImage[];
     badge: string;
     titulo: string;
     tituloDestacado: string;
@@ -136,6 +135,21 @@ export interface HomePage {
   };
   testimonios?: Testimonio[];
   obrasSociales?: ObraSocial[];
+  contacto?: {
+    badge: string;
+    titulo: string;
+    tituloDestacado: string;
+    descripcion: string;
+    mapaUrl?: string;
+    botonTexto: string;
+    botonEnlace?: string;
+    items: {
+      icono: string;
+      label: string;
+      valor: string;
+      enlace?: string;
+    }[];
+  };
   seo?: Seo;
 }
 
@@ -167,7 +181,12 @@ export interface NosotrosPage {
     imagenFondo?: SanityImage;
   };
   historia: {
-    imagen?: SanityImage;
+    video?: {
+      asset: {
+        _id: string;
+        url: string;
+      };
+    };
     badge: string;
     titulo: string;
     tituloDestacado: string;

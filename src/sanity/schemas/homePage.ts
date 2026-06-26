@@ -472,8 +472,19 @@ export default defineType({
         defineField({
           name: 'botonEnlace',
           title: 'Enlace del botón',
-          type: 'url',
-          description: 'URL a la que lleva el botón (ej: /equipo o enlace externo de turnos)',
+          type: 'string',
+          description: 'Seleccioná a qué página del sitio lleva el botón.',
+          options: {
+            list: [
+              { title: 'Inicio', value: '/' },
+              { title: 'Equipo médico', value: '/equipo' },
+              { title: 'Especialidades', value: '/especialidades' },
+              { title: 'Nosotros', value: '/nosotros' },
+              { title: 'Trabajá en Go', value: '/trabaja-con-nosotros' },
+            ],
+            layout: 'dropdown',
+          },
+          initialValue: '/equipo',
         }),
         defineField({
           name: 'items',
@@ -528,6 +539,49 @@ export default defineType({
                 select: {
                   title: 'label',
                   subtitle: 'valor',
+                },
+              },
+            },
+          ],
+        }),
+        defineField({
+          name: 'redesSociales',
+          title: 'Redes sociales',
+          type: 'array',
+          description: 'Links a redes sociales que aparecen en la sección de contacto.',
+          of: [
+            {
+              type: 'object',
+              name: 'redSocialContacto',
+              fields: [
+                defineField({
+                  name: 'nombre',
+                  title: 'Red social',
+                  type: 'string',
+                  options: {
+                    list: [
+                      { title: 'Instagram', value: 'instagram' },
+                      { title: 'Facebook', value: 'facebook' },
+                      { title: 'LinkedIn', value: 'linkedin' },
+                      { title: 'YouTube', value: 'youtube' },
+                      { title: 'Twitter / X', value: 'twitter' },
+                      { title: 'TikTok', value: 'tiktok' },
+                    ],
+                    layout: 'dropdown',
+                  },
+                  validation: (Rule) => Rule.required(),
+                }),
+                defineField({
+                  name: 'url',
+                  title: 'URL del perfil',
+                  type: 'url',
+                  validation: (Rule) => Rule.required(),
+                }),
+              ],
+              preview: {
+                select: {
+                  title: 'nombre',
+                  subtitle: 'url',
                 },
               },
             },

@@ -149,6 +149,10 @@ export interface HomePage {
       valor: string;
       enlace?: string;
     }[];
+    redesSociales?: {
+      nombre: string;
+      url: string;
+    }[];
   };
   seo?: Seo;
 }

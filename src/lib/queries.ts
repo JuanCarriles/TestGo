@@ -292,6 +292,10 @@ export const queries = {
         label,
         valor,
         enlace
+      },
+      redesSociales[]{
+        nombre,
+        url
       }
     },
     seo{

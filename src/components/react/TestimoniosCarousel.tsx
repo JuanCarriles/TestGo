@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import type { Testimonio } from '../../types';
 
 interface Props {
@@ -22,6 +22,9 @@ export default function TestimoniosCarousel({ testimonios }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollStart, setScrollStart] = useState(0);
 
   const checkScroll = () => {
     const el = containerRef.current;
@@ -43,9 +46,41 @@ export default function TestimoniosCarousel({ testimonios }: Props) {
     if (!el) return;
     const card = el.firstElementChild as HTMLElement | null;
     if (!card) return;
-    const scrollAmount = card.offsetWidth + 24; // card width + gap-6 (24px)
+    const scrollAmount = card.offsetWidth + 24;
     el.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
   };
+
+  // Mouse drag handlers
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    setIsDragging(true);
+    setStartX(e.pageX - (containerRef.current?.offsetLeft || 0));
+    setScrollStart(containerRef.current?.scrollLeft || 0);
+  }, []);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!isDragging || !containerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - (containerRef.current.offsetLeft || 0);
+    const walk = (x - startX) * 1.5;
+    containerRef.current.scrollLeft = scrollStart - walk;
+  }, [isDragging, startX, scrollStart]);
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  // Touch handlers
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    setStartX(e.touches[0].pageX - (containerRef.current?.offsetLeft || 0));
+    setScrollStart(containerRef.current?.scrollLeft || 0);
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!containerRef.current) return;
+    const x = e.touches[0].pageX - (containerRef.current.offsetLeft || 0);
+    const walk = (x - startX) * 1.5;
+    containerRef.current.scrollLeft = scrollStart - walk;
+  }, [startX, scrollStart]);
 
   if (testimonios.length === 0) return null;
 
@@ -103,13 +138,19 @@ export default function TestimoniosCarousel({ testimonios }: Props) {
         {/* Carousel */}
         <div
           ref={containerRef}
-          className="flex gap-6 overflow-x-auto py-8 snap-x snap-mandatory scrollbar-hide"
+          className="flex gap-6 overflow-x-auto py-8 snap-x snap-mandatory scrollbar-hide cursor-grab active:cursor-grabbing"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
         >
           {testimonios.map((resena, index) => (
             <article
               key={index}
-              className="group relative flex flex-col flex-shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-start rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 p-8 transition-all duration-500 hover:bg-white/10 hover:border-white/20 hover:-translate-y-2 hover:shadow-2xl"
+              className="group relative flex flex-col flex-shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-start rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 p-8 transition-all duration-500 hover:bg-white/10 hover:border-white/20 hover:-translate-y-2 hover:shadow-2xl select-none"
             >
               {/* Quote icon */}
               <div className="absolute top-6 right-6 text-primary/20">

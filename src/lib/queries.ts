@@ -247,6 +247,12 @@ export const queries = {
         etiqueta
       }
     },
+    especialidadesGrid{
+      badge,
+      titulo,
+      tituloDestacado,
+      descripcion
+    },
     porQueElegirnos{
       imagenes[]{
         asset->{_id,url},
@@ -272,13 +278,20 @@ export const queries = {
       estrellas,
       fecha
     },
-    obrasSociales[]{
+    obrasSociales[]|order(orden asc){
       nombre,
+      orden,
       logo{
         asset->{_id,url},
         alt
       }
     },
+    obrasSocialesBadge,
+    obrasSocialesTitulo,
+    obrasSocialesTituloDestacado,
+    obrasSocialesDescripcion,
+    obrasSocialesBotonTexto,
+    obrasSocialesBotonEnlace,
     contacto{
       badge,
       titulo,
@@ -340,10 +353,18 @@ export const queries = {
     },
     misionVision{
       mision{
+        icono{
+          asset->{_id,url},
+          alt
+        },
         titulo,
         descripcion
       },
       vision{
+        icono{
+          asset->{_id,url},
+          alt
+        },
         titulo,
         descripcion
       }

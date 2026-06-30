@@ -235,6 +235,7 @@ const cleanSchema = JSON.parse(JSON.stringify(physicianSchema));
   imageAlt={prof.seo?.seoImage?.alt || prof.foto?.alt}
   config={config}
   noIndex={prof.seo?.noIndex || false}
+  ogType="article"
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
@@ -344,7 +345,7 @@ const cleanSchema = JSON.parse(JSON.stringify(physicianSchema));
               href={prof.enlaceAgenda && prof.enlaceAgenda !== "#"
                 ? prof.enlaceAgenda
                 : prof.whatsapp
-                  ? `https://wa.me/${prof.whatsapp}?text=Hola%2C%20quiero%20reservar%20un%20turno%20con%20${encodeURIComponent(prof.nombre)}`
+                  ? `https://wa.me/${prof.whatsapp}?text=${encodeURIComponent(`Hola, quiero reservar un turno con el Dr/a. ${prof.nombre}.\n\nPara asignar y cotizar el turno, completá los siguientes datos:\n\nNombre completo:\nDNI:\nObra social:\n\nAdjuntar foto del pedido médico.\n\nGracias!`)}`
                   : "#"}
               target="_blank"
               rel="noopener noreferrer"

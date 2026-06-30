@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import type { InstagramReel } from '../../types';
 
 interface Props {
@@ -7,10 +7,12 @@ interface Props {
 }
 
 export default function InstagramReelsCarousel({ reels, instagramUrl }: Props) {
-  const [current, setCurrent] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollStart, setScrollStart] = useState(0);
 
   const checkScroll = () => {
     const el = containerRef.current;
@@ -34,6 +36,46 @@ export default function InstagramReelsCarousel({ reels, instagramUrl }: Props) {
     const gap = 24;
     el.scrollBy({ left: direction * (cardWidth + gap), behavior: 'smooth' });
   };
+
+  // Mouse drag handlers
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    setIsDragging(true);
+    setStartX(e.pageX - (containerRef.current?.offsetLeft || 0));
+    setScrollStart(containerRef.current?.scrollLeft || 0);
+  }, []);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!isDragging || !containerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - (containerRef.current.offsetLeft || 0);
+    const walk = (x - startX) * 1.5;
+    containerRef.current.scrollLeft = scrollStart - walk;
+  }, [isDragging, startX, scrollStart]);
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  // Touch handlers
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    setStartX(e.touches[0].pageX - (containerRef.current?.offsetLeft || 0));
+    setScrollStart(containerRef.current?.scrollLeft || 0);
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!containerRef.current) return;
+    const x = e.touches[0].pageX - (containerRef.current.offsetLeft || 0);
+    const walk = (x - startX) * 1.5;
+    containerRef.current.scrollLeft = scrollStart - walk;
+  }, [startX, scrollStart]);
+
+  // Prevent link clicks when dragging
+  const handleLinkClick = useCallback((e: React.MouseEvent) => {
+    if (isDragging) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, [isDragging]);
 
   if (reels.length === 0) return null;
 
@@ -94,8 +136,14 @@ export default function InstagramReelsCarousel({ reels, instagramUrl }: Props) {
         {/* Carousel */}
         <div
           ref={containerRef}
-          className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory"
+          className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory cursor-grab active:cursor-grabbing"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
         >
           {reels.map((reel, idx) => (
             <a
@@ -103,19 +151,21 @@ export default function InstagramReelsCarousel({ reels, instagramUrl }: Props) {
               href={reel.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col flex-shrink-0 w-[260px] sm:w-[280px] lg:w-[300px] snap-start"
+              className="group flex flex-col flex-shrink-0 w-[260px] sm:w-[280px] lg:w-[300px] snap-start select-none"
               style={{ animationDelay: `${idx * 100}ms` }}
+              onClick={handleLinkClick}
             >
               {/* Card */}
               <div className="relative flex flex-col flex-1 rounded-2xl overflow-hidden border border-text/5 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-primary/10">
                 {/* Image */}
-                <div className="relative h-[340px] sm:h-[380px] overflow-hidden">
+                <div className="relative h-[340px] sm:h-[380px] overflow-hidden pointer-events-none">
                   {reel.thumbnail?.asset?.url ? (
                     <img
                       src={reel.thumbnail.asset.url}
                       alt={reel.thumbnail.alt || reel.titulo}
                       className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
                       loading="lazy"
+                      draggable={false}
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-surface/20 to-primary/5">

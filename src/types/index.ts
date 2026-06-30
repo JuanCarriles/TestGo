@@ -92,6 +92,7 @@ export interface Testimonio {
  */
 export interface ObraSocial {
   nombre: string;
+  orden?: number;
   logo?: SanityImage;
 }
 
@@ -121,6 +122,12 @@ export interface HomePage {
       etiqueta: string;
     }[];
   };
+  especialidadesGrid?: {
+    badge: string;
+    titulo: string;
+    tituloDestacado: string;
+    descripcion: string;
+  };
   porQueElegirnos: {
     imagenes?: SanityImage[];
     badge: string;
@@ -135,6 +142,12 @@ export interface HomePage {
   };
   testimonios?: Testimonio[];
   obrasSociales?: ObraSocial[];
+  obrasSocialesBadge?: string;
+  obrasSocialesTitulo?: string;
+  obrasSocialesTituloDestacado?: string;
+  obrasSocialesDescripcion?: string;
+  obrasSocialesBotonTexto?: string;
+  obrasSocialesBotonEnlace?: string;
   contacto?: {
     badge: string;
     titulo: string;
@@ -202,10 +215,12 @@ export interface NosotrosPage {
   };
   misionVision: {
     mision: {
+      icono?: SanityImage;
       titulo: string;
       descripcion: string;
     };
     vision: {
+      icono?: SanityImage;
       titulo: string;
       descripcion: string;
     };

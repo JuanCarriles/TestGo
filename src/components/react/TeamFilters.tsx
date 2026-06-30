@@ -187,7 +187,7 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
                     Ver Perfil
                   </a>
                   <a
-                    href={prof.enlaceAgenda && prof.enlaceAgenda !== '#' ? prof.enlaceAgenda : prof.whatsapp ? `https://wa.me/${prof.whatsapp}?text=Hola%2C%20quiero%20reservar%20un%20turno%20con%20${encodeURIComponent(prof.nombre)}` : '#'}
+                    href={prof.enlaceAgenda && prof.enlaceAgenda !== '#' ? prof.enlaceAgenda : prof.whatsapp ? `https://wa.me/${prof.whatsapp}?text=${encodeURIComponent(`Hola, quiero reservar un turno con el Dr/a. ${prof.nombre}.\n\nPara asignar y cotizar el turno, completá los siguientes datos:\n\nNombre completo:\nDNI:\nObra social:\n\nAdjuntar foto del pedido médico.\n\nGracias!`)}` : '#'}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-md transition-all duration-500 hover:bg-primary/90 hover:shadow-glow hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 font-body"

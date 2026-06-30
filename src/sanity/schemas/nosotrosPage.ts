@@ -140,6 +140,21 @@ export default defineType({
           type: 'object',
           fields: [
             defineField({
+              name: 'icono',
+              title: 'Icono / Imagen',
+              type: 'image',
+              options: { hotspot: true },
+              fields: [
+                defineField({
+                  name: 'alt',
+                  title: 'Texto alternativo',
+                  type: 'string',
+                  validation: (Rule) => Rule.required(),
+                }),
+              ],
+              description: 'Icono o imagen que aparece arriba del título de Misión. Recomendado: SVG o PNG con fondo transparente, 100x100px.',
+            }),
+            defineField({
               name: 'titulo',
               title: 'Título',
               type: 'string',
@@ -151,6 +166,7 @@ export default defineType({
               title: 'Descripción',
               type: 'text',
               rows: 4,
+              description: 'Usá **texto** para poner palabras en negrita. Ej: "Brindamos atención **médica integral** basada en el **conocimiento**"',
               validation: (Rule) => Rule.required(),
             }),
           ],
@@ -160,6 +176,21 @@ export default defineType({
           title: 'Visión',
           type: 'object',
           fields: [
+            defineField({
+              name: 'icono',
+              title: 'Icono / Imagen',
+              type: 'image',
+              options: { hotspot: true },
+              fields: [
+                defineField({
+                  name: 'alt',
+                  title: 'Texto alternativo',
+                  type: 'string',
+                  validation: (Rule) => Rule.required(),
+                }),
+              ],
+              description: 'Icono o imagen que aparece arriba del título de Visión. Recomendado: SVG o PNG con fondo transparente, 100x100px.',
+            }),
             defineField({
               name: 'titulo',
               title: 'Título',
@@ -172,6 +203,7 @@ export default defineType({
               title: 'Descripción',
               type: 'text',
               rows: 4,
+              description: 'Usá **texto** para poner palabras en negrita. Ej: "Queremos ser un Centro de **referencia** por la calidad"',
               validation: (Rule) => Rule.required(),
             }),
           ],

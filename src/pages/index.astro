@@ -79,7 +79,7 @@ const cleanBusinessSchema = JSON.parse(JSON.stringify(medicalBusinessSchema));
     <script type="application/ld+json" set:html={JSON.stringify(cleanBusinessSchema)} />
   </Fragment>
   <HeroSection config={config} homePage={homePage} />
-  <EspecialidadesGrid especialidades={especialidades} />
+  <EspecialidadesGrid especialidades={especialidades} homePage={homePage} />
   <PorQueElegirnos homePage={homePage} />
   <ObrasSociales homePage={homePage} />
   {instagramReels.length > 0 && (

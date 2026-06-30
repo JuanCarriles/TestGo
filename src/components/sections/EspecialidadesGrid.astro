@@ -1,12 +1,31 @@
 ---
-import type { Especialidad } from '../../types';
+import type { Especialidad, HomePage } from '../../types';
 import { urlFor } from '../../lib/sanity';
 
 interface Props {
   especialidades: Especialidad[];
+  homePage?: HomePage | null;
 }
 
-const { especialidades } = Astro.props;
+const { especialidades, homePage } = Astro.props;
+
+const grid = homePage?.especialidadesGrid;
+const badge = grid?.badge || 'Nuestros Servicios';
+const titulo = grid?.titulo || 'Especialidades';
+const tituloDestacado = grid?.tituloDestacado || 'Médicas';
+const descripcion = grid?.descripcion || 'Contamos con un equipo multidisciplinario de excelencia para cuidar de tu salud y la de tu familia.';
+
+// Process title
+const tituloIndex = titulo.indexOf(tituloDestacado);
+let tituloBefore = '';
+let tituloAfter = '';
+
+if (tituloIndex !== -1) {
+  tituloBefore = titulo.slice(0, tituloIndex);
+  tituloAfter = titulo.slice(tituloIndex + tituloDestacado.length);
+} else {
+  tituloBefore = titulo;
+}
 
 // Placeholder images for specialties - using medical themed unsplash images
 const placeholderImages: Record<string, string> = {
@@ -35,12 +54,14 @@ const defaultIcon = `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke
 
   <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-12 md:mb-20">
-      <span class="inline-block text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-4 font-body">Nuestros Servicios</span>
+      <span class="inline-block text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-4 font-body">{badge}</span>
       <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-text sm:text-4xl lg:text-6xl font-display">
-        Especialidades <span class="text-gradient">Médicas</span>
+        {tituloBefore && <span>{tituloBefore}</span>}
+        {tituloIndex !== -1 && <span class="text-gradient">{tituloDestacado}</span>}
+        {tituloAfter && <span>{tituloAfter}</span>}
       </h2>
       <p class="mt-4 md:mt-6 text-base md:text-lg text-text/50 max-w-2xl mx-auto font-body font-light leading-relaxed">
-        Contamos con un equipo multidisciplinario de excelencia para cuidar de tu salud y la de tu familia.
+        {descripcion}
       </p>
     </div>
 

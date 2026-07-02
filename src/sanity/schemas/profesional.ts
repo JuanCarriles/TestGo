@@ -73,8 +73,8 @@ export default defineType({
       title: 'Biografía breve',
       type: 'text',
       rows: 4,
-      description: 'Mínimo 80 caracteres para SEO. Máximo 300 caracteres recomendados para tarjetas.',
-      validation: (Rule) => Rule.required().min(80).max(500),
+      description: 'Mínimo 80 caracteres para SEO. Máximo 600 caracteres.',
+      validation: (Rule) => Rule.required().min(80).max(600),
     }),
     defineField({
       name: 'destacado',

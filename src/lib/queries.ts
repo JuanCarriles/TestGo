@@ -20,6 +20,10 @@ export const queries = {
       asset->{_id,url},
       alt
     },
+    linkSugerencias{
+      texto,
+      url
+    },
     redesSociales[]{
       nombre,
       url
@@ -27,11 +31,12 @@ export const queries = {
   }`,
 
   // ── Especialidades ──
-  todasEspecialidades: `*[_type == "especialidad"] | order(nombre asc){
+  todasEspecialidades: `*[_type == "especialidad" && activo != false] | order(nombre asc){
     _id,
     nombre,
     "slug": slug.current,
     descripcion,
+    activo,
     icono{
       asset->{
         _id,
@@ -55,6 +60,7 @@ export const queries = {
     nombre,
     "slug": slug.current,
     descripcion,
+    activo,
     icono{
       asset->{
         _id,

@@ -120,6 +120,16 @@ const socialIcons: Record<string, string> = {
             </li>
           )}
         </ul>
+        {config?.linkSugerencias?.url && (
+          <a
+            href={config.linkSugerencias.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center mt-6 rounded-full border border-primary/30 bg-primary/10 px-5 py-2.5 text-sm font-medium text-primary transition-all duration-300 hover:bg-primary hover:text-white hover:shadow-glow focus:outline-none font-body"
+          >
+            {config.linkSugerencias.texto || 'Déjanos tu sugerencia'}
+          </a>
+        )}
       </div>
 
       {/* Horarios */}
@@ -129,7 +139,7 @@ const socialIcons: Record<string, string> = {
           {config?.horarios || 'Lunes a Viernes de 8:00 a 20:00 hs'}
         </p>
         <a
-          href="https://medexisweb.com/medexisportal/?to=50&eid=sASkLhxzGu3rUVwl"
+          href={config?.enlaceTurnos || "https://medexisweb.com/medexisportal/?to=50&eid=sASkLhxzGu3rUVwl"}
           target="_blank"
           rel="noopener noreferrer"
           class="inline-flex items-center justify-center mt-8 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-md transition-all duration-500 hover:bg-primary/90 hover:shadow-glow hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-text font-body"

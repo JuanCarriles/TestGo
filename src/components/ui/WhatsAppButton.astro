@@ -5,10 +5,8 @@ interface Props {
 
 const { whatsapp } = Astro.props;
 
-const mensaje = encodeURIComponent(`Hola, quiero reservar un turno en GO Centro Médico.\n\nPara asignar y cotizar el turno, completá los siguientes datos:\n\nNombre completo:\nDNI:\nObra social:\n\nEn caso de tenerlo, enviar foto del pedido médico.\n\nGracias!`);
-
 const waLink = whatsapp
-  ? `https://wa.me/${whatsapp}?text=${mensaje}`
+  ? `https://wa.me/${whatsapp}`
   : '#';
 ---
 

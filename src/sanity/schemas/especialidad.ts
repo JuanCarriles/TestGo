@@ -6,6 +6,13 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'activo',
+      title: 'Activa / Publicada',
+      type: 'boolean',
+      initialValue: true,
+      description: 'Si se desactiva, la especialidad desaparecerá de los listados y su página devolverá error 404.',
+    }),
+    defineField({
       name: 'nombre',
       title: 'Nombre',
       type: 'string',

@@ -4,23 +4,17 @@ import { client } from '../../lib/sanity';
 import { queries } from '../../lib/queries';
 import type { Configuracion, Especialidad, Profesional } from '../../types';
 
-export const prerender = true;
-
-export async function getStaticPaths() {
-  const especialidades = await client.fetch<Especialidad[]>(queries.todasEspecialidades).catch(() => []);
-
-  return especialidades.map((esp) => ({
-    params: { slug: esp.slug },
-    props: { especialidad: esp },
-  }));
-}
-
-interface Props {
-  especialidad: Especialidad;
-}
-
-const { especialidad } = Astro.props;
 const { slug } = Astro.params;
+
+if (!slug) {
+  return new Response(null, { status: 404, statusText: 'Not Found' });
+}
+
+const especialidad = await client.fetch<Especialidad | null>(queries.especialidadBySlug, { slug }).catch(() => null);
+
+if (!especialidad || especialidad.activo === false) {
+  return new Response(null, { status: 404, statusText: 'Not Found' });
+}
 
 const [config, profesionales] = await Promise.all([
   client.fetch<Configuracion | null>(queries.configuracion).catch(() => null),

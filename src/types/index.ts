@@ -17,6 +17,7 @@ export interface Especialidad {
   nombre: string;
   slug: string;
   descripcion: string;
+  activo?: boolean;
   icono?: SanityImage;
   seo?: Seo;
 }
@@ -66,6 +67,10 @@ export interface Configuracion {
   metaDescription: string;
   ogImage?: SanityImage;
   redesSociales?: RedSocial[];
+  linkSugerencias?: {
+    texto: string;
+    url: string;
+  };
 }
 
 /**

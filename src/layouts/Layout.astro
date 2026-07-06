@@ -74,6 +74,15 @@ const faviconUrl = config?.logo?.asset?.url || '/favicon.svg';
 
     <slot name="head" />
     <ClientRouter />
+
+    {/* Google Analytics 4 */}
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-JLRXBT5L0M"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-JLRXBT5L0M');
+    </script>
   </head>
 
   <body class="min-h-screen flex flex-col bg-background text-text antialiased font-body">

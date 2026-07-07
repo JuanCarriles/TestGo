@@ -1,5 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import Breadcrumbs from "../../components/ui/Breadcrumbs.astro";
 import { client } from "../../lib/sanity";
 import { queries } from "../../lib/queries";
 import type { Configuracion, Profesional } from "../../types";
@@ -241,6 +242,14 @@ const cleanSchema = JSON.parse(JSON.stringify(physicianSchema));
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(cleanSchema)} />
   </Fragment>
+
+  <Breadcrumbs
+    items={[
+      { label: "Equipo", href: "/equipo" },
+      { label: prof.nombre },
+    ]}
+  />
+
   {/* Hero */}
   <section class="relative bg-text py-16 md:py-24 lg:py-32 overflow-hidden">
     <div class="absolute inset-0">

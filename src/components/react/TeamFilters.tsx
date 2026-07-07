@@ -165,9 +165,9 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
 
               {/* Content */}
               <div className="flex flex-1 flex-col p-8">
-                <h3 className="text-2xl font-semibold text-text group-hover:text-primary transition-colors duration-500 font-display">
+                <h2 className="text-2xl font-semibold text-text group-hover:text-primary transition-colors duration-500 font-display">
                   {prof.nombre}
-                </h3>
+                </h2>
                 <p className="mt-3 text-sm leading-relaxed text-text/50 line-clamp-3 flex-1 font-body font-light whitespace-pre-line">
                   {prof.biografia}
                 </p>

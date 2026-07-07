@@ -3,7 +3,7 @@ import { client } from '../lib/sanity';
 import { queries } from '../lib/queries';
 
 export const GET: APIRoute = async () => {
-  const baseUrl = 'https://gocentromedico.com';
+  const baseUrl = 'https://gogineco.com';
 
   // Fetch dynamic pages from Sanity
   const [especialidades, profesionales] = await Promise.all([

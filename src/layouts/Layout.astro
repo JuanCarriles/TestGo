@@ -20,7 +20,7 @@ const { title, description, image, imageAlt, pathname, config: propConfig, noInd
 const config: Configuracion | null = propConfig ?? (await client.fetch(queries.configuracion).catch(() => null));
 
 const canonical = pathname
-  ? `https://gocentromedico.com${pathname}`
+  ? `https://gogineco.com${pathname}`
   : Astro.url.href;
 
 const siteTitle = config?.metaTitle || 'GO Centro Médico';

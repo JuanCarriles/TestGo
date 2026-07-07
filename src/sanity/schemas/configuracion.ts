@@ -4,11 +4,21 @@ export default defineType({
   name: 'configuracion',
   title: 'Configuración Global',
   type: 'document',
+  groups: [
+    { name: 'general', title: 'General' },
+    { name: 'contacto', title: 'Contacto' },
+    { name: 'turnos', title: 'Turnos y Estudios' },
+    { name: 'mapa', title: 'Mapa' },
+    { name: 'redes', title: 'Redes Sociales' },
+    { name: 'seo', title: 'SEO' },
+    { name: 'google', title: 'Google (LocalBusiness)' },
+  ],
   fields: [
     defineField({
       name: 'logo',
       title: 'Logo de la empresa',
       type: 'image',
+      group: 'general',
       description: 'Se usará en el navbar, footer y favicon. Recomendado: formato cuadrado (SVG o PNG con fondo transparente)',
       options: { hotspot: true },
       fields: [
@@ -22,16 +32,46 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'email',
+      title: 'Email de contacto',
+      type: 'string',
+      group: 'contacto',
+      validation: (Rule) => Rule.required().email(),
+    }),
+    defineField({
+      name: 'telefono',
+      title: 'Teléfono fijo',
+      type: 'string',
+      group: 'contacto',
+    }),
+    defineField({
       name: 'whatsapp',
       title: 'WhatsApp para urgencias',
       type: 'string',
+      group: 'contacto',
       description: 'Número completo con código de país (sin + ni espacios). Ej: 5491123456789',
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'direccion',
+      title: 'Dirección',
+      type: 'string',
+      group: 'contacto',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'horarios',
+      title: 'Horarios de atención (texto)',
+      type: 'text',
+      group: 'contacto',
+      rows: 3,
+      description: 'Texto libre que se muestra en el sitio. Ej: Lunes a Viernes de 8:00 a 20:00 hs',
     }),
     defineField({
       name: 'enlaceTurnos',
       title: 'Enlace a Resultados de Estudios',
       type: 'url',
+      group: 'turnos',
       description: 'URL del portal de resultados de estudios (ej: MedExis)',
       validation: (Rule) => Rule.required(),
     }),
@@ -39,30 +79,15 @@ export default defineType({
       name: 'enlaceReservarTurno',
       title: 'Enlace para Reservar Turno',
       type: 'url',
+      group: 'turnos',
       description: 'URL a la que lleva el botón "Reservar Turno". Por defecto: /equipo',
       initialValue: '/equipo',
-    }),
-    defineField({
-      name: 'email',
-      title: 'Email de contacto',
-      type: 'string',
-      validation: (Rule) => Rule.required().email(),
-    }),
-    defineField({
-      name: 'telefono',
-      title: 'Teléfono fijo',
-      type: 'string',
-    }),
-    defineField({
-      name: 'direccion',
-      title: 'Dirección',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'mapaUrl',
       title: 'URL del mapa (Google Maps Embed)',
       type: 'url',
+      group: 'mapa',
       description: 'Copiar la URL de embed desde Google Maps: Compartir → Incorporar un mapa → Copiar HTML → pegar solo la URL del src',
       validation: (Rule) =>
         Rule.required().custom((value) => {
@@ -77,6 +102,7 @@ export default defineType({
       name: 'redesSociales',
       title: 'Redes Sociales',
       type: 'array',
+      group: 'redes',
       of: [
         {
           type: 'object',
@@ -114,31 +140,44 @@ export default defineType({
       ],
     }),
     defineField({
-      name: 'horarios',
-      title: 'Horarios de atención',
-      type: 'text',
-      rows: 3,
-      description: 'Ej: Lunes a Viernes de 8:00 a 20:00 hs',
-    }),
-    defineField({
       name: 'metaTitle',
       title: 'Meta Title (SEO)',
       type: 'string',
-      description: 'Título por defecto del sitio',
+      group: 'seo',
+      description: 'Título por defecto del sitio. Aparece en Google y en el schema del negocio.',
       validation: (Rule) => Rule.required().max(60),
     }),
     defineField({
       name: 'metaDescription',
       title: 'Meta Description (SEO)',
       type: 'text',
+      group: 'seo',
       rows: 2,
-      description: 'Descripción por defecto del sitio',
+      description: 'Descripción por defecto del sitio. Aparece en Google y en el schema del negocio.',
       validation: (Rule) => Rule.required().max(160),
+    }),
+    defineField({
+      name: 'ogImage',
+      title: 'Imagen Open Graph por defecto',
+      type: 'image',
+      group: 'seo',
+      description: 'Imagen que aparece al compartir el sitio en redes sociales (Facebook, WhatsApp, etc.). Recomendado: 1200×630px.',
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Texto alternativo',
+          type: 'string',
+          initialValue: 'GO Centro Médico',
+          validation: (Rule) => Rule.required(),
+        }),
+      ],
     }),
     defineField({
       name: 'linkSugerencias',
       title: 'Link de sugerencias / consultas',
       type: 'object',
+      group: 'general',
       description: 'Si se completa, aparecerá un botón en el footer de la página para que los usuarios dejen sugerencias o consultas.',
       fields: [
         defineField({
@@ -162,6 +201,7 @@ export default defineType({
       name: 'localBusiness',
       title: 'Datos para Google (LocalBusiness schema)',
       type: 'object',
+      group: 'google',
       description: 'Coordenadas GPS, horarios y link del mapa para el schema de Google.',
       fields: [
         defineField({

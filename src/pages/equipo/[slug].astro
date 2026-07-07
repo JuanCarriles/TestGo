@@ -349,6 +349,7 @@ const cleanSchema = JSON.parse(JSON.stringify(physicianSchema));
                   : "#"}
               target="_blank"
               rel="noopener noreferrer"
+              onclick={`gtag('event', 'reservar_turno', { event_category: 'conversion', event_label: 'perfil_doctor', doctor_name: '${prof.nombre.replace(/'/g, "\\'")}' })`}
               class="group inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 md:px-8 md:py-4 text-sm md:text-lg font-semibold text-white shadow-lg transition-all duration-500 hover:bg-primary/90 hover:shadow-glow hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-text font-body"
             >
               <svg

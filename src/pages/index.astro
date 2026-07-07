@@ -87,4 +87,21 @@ const cleanBusinessSchema = JSON.parse(JSON.stringify(medicalBusinessSchema));
   )}
   <TestimoniosCarousel testimonios={displayTestimonios} client:load />
   <ContactoSection homePage={homePage} />
+
+  <script is:inline>
+    (function() {
+      var sent = false;
+      function checkScroll() {
+        if (sent) return;
+        if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight - 100) {
+          sent = true;
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'scroll_final', { event_category: 'engagement', event_label: 'home' });
+          }
+        }
+      }
+      window.addEventListener('scroll', checkScroll, { passive: true });
+      checkScroll();
+    })();
+  </script>
 </Layout>

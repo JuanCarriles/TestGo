@@ -426,6 +426,23 @@ const galImagenes: ImagenGaleria[] = (galeria?.imagenes && galeria.imagenes.leng
       <GaleriaCarousel imagenes={galImagenes} client:visible />
     </div>
   </section>
+
+  <script is:inline>
+    (function() {
+      var sent = false;
+      function checkScroll() {
+        if (sent) return;
+        if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight - 100) {
+          sent = true;
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'scroll_final', { event_category: 'engagement', event_label: 'nosotros' });
+          }
+        }
+      }
+      window.addEventListener('scroll', checkScroll, { passive: true });
+      checkScroll();
+    })();
+  </script>
 </Layout>
 
 <style is:global>

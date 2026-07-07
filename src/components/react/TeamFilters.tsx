@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import type { Profesional, Especialidad } from '../../types';
+import { trackEvent } from '../../lib/analytics';
 
 const STORAGE_KEY = 'team-filters';
 
@@ -187,9 +188,10 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
                     Ver Perfil
                   </a>
                   <a
-                    href={prof.enlaceAgenda && prof.enlaceAgenda !== '#' ? prof.enlaceAgenda : prof.whatsapp ? `https://wa.me/${prof.whatsapp}?text=${encodeURIComponent(`Hola, quiero reservar un turno con el Dr/a. ${prof.nombre}.\n\nPara asignar y cotizar el turno, completá los siguientes datos:\n\nNombre completo:\nDNI:\nObra social:\n\nAdjuntar foto del pedido médico.\n\nGracias!`)}` : '#'}
+                    href={prof.enlaceAgenda && prof.enlaceAgenda !== '#' ? prof.enlaceAgenda : prof.whatsapp ? `https://wa.me/${prof.whatsapp}?text=${encodeURIComponent(`Hola, quiero reservar un turno con el Dr/a. ${prof.nombre}.\n\nPara asignar y cotizar el turno, completá los siguientes datos:\n\nNombre completo:\nDNI:\nObra social:\n\nAdjuntar foto del pedido médico.\n\nGracias!`)}` : '#'}`
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => trackEvent('reservar_turno', { event_category: 'conversion', event_label: 'grid_equipo', doctor_name: prof.nombre })}
                     className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-md transition-all duration-500 hover:bg-primary/90 hover:shadow-glow hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 font-body"
                   >
                     <svg className="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

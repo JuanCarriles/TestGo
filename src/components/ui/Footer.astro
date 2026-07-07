@@ -11,7 +11,7 @@ const currentYear = new Date().getFullYear();
 
 const footerLinks = [
   { href: '/', label: 'Inicio' },
-  { href: '/equipo', label: 'Nuestro Equipo' },
+  { href: '/equipo', label: 'Nuestro Equipo', event: "gtag('event', 'buscar_profesionales', { event_category: 'navegacion', event_label: 'footer' })" },
   { href: '/nosotros', label: 'Nosotros' },
   { href: '/trabaja-con-nosotros', label: 'Trabajá en Go' },
 ];
@@ -77,6 +77,7 @@ const socialIcons: Record<string, string> = {
             <li>
               <a
                 href={link.href}
+                onclick={link.event}
                 class="text-sm text-white/40 transition-all duration-300 hover:text-primary hover:pl-2 focus:outline-none font-body font-light"
               >
                 {link.label}
@@ -142,6 +143,7 @@ const socialIcons: Record<string, string> = {
           href={config?.enlaceTurnos || "https://medexisweb.com/medexisportal/?to=50&eid=sASkLhxzGu3rUVwl"}
           target="_blank"
           rel="noopener noreferrer"
+          onclick="gtag('event', 'ver_resultados_estudios', { event_category: 'servicio', event_label: 'footer' })"
           class="inline-flex items-center justify-center mt-8 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-md transition-all duration-500 hover:bg-primary/90 hover:shadow-glow hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-text font-body"
         >
           Resultados de estudios

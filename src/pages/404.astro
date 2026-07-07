@@ -1,0 +1,63 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { client } from '../lib/sanity';
+import { queries } from '../lib/queries';
+import type { Configuracion } from '../types';
+
+const config = await client.fetch<Configuracion | null>(queries.configuracion).catch(() => null);
+
+Astro.response.status = 404;
+---
+
+<Layout
+  title="Página no encontrada"
+  description="La página que buscás no existe o fue movida. Volvé al inicio de GO Centro Médico."
+  config={config}
+  noIndex={true}
+>
+  <section class="relative flex flex-col items-center justify-center min-h-[70vh] px-4 py-20 text-center bg-background">
+    {/* Decorative background shapes */}
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <div class="absolute top-1/4 left-1/4 h-64 w-64 rounded-full bg-primary/5 blur-3xl"></div>
+      <div class="absolute bottom-1/4 right-1/4 h-48 w-48 rounded-full bg-secondary/5 blur-3xl"></div>
+    </div>
+
+    <div class="relative z-10 max-w-xl mx-auto">
+      {/* Large 404 */}
+      <h1 class="text-[8rem] sm:text-[10rem] font-bold leading-none font-display text-text/10 select-none">
+        404
+      </h1>
+
+      <h2 class="mt-2 text-2xl sm:text-3xl font-bold text-text font-display tracking-tight">
+        Página no encontrada
+      </h2>
+
+      <p class="mt-4 text-base sm:text-lg text-text/60 font-body font-light leading-relaxed">
+        La página que buscás no existe o fue movida. <br class="hidden sm:block" />
+        No te preocupés, te ayudamos a volver.
+      </p>
+
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a
+          href="/"
+          class="group inline-flex items-center justify-center rounded-full bg-primary px-8 py-3.5 text-base font-semibold text-white shadow-lg transition-all duration-500 hover:bg-primary/90 hover:shadow-glow hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 font-body"
+        >
+          <svg class="mr-2 h-5 w-5 transition-transform duration-300 group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Volver al inicio
+        </a>
+
+        <a
+          href="/equipo"
+          class="inline-flex items-center justify-center rounded-full border border-text/20 px-8 py-3.5 text-base font-medium text-text/70 transition-all duration-500 hover:border-primary hover:text-primary hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-primary font-body"
+        >
+          Conocer el equipo
+          <svg class="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

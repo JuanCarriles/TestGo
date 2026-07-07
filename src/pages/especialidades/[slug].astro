@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/ui/Breadcrumbs.astro';
 import { client } from '../../lib/sanity';
 import { queries } from '../../lib/queries';
 import type { Configuracion, Especialidad, Profesional } from '../../types';
@@ -65,6 +66,14 @@ const breadcrumbSchema = {
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   </Fragment>
+
+  <Breadcrumbs
+    items={[
+      { label: 'Especialidades', href: '/especialidades' },
+      { label: especialidad.nombre },
+    ]}
+  />
+
   {/* Hero interno */}
   <section class="relative bg-text py-32 lg:py-40 overflow-hidden">
     <div class="absolute inset-0">
@@ -76,13 +85,6 @@ const breadcrumbSchema = {
       <div class="absolute inset-0 bg-gradient-to-br from-text via-text to-primary/20"></div>
     </div>
     <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-      <span class="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-4 font-body">
-        <a href="/especialidades" class="hover:underline transition-all">Especialidades</a>
-        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-        </svg>
-        <span>{especialidad.nombre}</span>
-      </span>
       <h1 class="text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl font-display leading-tight">
         {especialidad.nombre}
       </h1>

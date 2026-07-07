@@ -203,6 +203,7 @@ const galImagenes: ImagenGaleria[] = (galeria?.imagenes && galeria.imagenes.leng
                 muted
                 loop
                 playsinline
+                preload="auto"
                 class="aspect-[4/3] w-full object-cover"
               />
             ) : (
@@ -441,6 +442,19 @@ const galImagenes: ImagenGaleria[] = (galeria?.imagenes && galeria.imagenes.leng
       }
       window.addEventListener('scroll', checkScroll, { passive: true });
       checkScroll();
+    })();
+  </script>
+
+  <script is:inline>
+    (function() {
+      function playVideo() {
+        var video = document.querySelector('video[src*="cdn.sanity.io"]');
+        if (video && video.paused) {
+          video.play().catch(function() {});
+        }
+      }
+      document.addEventListener('astro:page-load', playVideo);
+      if (document.readyState !== 'loading') playVideo();
     })();
   </script>
 </Layout>

@@ -39,11 +39,15 @@ const avgRating = displayTestimonios.length > 0
   : 5;
 
 // MedicalBusiness schema for the homepage
+// Usa Configuración Global (nombre/desc del negocio) con fallback descriptivo
+const businessName = config?.metaTitle?.trim() || "GO Centro Médico";
+const businessDescription = config?.metaDescription?.trim() || "Centro médico de excelencia en San Miguel de Tucumán. Atención médica integral con los mejores especialistas.";
+
 const medicalBusinessSchema: Record<string, any> = {
   "@context": "https://schema.org",
   "@type": ["MedicalBusiness", "LocalBusiness"],
-  "name": config?.metaTitle || "GO Centro Médico",
-  "description": config?.metaDescription || "Centro médico de excelencia en San Miguel de Tucumán",
+  "name": businessName,
+  "description": businessDescription,
   "url": "https://gocentromedico.com",
   "logo": config?.logo?.asset?.url,
   "image": ogImage || config?.ogImage?.asset?.url,

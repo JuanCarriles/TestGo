@@ -199,6 +199,7 @@ const galImagenes: ImagenGaleria[] = (galeria?.imagenes && galeria.imagenes.leng
           <div class="relative rounded-3xl overflow-hidden shadow-2xl">
             {histVideoUrl ? (
               <video
+                id="historia-video"
                 src={histVideoUrl}
                 autoplay
                 muted
@@ -478,10 +479,19 @@ const galImagenes: ImagenGaleria[] = (galeria?.imagenes && galeria.imagenes.leng
   <script is:inline>
     (function() {
       function playVideo() {
-        var video = document.querySelector('video[src*="cdn.sanity.io"]');
-        if (video && video.paused) {
-          video.play().catch(function() {});
-        }
+        var video = document.getElementById('historia-video');
+        if (!video) return;
+        // Forzar recarga del video después de transiciones de Astro
+        video.load();
+        // Pequeño delay para asegurar que el DOM esté estable
+        setTimeout(function() {
+          var playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(function() {
+              // Autoplay bloqueado por el navegador, intentar de nuevo al interactuar
+            });
+          }
+        }, 100);
       }
       document.addEventListener('astro:page-load', playVideo);
       if (document.readyState !== 'loading') playVideo();

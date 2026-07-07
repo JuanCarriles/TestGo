@@ -141,7 +141,7 @@ if (tituloIndex !== -1) {
     </div>
   </div>
   <script is:inline>
-    (function () {
+    function initPqeCarousel() {
       var carousel = document.getElementById('pqe-carousel');
       if (!carousel) return;
       var slides = carousel.querySelectorAll('[data-slide]');
@@ -163,9 +163,14 @@ if (tituloIndex !== -1) {
         dot.addEventListener('click', function () { show(i); });
       });
 
-      setInterval(function () {
+      // Clear existing interval to avoid duplicates
+      if (window._pqeInterval) clearInterval(window._pqeInterval);
+      window._pqeInterval = setInterval(function () {
         show((active + 1) % total);
       }, 5000);
-    })();
+    }
+
+    document.addEventListener('astro:page-load', initPqeCarousel);
+    if (document.readyState !== 'loading') initPqeCarousel();
   </script>
 </section>

@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import { client } from "../lib/sanity";
 import { queries } from "../lib/queries";
+import { getImageUrl } from "../lib/images";
 import type { Configuracion, NosotrosPage, ImagenGaleria } from "../types";
 import GaleriaCarousel from "../components/react/GaleriaCarousel";
 
@@ -287,7 +288,7 @@ const galImagenes: ImagenGaleria[] = (galeria?.imagenes && galeria.imagenes.leng
           {misionIcono?.asset?.url ? (
             <div class="mb-6 sm:mb-8 inline-flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-primary/5 border border-primary/10 transition-all duration-500 group-hover:bg-primary/10 group-hover:scale-110 group-hover:shadow-glow">
               <img
-                src={misionIcono.asset.url}
+                src={getImageUrl(misionIcono.asset.url)}
                 alt={misionIcono.alt || misionTitulo}
                 class="h-8 w-8 sm:h-10 sm:w-10 object-contain"
               />
@@ -340,7 +341,7 @@ const galImagenes: ImagenGaleria[] = (galeria?.imagenes && galeria.imagenes.leng
           {visionIcono?.asset?.url ? (
             <div class="mb-6 sm:mb-8 inline-flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-secondary/5 border border-secondary/10 transition-all duration-500 group-hover:bg-secondary/10 group-hover:scale-110 group-hover:shadow-glow-secondary">
               <img
-                src={visionIcono.asset.url}
+                src={getImageUrl(visionIcono.asset.url)}
                 alt={visionIcono.alt || visionTitulo}
                 class="h-8 w-8 sm:h-10 sm:w-10 object-contain"
               />
@@ -425,6 +426,35 @@ const galImagenes: ImagenGaleria[] = (galeria?.imagenes && galeria.imagenes.leng
         </h2>
       </div>
       <GaleriaCarousel imagenes={galImagenes} client:visible />
+    </div>
+  </section>
+
+  {/* CTA Section */}
+  <section class="py-20 bg-surface/5 border-t border-text/5">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-lg text-text/60 font-body font-light mb-6">
+        Conocé quiénes conforman nuestro equipo de excelencia.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a
+          href="/equipo"
+          class="group inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-500 hover:bg-primary/90 hover:shadow-glow hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 font-body"
+        >
+          Nuestro equipo
+          <svg class="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+        </a>
+        <a
+          href="/especialidades"
+          class="group inline-flex items-center justify-center rounded-full border-2 border-text/10 px-8 py-4 text-base font-semibold text-text transition-all duration-500 hover:border-primary hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 font-body"
+        >
+          Especialidades
+          <svg class="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+        </a>
+      </div>
     </div>
   </section>
 

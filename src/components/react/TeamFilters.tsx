@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import type { Profesional, Especialidad } from '../../types';
+import { getImageUrl } from '../../lib/images';
 import { trackEvent } from '../../lib/analytics';
 
 const STORAGE_KEY = 'team-filters';
@@ -135,7 +136,7 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
               <div className="relative h-72 overflow-hidden">
                 {prof.foto?.asset?.url ? (
                   <img
-                    src={prof.foto.asset.url}
+                    src={getImageUrl(prof.foto.asset.url)}
                     alt={prof.foto.alt || prof.nombre}
                     className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
                     loading="lazy"

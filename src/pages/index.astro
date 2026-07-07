@@ -39,7 +39,7 @@ const avgRating = displayTestimonios.length > 0
   : 5;
 
 // MedicalBusiness schema for the homepage
-const medicalBusinessSchema = {
+const medicalBusinessSchema: Record<string, any> = {
   "@context": "https://schema.org",
   "@type": ["MedicalBusiness", "LocalBusiness"],
   "name": config?.metaTitle || "GO Centro Médico",
@@ -63,6 +63,25 @@ const medicalBusinessSchema = {
     "reviewCount": displayTestimonios.length.toString()
   }
 };
+
+if (config?.localBusiness) {
+  medicalBusinessSchema.geo = {
+    "@type": "GeoCoordinates",
+    "latitude": config.localBusiness.latitud,
+    "longitude": config.localBusiness.longitud
+  };
+  if (config.localBusiness.mapaUrlPublica) {
+    medicalBusinessSchema.hasMap = config.localBusiness.mapaUrlPublica;
+  }
+  if (config.localBusiness.horarios && config.localBusiness.horarios.length > 0) {
+    medicalBusinessSchema.openingHoursSpecification = config.localBusiness.horarios.map((h) => ({
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": h.dias.split(',').map((d) => d.trim()),
+      "opens": h.abre,
+      "closes": h.cierra
+    }));
+  }
+}
 
 const cleanBusinessSchema = JSON.parse(JSON.stringify(medicalBusinessSchema));
 ---

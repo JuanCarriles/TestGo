@@ -19,6 +19,7 @@ export interface Especialidad {
   descripcion: string;
   activo?: boolean;
   icono?: SanityImage;
+  especialidadesRelacionadas?: Pick<Especialidad, '_id' | 'nombre' | 'slug' | 'icono'>[];
   seo?: Seo;
 }
 
@@ -70,6 +71,16 @@ export interface Configuracion {
   linkSugerencias?: {
     texto: string;
     url: string;
+  };
+  localBusiness?: {
+    latitud: number;
+    longitud: number;
+    mapaUrlPublica?: string;
+    horarios?: {
+      dias: string;
+      abre: string;
+      cierra: string;
+    }[];
   };
 }
 

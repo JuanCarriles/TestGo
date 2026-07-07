@@ -158,6 +158,81 @@ export default defineType({
         }),
       ],
     }),
+    defineField({
+      name: 'localBusiness',
+      title: 'Datos para Google (LocalBusiness schema)',
+      type: 'object',
+      description: 'Coordenadas GPS, horarios y link del mapa para el schema de Google.',
+      fields: [
+        defineField({
+          name: 'latitud',
+          title: 'Latitud',
+          type: 'number',
+          description: 'Coordenada de latitud. Ej: -26.8241',
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: 'longitud',
+          title: 'Longitud',
+          type: 'number',
+          description: 'Coordenada de longitud. Ej: -65.2226',
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: 'mapaUrlPublica',
+          title: 'URL pública de Google Maps',
+          type: 'url',
+          description: 'Link público de la ubicación en Google Maps (no el embed). Ej: https://maps.app.goo.gl/xxxxx',
+        }),
+        defineField({
+          name: 'horarios',
+          title: 'Horarios de atención',
+          type: 'array',
+          description: 'Horarios estructurados para el schema de Google. Agregá una fila por rango de días.',
+          of: [
+            {
+              type: 'object',
+              name: 'horario',
+              fields: [
+                defineField({
+                  name: 'dias',
+                  title: 'Días',
+                  type: 'string',
+                  description: 'Ej: Monday, Tuesday, Wednesday, Thursday, Friday',
+                  validation: (Rule) => Rule.required(),
+                }),
+                defineField({
+                  name: 'abre',
+                  title: 'Abre',
+                  type: 'string',
+                  description: 'Formato 24hs. Ej: 08:00',
+                  validation: (Rule) => Rule.required(),
+                }),
+                defineField({
+                  name: 'cierra',
+                  title: 'Cierra',
+                  type: 'string',
+                  description: 'Formato 24hs. Ej: 20:00',
+                  validation: (Rule) => Rule.required(),
+                }),
+              ],
+              preview: {
+                select: {
+                  title: 'dias',
+                  subtitle: 'abre',
+                },
+                prepare({ title, subtitle }) {
+                  return {
+                    title,
+                    subtitle: `Abre: ${subtitle}`,
+                  };
+                },
+              },
+            },
+          ],
+        }),
+      ],
+    }),
   ],
   preview: {
     select: {

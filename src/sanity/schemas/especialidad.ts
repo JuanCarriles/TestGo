@@ -62,6 +62,19 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'especialidadesRelacionadas',
+      title: 'Especialidades relacionadas',
+      type: 'array',
+      description: 'Especialidades relacionadas que se mostrarán al final de la página. Máximo 3.',
+      validation: (Rule) => Rule.max(3),
+      of: [
+        {
+          type: 'reference',
+          to: [{ type: 'especialidad' }],
+        },
+      ],
+    }),
+    defineField({
       name: 'seo',
       title: 'SEO',
       type: 'object',

@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { client } from '../../lib/sanity';
 import { queries } from '../../lib/queries';
+import { getImageUrl } from '../../lib/images';
 import type { Configuracion, Especialidad, EspecialidadesPage } from '../../types';
 
 const [config, especialidades, especialidadesPage] = await Promise.all([
@@ -78,7 +79,7 @@ const displayEspecialidades = especialidades.length > 0 ? especialidades : demoE
           >
             <div class="relative h-56 overflow-hidden img-zoom">
               <img
-                src={esp.icono?.asset?.url || getImageForSlug(esp.slug)}
+                src={getImageUrl(esp.icono?.asset?.url) || getImageForSlug(esp.slug)}
                 alt={esp.icono?.alt || esp.nombre}
                 class="h-full w-full object-cover"
                 loading="lazy"

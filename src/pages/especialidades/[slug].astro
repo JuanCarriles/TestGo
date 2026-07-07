@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import Breadcrumbs from '../../components/ui/Breadcrumbs.astro';
 import { client } from '../../lib/sanity';
 import { queries } from '../../lib/queries';
-import type { Configuracion, Especialidad, Profesional } from '../../types';
+import { getImageUrl } from '../../lib/images';
 
 const { slug } = Astro.params;
 
@@ -21,6 +21,20 @@ const [config, profesionales] = await Promise.all([
   client.fetch<Configuracion | null>(queries.configuracion).catch(() => null),
   client.fetch<Profesional[]>(queries.profesionalesByEspecialidad, { slug }).catch(() => []),
 ]);
+
+// Ordenar por apellido (quita prefijos profesionales)
+const PREFIXES = ['dr.', 'dra.', 'lic.', 'psic.', 'profesora', 'profesor', 'prof.', 'mgtr.', 'mag.'];
+function getSortKey(nombre: string): string {
+  const words = nombre.trim().split(/\s+/);
+  let start = 0;
+  if (words.length > 0 && PREFIXES.includes(words[0].toLowerCase())) {
+    start = 1;
+  }
+  return words.slice(start, words.length - 1).join(' ').toLowerCase();
+}
+const profesionalesSorted = [...profesionales].sort((a, b) => {
+  return getSortKey(a.nombre).localeCompare(getSortKey(b.nombre), 'es');
+});
 
 const metaDescription = especialidad.seo?.seoDescription || `Conocé la especialidad de ${especialidad.nombre} en GO Centro Médico. ${especialidad.descripcion.slice(0, 120)}...`;
 const metaTitle = especialidad.seo?.seoTitle || especialidad.nombre;
@@ -101,7 +115,7 @@ const breadcrumbSchema = {
   </section>
 
   {/* Profesionales asociados */}
-  {profesionales.length > 0 && (
+  {profesionalesSorted.length > 0 && (
   <section class="py-28 bg-surface/5 overflow-hidden">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-20">
@@ -112,7 +126,7 @@ const breadcrumbSchema = {
       </div>
 
       <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {profesionales.map((prof) => (
+        {profesionalesSorted.map((prof) => (
           <div
             class="doctor-card group relative flex flex-col rounded-3xl border border-text/5 bg-white overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-primary/10 cursor-pointer"
             data-href={`/equipo/${prof.slug}`}
@@ -120,7 +134,7 @@ const breadcrumbSchema = {
             <div class="relative h-72 overflow-hidden">
               {prof.foto?.asset?.url ? (
                 <img
-                  src={prof.foto.asset.url}
+                  src={getImageUrl(prof.foto.asset.url)}
                   alt={prof.foto.alt || prof.nombre}
                   class="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
                   loading="lazy"
@@ -188,6 +202,48 @@ const breadcrumbSchema = {
   </section>
   )}
 
+  {especialidad.especialidadesRelacionadas && especialidad.especialidadesRelacionadas.length > 0 && (
+    <section class="py-20 bg-surface/5 border-t border-text/5">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-text font-display">
+            Especialidades <span class="text-gradient">relacionadas</span>
+          </h2>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {especialidad.especialidadesRelacionadas.map((rel) => (
+            <a
+              href={`/especialidades/${rel.slug}`}
+              class="group card-glow relative flex flex-col rounded-3xl border border-text/5 bg-white overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            >
+              <div class="relative h-56 overflow-hidden img-zoom">
+                <img
+                  src={rel.icono?.asset?.url || "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&q=80&w=600"}
+                  alt={rel.icono?.alt || rel.nombre}
+                  class="h-full w-full object-cover"
+                  loading="lazy"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-text/60 via-text/20 to-transparent"></div>
+              </div>
+              <div class="flex flex-col flex-1 p-6 sm:p-8">
+                <h3 class="text-xl font-semibold text-text group-hover:text-primary transition-colors duration-500 font-display">
+                  {rel.nombre}
+                </h3>
+                <div class="mt-4 flex items-center text-sm font-semibold text-primary font-body">
+                  <span>Ver especialidad</span>
+                  <svg class="ml-2 h-4 w-4 transition-transform duration-500 group-hover:translate-x-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="h-1 bg-gradient-to-r from-primary to-secondary transform scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100"></div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
   {/* CTA Back */}
   <section class="py-20 bg-background">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
@@ -200,6 +256,35 @@ const breadcrumbSchema = {
         </svg>
         Ver todas las especialidades
       </a>
+    </div>
+  </section>
+
+  {/* CTA Section */}
+  <section class="py-20 bg-surface/5 border-t border-text/5">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-lg text-text/60 font-body font-light mb-6">
+        ¿Buscás un especialista? Conocé todo nuestro equipo médico.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a
+          href="/equipo"
+          class="group inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-500 hover:bg-primary/90 hover:shadow-glow hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 font-body"
+        >
+          Conocer el equipo
+          <svg class="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+        </a>
+        <a
+          href="/especialidades"
+          class="group inline-flex items-center justify-center rounded-full border-2 border-text/10 px-8 py-4 text-base font-semibold text-text transition-all duration-500 hover:border-primary hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 font-body"
+        >
+          <svg class="mr-2 h-5 w-5 transition-transform duration-300 group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+          Ver todas las especialidades
+        </a>
+      </div>
     </div>
   </section>
 

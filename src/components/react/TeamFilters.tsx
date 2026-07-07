@@ -188,7 +188,7 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
                     Ver Perfil
                   </a>
                   <a
-                    href={prof.enlaceAgenda && prof.enlaceAgenda !== '#' ? prof.enlaceAgenda : prof.whatsapp ? `https://wa.me/${prof.whatsapp}?text=${encodeURIComponent(`Hola, quiero reservar un turno con el Dr/a. ${prof.nombre}.\n\nPara asignar y cotizar el turno, completá los siguientes datos:\n\nNombre completo:\nDNI:\nObra social:\n\nAdjuntar foto del pedido médico.\n\nGracias!`)}` : '#'}`
+                    href={prof.enlaceAgenda && prof.enlaceAgenda !== '#' ? prof.enlaceAgenda : prof.whatsapp ? `https://wa.me/${prof.whatsapp}?text=${encodeURIComponent(`Hola, quiero reservar un turno con el Dr/a. ${prof.nombre}.\n\nPara asignar y cotizar el turno, completá los siguientes datos:\n\nNombre completo:\nDNI:\nObra social:\n\nAdjuntar foto del pedido médico.\n\nGracias!`)}` : '#'}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => trackEvent('reservar_turno', { event_category: 'conversion', event_label: 'grid_equipo', doctor_name: prof.nombre })}

@@ -1,5 +1,6 @@
 ---
 import HeroImageCarousel from '../../components/react/HeroImageCarousel';
+import { getImageUrl } from '../../lib/images';
 import type { Configuracion, HomePage } from '../../types';
 interface Props {
   config: Configuracion | null;
@@ -34,7 +35,7 @@ const estadisticas = hero?.estadisticas?.length
       { numero: '+10k', etiqueta: 'Pacientes' },
     ];
 
-const imagenFondoUrl = hero?.imagenFondo?.asset?.url || 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=2000';
+const imagenFondoUrl = getImageUrl(hero?.imagenFondo?.asset?.url) || 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=2000';
 const imagenFondoAlt = hero?.imagenFondo?.alt || 'Equipo médico profesional';
 
 // Process title: supports both actual newlines and literal \n
@@ -81,6 +82,7 @@ const lineasProcesadas = tituloLineas.map((linea) => ({
       src={imagenFondoUrl}
       alt={imagenFondoAlt}
       class="h-full w-full object-cover"
+      fetchpriority="high"
     />
     <div class="absolute inset-0 bg-gradient-to-r from-text via-text/90 to-text/60"></div>
     <div class="absolute inset-0 bg-gradient-to-t from-text/80 via-transparent to-text/40"></div>

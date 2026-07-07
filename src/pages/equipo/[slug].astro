@@ -3,6 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import Breadcrumbs from "../../components/ui/Breadcrumbs.astro";
 import { client } from "../../lib/sanity";
 import { queries } from "../../lib/queries";
+import { getImageUrl } from "../../lib/images";
 import type { Configuracion, Profesional } from "../../types";
 
 export const prerender = true;
@@ -32,11 +33,10 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params;
 
-const [config, profesional] = await Promise.all([
+const [config, profesional, allProfesionalesRaw] = await Promise.all([
   client.fetch<Configuracion | null>(queries.configuracion).catch(() => null),
-  client
-    .fetch<Profesional | null>(queries.profesionalBySlug, { slug })
-    .catch(() => null),
+  client.fetch<Profesional | null>(queries.profesionalBySlug, { slug }).catch(() => null),
+  client.fetch<Profesional[]>(queries.todosProfesionales).catch(() => []),
 ]);
 
 // Demo fallback
@@ -150,7 +150,61 @@ if (!prof) {
   return Astro.redirect("/equipo");
 }
 
-const fotoUrl = prof.foto?.asset?.url || "";
+// ── Profesionales relacionados por cada especialidad ──
+const PREFIXES = ['dr.', 'dra.', 'lic.', 'psic.', 'profesora', 'profesor', 'prof.', 'mgtr.', 'mag.'];
+function getSortKey(nombre: string): string {
+  const words = nombre.trim().split(/\s+/);
+  let start = 0;
+  if (words.length > 0 && PREFIXES.includes(words[0].toLowerCase())) {
+    start = 1;
+  }
+  return words.slice(start, words.length - 1).join(' ').toLowerCase();
+}
+
+const profEspecialidades = (prof.especialidades && prof.especialidades.length > 0
+  ? prof.especialidades
+  : prof.especialidad ? [prof.especialidad] : []
+);
+
+interface RelacionadosGroup {
+  especialidad: { _id: string; nombre: string; slug: string };
+  doctores: Profesional[];
+}
+
+const relacionadosPorEspecialidad: RelacionadosGroup[] = [];
+
+for (const esp of profEspecialidades) {
+  const sameSpecialty = allProfesionalesRaw.filter((p) => {
+    const pEsps = p.especialidades && p.especialidades.length > 0
+      ? p.especialidades
+      : p.especialidad ? [p.especialidad] : [];
+    return pEsps.some((e) => e._id === esp._id);
+  });
+
+  if (sameSpecialty.length > 1) {
+    const sorted = [...sameSpecialty].sort((a, b) => {
+      return getSortKey(a.nombre).localeCompare(getSortKey(b.nombre), 'es');
+    });
+
+    const currentIndex = sorted.findIndex((p) => p._id === prof._id);
+    const total = sorted.length;
+
+    const candidates: Profesional[] = [];
+    for (let offset = 1; offset <= 3; offset++) {
+      const idx = (currentIndex + offset) % total;
+      const candidate = sorted[idx];
+      if (candidate._id !== prof._id && !candidates.find((c) => c._id === candidate._id)) {
+        candidates.push(candidate);
+      }
+    }
+    const relacionados = candidates.slice(0, 3);
+    if (relacionados.length > 0) {
+      relacionadosPorEspecialidad.push({ especialidad: esp, doctores: relacionados });
+    }
+  }
+}
+
+const fotoUrl = getImageUrl(prof.foto?.asset?.url) || "";
 const fotoAlt = prof.foto?.alt || prof.nombre;
 
 // BreadcrumbList schema
@@ -487,6 +541,95 @@ const cleanSchema = JSON.parse(JSON.stringify(physicianSchema));
             )
           }
         </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Profesionales relacionados */}
+  {relacionadosPorEspecialidad.map((group) => (
+    <section class="py-20 bg-background border-t border-text/5">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-text font-display">
+            Otros especialistas en <span class="text-gradient">{group.especialidad.nombre}</span>
+          </h2>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {group.doctores.map((rel) => {
+            const relEsp = (rel.especialidades && rel.especialidades.length > 0
+              ? rel.especialidades[0]
+              : rel.especialidad
+            );
+            return (
+              <a
+                href={`/equipo/${rel.slug}`}
+                class="group card-glow relative flex flex-col rounded-3xl border border-text/5 bg-white overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+              >
+                <div class="relative h-72 overflow-hidden">
+                  {rel.foto?.asset?.url ? (
+                    <img
+                      src={getImageUrl(rel.foto.asset.url)}
+                      alt={rel.foto.alt || rel.nombre}
+                      class="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-surface/20 to-primary/5">
+                      <svg class="h-20 w-20 text-surface/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    </div>
+                  )}
+                  <div class="absolute inset-0 bg-gradient-to-t from-text/60 via-transparent to-transparent"></div>
+                </div>
+                <div class="flex flex-col flex-1 p-6 sm:p-8">
+                  <h3 class="text-xl font-semibold text-text group-hover:text-primary transition-colors duration-500 font-display">
+                    {rel.nombre}
+                  </h3>
+                  <p class="mt-1 text-sm text-text/50 font-body font-light">
+                    {relEsp?.nombre || 'Especialista'}
+                  </p>
+                  <div class="mt-4 flex items-center text-sm font-semibold text-primary font-body">
+                    <span>Ver perfil</span>
+                    <svg class="ml-2 h-4 w-4 transition-transform duration-500 group-hover:translate-x-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                  </div>
+                </div>
+                <div class="h-1 bg-gradient-to-r from-primary to-secondary transform scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100"></div>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  {/* CTA Section */}
+  <section class="py-20 bg-surface/5 border-t border-text/5">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-lg text-text/60 font-body font-light mb-6">
+        ¿Buscás otro especialista? Conocé todas nuestras especialidades.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a
+          href="/especialidades"
+          class="group inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-500 hover:bg-primary/90 hover:shadow-glow hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 font-body"
+        >
+          Ver especialidades
+          <svg class="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+        </a>
+        <a
+          href="/equipo"
+          class="group inline-flex items-center justify-center rounded-full border-2 border-text/10 px-8 py-4 text-base font-semibold text-text transition-all duration-500 hover:border-primary hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 font-body"
+        >
+          <svg class="mr-2 h-5 w-5 transition-transform duration-300 group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+          Ver todo el equipo
+        </a>
       </div>
     </div>
   </section>

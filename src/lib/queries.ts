@@ -24,6 +24,16 @@ export const queries = {
       texto,
       url
     },
+    localBusiness{
+      latitud,
+      longitud,
+      mapaUrlPublica,
+      horarios[]{
+        dias,
+        abre,
+        cierra
+      }
+    },
     redesSociales[]{
       nombre,
       url
@@ -67,6 +77,15 @@ export const queries = {
         url
       },
       alt
+    },
+    especialidadesRelacionadas[]->{
+      _id,
+      nombre,
+      "slug": slug.current,
+      icono{
+        asset->{_id,url},
+        alt
+      }
     },
     seo{
       seoTitle,

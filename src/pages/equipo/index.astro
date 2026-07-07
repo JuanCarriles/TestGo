@@ -3,6 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import TeamFilters from "../../components/react/TeamFilters";
 import { client } from "../../lib/sanity";
 import { queries } from "../../lib/queries";
+import { getImageUrl } from "../../lib/images";
 import type { Configuracion, Profesional, Especialidad, EquipoPage } from "../../types";
 
 const [config, profesionalesRaw, especialidades, equipoPage] = await Promise.all([
@@ -115,14 +116,28 @@ const demoProfesionales: Profesional[] = [
 const profesionales =
   profesionalesRaw.length > 0 ? profesionalesRaw : demoProfesionales;
 
+// Ordenar por apellido (quita prefijos profesionales)
+const PREFIXES = ['dr.', 'dra.', 'lic.', 'psic.', 'profesora', 'profesor', 'prof.', 'mgtr.', 'mag.'];
+function getSortKey(nombre: string): string {
+  const words = nombre.trim().split(/\s+/);
+  let start = 0;
+  if (words.length > 0 && PREFIXES.includes(words[0].toLowerCase())) {
+    start = 1;
+  }
+  return words.slice(start, words.length - 1).join(' ').toLowerCase();
+}
+const profesionalesSorted = [...profesionales].sort((a, b) => {
+  return getSortKey(a.nombre).localeCompare(getSortKey(b.nombre), 'es');
+});
+
 // Preparar datos con URLs
-const profesionalesConUrls: Profesional[] = profesionales.map((prof) => ({
+const profesionalesConUrls: Profesional[] = profesionalesSorted.map((prof) => ({
   ...prof,
   foto: prof.foto?.asset
     ? {
         asset: {
           _id: prof.foto.asset._id,
-          url: prof.foto.asset.url || "",
+          url: getImageUrl(prof.foto.asset.url) || "",
         },
         alt: prof.foto.alt,
       }

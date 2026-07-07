@@ -121,6 +121,7 @@ const lineasProcesadas = tituloLineas.map((linea) => ({
         <div class="animate-fade-up delay-300 mt-6 md:mt-12 flex flex-col sm:flex-row items-stretch sm:items-start gap-3 md:gap-4">
           <a
             href={ctaPrimarioEnlace}
+            onclick="gtag('event', 'buscar_profesionales', { event_category: 'navegacion', event_label: 'hero_home' })"
             class="group inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 md:px-8 md:py-4 text-base md:text-lg font-semibold text-white shadow-lg transition-all duration-500 hover:bg-primary/90 hover:shadow-glow hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-text font-body"
           >
             <svg class="mr-2 h-5 w-5 transition-transform duration-300 group-hover:rotate-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">

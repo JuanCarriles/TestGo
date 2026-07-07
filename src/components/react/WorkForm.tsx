@@ -1,4 +1,5 @@
 import { useState, type FormEvent, type ChangeEvent } from 'react';
+import { trackEvent } from '../../lib/analytics';
 
 interface Props {
   contactEmail: string;
@@ -137,6 +138,7 @@ export default function WorkForm({ contactEmail }: Props) {
       setMockMode(!!responseBody.mock);
       setForm(initialForm);
       (e.target as HTMLFormElement).reset();
+      trackEvent('enviar_formulario_trabajo', { event_category: 'conversion', event_label: 'trabaja_con_nosotros' });
     } catch (err: any) {
       setError(err?.message || 'Hubo un error al enviar la postulación. Intentá de nuevo.');
     } finally {

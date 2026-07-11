@@ -10,66 +10,38 @@ export default function GaleriaCarousel({ imagenes }: Props) {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollStart, setScrollStart] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
 
-  // Duplicate images for seamless infinite loop
-  const duplicatedImages = [...imagenes, ...imagenes, ...imagenes];
-  const shouldAutoScroll = imagenes.length > 3;
+  const scrollDirection = useCallback((direction: 'left' | 'right') => {
+    if (containerRef.current) {
+      const amount = direction === 'left' ? -containerRef.current.clientWidth : containerRef.current.clientWidth;
+      containerRef.current.scrollBy({ left: amount, behavior: 'smooth' });
+    }
+  }, []);
 
-  // Auto-scroll with requestAnimationFrame for smoothness
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el || !shouldAutoScroll) return;
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
-    let rafId: number;
-    let lastTime: number;
-    const speed = 0.5; // pixels per frame
+  const checkScroll = useCallback(() => {
+    if (!containerRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
+    setCanScrollLeft(scrollLeft > 10);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+  }, []);
 
-    const animate = (time: number) => {
-      if (!lastTime) lastTime = time;
-      const delta = time - lastTime;
-      lastTime = time;
-
-      if (!isPaused && el) {
-        el.scrollLeft += speed * (delta / 16);
-
-        // Calculate the width of one original set
-        const singleSetWidth = el.scrollWidth / 3;
-
-        // When we've scrolled past the second set, reset to the first set position
-        if (el.scrollLeft >= singleSetWidth * 2) {
-          el.scrollLeft = el.scrollLeft - singleSetWidth;
-        }
-      }
-
-      rafId = requestAnimationFrame(animate);
-    };
-
-    // Initial offset: start at the beginning of the second set so we can scroll both ways
-    const singleSetWidth = () => el.scrollWidth / 3;
-    el.scrollLeft = singleSetWidth();
-
-    rafId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(rafId);
-  }, [imagenes, shouldAutoScroll, isPaused]);
-
-  // Pause on hover/touch
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    const pause = () => setIsPaused(true);
-    const resume = () => setIsPaused(false);
-    el.addEventListener('mouseenter', pause);
-    el.addEventListener('mouseleave', resume);
-    el.addEventListener('touchstart', pause, { passive: true });
-    el.addEventListener('touchend', resume);
+    el.addEventListener('scroll', checkScroll, { passive: true });
+    checkScroll();
+    
+    const handleResize = () => checkScroll();
+    window.addEventListener('resize', handleResize);
+    
     return () => {
-      el.removeEventListener('mouseenter', pause);
-      el.removeEventListener('mouseleave', resume);
-      el.removeEventListener('touchstart', pause);
-      el.removeEventListener('touchend', resume);
+      el.removeEventListener('scroll', checkScroll);
+      window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [checkScroll, imagenes]);
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     setIsDragging(true);
@@ -104,11 +76,35 @@ export default function GaleriaCarousel({ imagenes }: Props) {
   if (imagenes.length === 0) return null;
 
   return (
-    <div className="relative">
+    <div className="relative group/carousel">
+      {/* Navigation Arrows */}
+      {canScrollLeft && (
+        <button
+          onClick={() => scrollDirection('left')}
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 hidden md:flex h-12 w-12 items-center justify-center rounded-full bg-white/90 backdrop-blur-sm shadow-lg border border-text/5 text-text hover:text-primary hover:scale-105 transition-all duration-300 opacity-0 group-hover/carousel:opacity-100 focus:opacity-100"
+          aria-label="Anterior"
+        >
+          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+      )}
+      {canScrollRight && (
+        <button
+          onClick={() => scrollDirection('right')}
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-10 hidden md:flex h-12 w-12 items-center justify-center rounded-full bg-white/90 backdrop-blur-sm shadow-lg border border-text/5 text-text hover:text-primary hover:scale-105 transition-all duration-300 opacity-0 group-hover/carousel:opacity-100 focus:opacity-100"
+          aria-label="Siguiente"
+        >
+          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      )}
+
       {/* Scrollable container */}
       <div
         ref={containerRef}
-        className="flex gap-4 md:gap-6 overflow-x-auto pb-4 scrollbar-hide cursor-grab active:cursor-grabbing"
+        className="flex gap-4 md:gap-6 overflow-x-auto pb-4 scrollbar-hide cursor-grab active:cursor-grabbing snap-x snap-mandatory"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
@@ -117,10 +113,10 @@ export default function GaleriaCarousel({ imagenes }: Props) {
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
       >
-        {duplicatedImages.map((item, idx) => (
+        {imagenes.map((item, idx) => (
           <div
             key={`${item.titulo}-${idx}`}
-            className="group relative aspect-[4/3] flex-shrink-0 w-[calc(100%-16px)] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] overflow-hidden rounded-2xl sm:rounded-3xl select-none"
+            className="group relative aspect-[4/3] flex-shrink-0 w-[calc(100%-16px)] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] overflow-hidden rounded-2xl sm:rounded-3xl select-none snap-start"
           >
             <img
               src={item.imagen?.asset?.url || 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=600'}

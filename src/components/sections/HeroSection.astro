@@ -1,7 +1,7 @@
 ---
-import HeroImageCarousel from '../../components/react/HeroImageCarousel';
-import { getImageUrl } from '../../lib/images';
-import type { Configuracion, HomePage } from '../../types';
+import HeroImageCarousel from "../../components/react/HeroImageCarousel";
+import { getImageUrl } from "../../lib/images";
+import type { Configuracion, HomePage } from "../../types";
 interface Props {
   config: Configuracion | null;
   homePage: HomePage | null;
@@ -9,34 +9,39 @@ interface Props {
 
 const { config, homePage } = Astro.props;
 
-const turnosUrl = config?.enlaceTurnos || '#';
+const turnosUrl = config?.enlaceTurnos || "#";
 
 // ── Hero defaults ──
 const hero = homePage?.hero;
-const badge = hero?.badge || 'Atención médica 24/7';
-const titulo = hero?.titulo || 'Tu salud,\nnuestra prioridad';
-const tituloDestacado = hero?.tituloDestacado || 'nuestra prioridad';
-const descripcion = hero?.descripcion || 'Atención médica de alta gama con los mejores profesionales y tecnología de vanguardia. Agenda tu consulta de forma rápida y segura.';
+const badge = hero?.badge || "Atención médica 24/7";
+const titulo = hero?.titulo || "Tu salud,\nnuestra prioridad";
+const tituloDestacado = hero?.tituloDestacado || "nuestra prioridad";
+const descripcion =
+  hero?.descripcion ||
+  "Atención médica de alta gama con los mejores profesionales y tecnología de vanguardia. Agenda tu consulta de forma rápida y segura.";
 
-const ctaPrimarioTexto = hero?.ctaPrimario?.texto || 'Reservar Turno';
-const ctaPrimarioEnlace = hero?.ctaPrimario?.usarEnlaceTurnos !== false
-  ? '/equipo'
-  : (hero?.ctaPrimario?.enlacePersonalizado || '/equipo');
+const ctaPrimarioTexto = hero?.ctaPrimario?.texto || "Reservar Turno";
+const ctaPrimarioEnlace =
+  hero?.ctaPrimario?.usarEnlaceTurnos !== false
+    ? "/equipo"
+    : hero?.ctaPrimario?.enlacePersonalizado || "/equipo";
 
-const ctaSecundarioTexto = hero?.ctaSecundario?.texto || 'Ver Especialidades';
-const ctaSecundarioEnlace = hero?.ctaSecundario?.enlace || '/especialidades';
+const ctaSecundarioTexto = hero?.ctaSecundario?.texto || "Ver Especialidades";
+const ctaSecundarioEnlace = hero?.ctaSecundario?.enlace || "/especialidades";
 
 const estadisticas = hero?.estadisticas?.length
   ? hero.estadisticas
   : [
-      { numero: '+50', etiqueta: 'Especialistas' },
-      { numero: '+20', etiqueta: 'Especialidades' },
-      { numero: '24/7', etiqueta: 'Atención' },
-      { numero: '+10k', etiqueta: 'Pacientes' },
+      { numero: "+50", etiqueta: "Especialistas" },
+      { numero: "+20", etiqueta: "Especialidades" },
+      { numero: "24/7", etiqueta: "Atención" },
+      { numero: "+10k", etiqueta: "Pacientes" },
     ];
 
-const imagenFondoUrl = getImageUrl(hero?.imagenFondo?.asset?.url) || 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=2000';
-const imagenFondoAlt = hero?.imagenFondo?.alt || 'Equipo médico profesional';
+const imagenFondoUrl =
+  getImageUrl(hero?.imagenFondo?.asset?.url) ||
+  "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=2000";
+const imagenFondoAlt = hero?.imagenFondo?.alt || "Equipo médico profesional";
 
 // Process title: supports both actual newlines and literal \n
 const tituloLineas = titulo.split(/\n|\\n/);
@@ -84,50 +89,87 @@ const lineasProcesadas = tituloLineas.map((linea) => ({
       class="h-full w-full object-cover"
       fetchpriority="high"
     />
-    <div class="absolute inset-0 bg-gradient-to-r from-text via-text/90 to-text/60"></div>
-    <div class="absolute inset-0 bg-gradient-to-t from-text/80 via-transparent to-text/40"></div>
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-text via-text/90 to-text/60"
+    >
+    </div>
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-text/80 via-transparent to-text/40"
+    >
+    </div>
   </div>
 
   {/* Decorative elements - hidden on mobile */}
-  <div class="hidden md:block absolute top-20 right-20 h-64 w-64 rounded-full bg-primary/10 blur-3xl"></div>
-  <div class="hidden md:block absolute bottom-20 left-10 h-48 w-48 rounded-full bg-secondary/10 blur-3xl"></div>
+  <div
+    class="hidden md:block absolute top-20 right-20 h-64 w-64 rounded-full bg-primary/10 blur-3xl"
+  >
+  </div>
+  <div
+    class="hidden md:block absolute bottom-20 left-10 h-48 w-48 rounded-full bg-secondary/10 blur-3xl"
+  >
+  </div>
 
   {/* Noise texture */}
   <div class="absolute inset-0 noise-overlay opacity-50"></div>
 
-  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-8 pb-24 md:pt-12 md:pb-28 lg:pt-16 lg:pb-32">
+  <div
+    class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-8 pb-24 md:pt-12 md:pb-28 lg:pt-12 lg:pb-20"
+  >
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
       {/* Content */}
       <div class="text-left">
-        <span class="animate-fade-up inline-block rounded-full bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-1.5 md:px-5 md:py-2 text-xs md:text-sm font-medium text-primary mb-4 md:mb-8 font-body">
+        <span
+          class="animate-fade-up inline-block rounded-full bg-white/10 backdrop-blur-sm border border-white/20 px-4 py-1.5 md:px-5 md:py-2 text-xs md:text-sm font-medium text-primary mb-4 md:mb-8 font-body"
+        >
           {badge}
         </span>
-        
-        <h1 class="animate-fade-up delay-100 text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-display leading-[0.95]">
-          {lineasProcesadas.map((linea, lineIndex) => (
-            <>
-              {lineIndex > 0 && <br />}
-              {linea.partes.map((parte) => (
-                parte.destacado
-                  ? <span class="text-gradient">{parte.texto}</span>
-                  : <span>{parte.texto}</span>
-              ))}
-            </>
-          ))}
+
+        <h1
+          class="animate-fade-up delay-100 text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-display leading-[0.95]"
+        >
+          {
+            lineasProcesadas.map((linea, lineIndex) => (
+              <>
+                {lineIndex > 0 && <br />}
+                {linea.partes.map((parte) =>
+                  parte.destacado ? (
+                    <span class="text-gradient">{parte.texto}</span>
+                  ) : (
+                    <span>{parte.texto}</span>
+                  ),
+                )}
+              </>
+            ))
+          }
         </h1>
-        
-        <p class="animate-fade-up delay-200 mx-auto mt-4 md:mt-8 max-w-xl text-base md:text-xl leading-relaxed text-white/70 font-body font-light">
+
+        <p
+          class="animate-fade-up delay-200 mx-auto mt-4 md:mt-8 max-w-xl text-base md:text-xl leading-relaxed text-white/70 font-body font-light"
+        >
           {descripcion}
         </p>
-        
-        <div class="animate-fade-up delay-300 mt-6 md:mt-12 flex flex-col sm:flex-row items-stretch sm:items-start gap-3 md:gap-4">
+
+        <div
+          class="animate-fade-up delay-300 mt-6 md:mt-12 flex flex-col sm:flex-row items-stretch sm:items-start gap-3 md:gap-4"
+        >
           <a
             href={ctaPrimarioEnlace}
             onclick="gtag('event', 'buscar_profesionales', { event_category: 'navegacion', event_label: 'hero_home' })"
             class="group inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 md:px-8 md:py-4 text-base md:text-lg font-semibold text-white shadow-lg transition-all duration-500 hover:bg-primary/90 hover:shadow-glow hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-text font-body"
           >
-            <svg class="mr-2 h-5 w-5 transition-transform duration-300 group-hover:rotate-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            <svg
+              class="mr-2 h-5 w-5 transition-transform duration-300 group-hover:rotate-12"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              ></path>
             </svg>
             {ctaPrimarioTexto}
           </a>
@@ -136,8 +178,18 @@ const lineasProcesadas = tituloLineas.map((linea) => ({
             class="group inline-flex items-center justify-center rounded-full border border-white/30 px-6 py-3 md:px-8 md:py-4 text-base md:text-lg font-medium text-white transition-all duration-500 hover:border-white hover:bg-white/10 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-text font-body"
           >
             {ctaSecundarioTexto}
-            <svg class="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            <svg
+              class="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
             </svg>
           </a>
         </div>
@@ -145,42 +197,89 @@ const lineasProcesadas = tituloLineas.map((linea) => ({
 
       {/* Right side - floating carousel card */}
       <div class="hidden lg:block relative animate-fade-up delay-500">
-        <HeroImageCarousel
-          images={hero?.imagenesTarjeta || []}
-          client:load
-        />
+        <HeroImageCarousel images={hero?.imagenesTarjeta || []} client:load />
 
         {/* Decorative floating elements */}
-        <div class="absolute -top-6 -right-6 h-20 w-20 md:h-24 md:w-24 rounded-2xl bg-secondary/20 backdrop-blur-sm border border-secondary/30 flex items-center justify-center animate-float">
-          <svg class="h-8 w-8 md:h-10 md:w-10 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        <div
+          class="absolute -top-6 -right-6 h-20 w-20 md:h-24 md:w-24 rounded-2xl bg-secondary/20 backdrop-blur-sm border border-secondary/30 flex items-center justify-center animate-float"
+        >
+          <svg
+            class="h-8 w-8 md:h-10 md:w-10 text-secondary"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+            ></path>
           </svg>
         </div>
 
-        <div class="absolute -bottom-4 -left-4 h-16 w-16 md:h-20 md:w-20 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30 flex items-center justify-center animate-float" style="animation-delay: 1s;">
-          <svg class="h-6 w-6 md:h-8 md:w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+        <div
+          class="absolute -bottom-4 -left-4 h-16 w-16 md:h-20 md:w-20 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30 flex items-center justify-center animate-float"
+          style="animation-delay: 1s;"
+        >
+          <svg
+            class="h-6 w-6 md:h-8 md:w-8 text-primary"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+            ></path>
           </svg>
         </div>
       </div>
     </div>
 
     {/* Stats */}
-    <div class="animate-fade-up delay-700 mt-12 md:mt-20 grid grid-cols-2 gap-y-8 gap-x-4 md:gap-8 sm:grid-cols-4 border-t border-white/10 pt-8 md:pt-12 items-start">
-      {estadisticas.map((stat) => (
-        <div class="flex flex-col items-center lg:items-start text-center lg:text-left">
-          <span data-counter={stat.numero} class="text-4xl md:text-5xl font-bold text-primary font-display leading-none">0</span>
-          <span class="mt-2 md:mt-3 text-[11px] sm:text-xs md:text-sm text-white/60 font-body tracking-wider uppercase leading-snug">{stat.etiqueta}</span>
-        </div>
-      ))}
+    <div
+      class="animate-fade-up delay-700 mt-12 md:mt-20 grid grid-cols-2 gap-y-8 gap-x-4 md:gap-8 sm:grid-cols-4 border-t border-white/10 pt-8 md:pt-12 items-start"
+    >
+      {
+        estadisticas.map((stat) => (
+          <div class="flex flex-col items-center lg:items-start text-center lg:text-left">
+            <span
+              data-counter={stat.numero}
+              class="text-4xl md:text-5xl font-bold text-primary font-display leading-none"
+            >
+              0
+            </span>
+            <span class="mt-2 md:mt-3 text-[11px] sm:text-xs md:text-sm text-white/60 font-body tracking-wider uppercase leading-snug">
+              {stat.etiqueta}
+            </span>
+          </div>
+        ))
+      }
     </div>
   </div>
 
   {/* Scroll indicator - hidden on mobile */}
-  <div class="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce flex-col items-center gap-2">
-    <span class="text-xs text-white/40 uppercase tracking-widest font-body">Scroll</span>
-    <svg class="h-5 w-5 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+  <div
+    class="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce flex-col items-center gap-2"
+  >
+    <span class="text-xs text-white/40 uppercase tracking-widest font-body"
+      >Scroll</span
+    >
+    <svg
+      class="h-5 w-5 text-white/40"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      aria-hidden="true"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
     </svg>
   </div>
 </section>

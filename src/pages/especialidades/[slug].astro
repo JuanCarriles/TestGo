@@ -66,6 +66,24 @@ const breadcrumbSchema = {
     }
   ]
 };
+
+// MedicalWebPage Schema
+const medicalWebPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  "name": especialidad.nombre,
+  "description": especialidad.descripcion,
+  "url": `https://gogineco.com/especialidades/${especialidad.slug}`,
+  "about": {
+    "@type": "MedicalSpecialty",
+    "name": especialidad.nombre
+  },
+  "provider": {
+    "@type": "MedicalOrganization",
+    "name": "GO Centro Médico",
+    "url": "https://gogineco.com"
+  }
+};
 ---
 
 <Layout
@@ -79,6 +97,7 @@ const breadcrumbSchema = {
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(medicalWebPageSchema)} />
   </Fragment>
 
   <Breadcrumbs

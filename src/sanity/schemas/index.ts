@@ -11,6 +11,7 @@ import profesional from './profesional';
 import resena from './resena';
 import seo from './seo';
 import trabajaConNosotrosPage from './trabajaConNosotrosPage';
+import noticia from './noticia';
 
 export const schemaTypes: SchemaTypeDefinition[] = [
   configuracion,
@@ -24,4 +25,5 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   instagramReel,
   resena,
   seo,
+  noticia,
 ];

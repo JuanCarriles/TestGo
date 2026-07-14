@@ -90,7 +90,7 @@ export default function ObrasSocialesCarousel({ obras }: Props) {
     >
       {obra.logo?.asset ? (
         <img
-          src={urlFor(obra.logo.asset)}
+          src={urlFor(obra.logo.asset, { w: 300, h: 100 })}
           alt={obra.logo.alt || obra.nombre}
           className="h-full w-full object-contain grayscale opacity-60 transition-all duration-500 group-hover:grayscale-0 group-hover:opacity-100 pointer-events-none"
           loading="lazy"

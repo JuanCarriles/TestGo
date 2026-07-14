@@ -68,20 +68,54 @@ const faviconUrl = config?.logo?.asset?.url || '/favicon.svg';
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      rel="preload"
+      as="style"
       href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+      />
+    </noscript>
 
     <slot name="head" />
     <ClientRouter />
 
     {/* Google Analytics 4 */}
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-JLRXBT5L0M"></script>
+    {/* Google Analytics 4 - Carga Diferida */}
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-JLRXBT5L0M');
+      window.gtag = gtag; // Asegurar que gtag esté disponible globalmente antes de cargar GTM
+      
+      function loadGTM() {
+        if (window.gtagLoaded) return;
+        window.gtagLoaded = true;
+        
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = "https://www.googletagmanager.com/gtag/js?id=G-JLRXBT5L0M";
+        document.head.appendChild(script);
+        
+        gtag('js', new Date());
+        gtag('config', 'G-JLRXBT5L0M');
+      }
+
+      // Cargar después de interacción o 3.5s
+      var gtmTimer = setTimeout(loadGTM, 3500);
+      ['scroll', 'mousemove', 'touchstart', 'click'].forEach(function(e) {
+        window.addEventListener(e, function() {
+          clearTimeout(gtmTimer);
+          loadGTM();
+        }, { once: true, passive: true });
+      });
     </script>
   </head>
 

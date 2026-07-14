@@ -37,7 +37,7 @@ const socialIcons: Record<string, string> = {
         <a href="/" class="inline-flex items-center gap-3 transition-opacity duration-300 hover:opacity-80">
           {config?.logo?.asset?.url ? (
           <img
-            src={getImageUrl(config.logo.asset.url)}
+            src={getImageUrl(config.logo.asset.url, { w: 120, h: 120, fit: 'fill' })}
             alt={config.logo.alt || 'Logo'}
             class="h-10 w-auto max-w-[120px] object-contain"
             width="120"

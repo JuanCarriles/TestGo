@@ -107,9 +107,9 @@ const cleanBusinessSchema = JSON.parse(JSON.stringify(medicalBusinessSchema));
   <PorQueElegirnos homePage={homePage} />
   <ObrasSociales homePage={homePage} />
   {instagramReels.length > 0 && (
-    <InstagramReelsCarousel reels={instagramReels} instagramUrl={instagramUrl} client:load />
+    <InstagramReelsCarousel reels={instagramReels} instagramUrl={instagramUrl} client:visible />
   )}
-  <TestimoniosCarousel testimonios={displayTestimonios} client:load />
+  <TestimoniosCarousel testimonios={displayTestimonios} client:visible />
   <ContactoSection homePage={homePage} />
 
   <script is:inline>

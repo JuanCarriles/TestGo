@@ -1,6 +1,7 @@
 ---
 import type { HomePage } from '../../types';
 import { getIconoSvg } from './iconos';
+import { getImageUrl } from '../../lib/images';
 
 interface Props {
   homePage: HomePage | null;
@@ -70,7 +71,7 @@ if (tituloIndex !== -1) {
                   data-slide={idx}
                 >
                   <img
-                    src={img.asset?.url}
+                    src={getImageUrl(img.asset?.url, { w: 800, h: 600, fit: 'crop' })}
                     alt={img.alt || 'Instalaciones médicas'}
                     class="h-full w-full object-cover"
                     loading={idx === 0 ? 'eager' : 'lazy'}

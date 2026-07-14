@@ -17,6 +17,9 @@ export const client = createClient({
 
 const builder = createImageUrlBuilder(client);
 
-export function urlFor(source: SanityImageSource): string {
-  return builder.image(source).auto('format').fit('max').url();
+export function urlFor(source: SanityImageSource, options?: { w?: number; h?: number }): string {
+  let img = builder.image(source).auto('format').fit('max');
+  if (options?.w) img = img.width(options.w);
+  if (options?.h) img = img.height(options.h);
+  return img.url();
 }

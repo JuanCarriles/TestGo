@@ -96,7 +96,7 @@ const collectionSchema = {
           >
             <div class="relative h-56 overflow-hidden img-zoom">
               <img
-                src={getImageUrl(esp.icono?.asset?.url) || getImageForSlug(esp.slug)}
+                src={getImageUrl(esp.icono?.asset?.url, { w: 800, h: 450, fit: 'crop' }) || getImageForSlug(esp.slug)}
                 alt={esp.icono?.alt || esp.nombre}
                 class="h-full w-full object-cover"
                 loading="lazy"

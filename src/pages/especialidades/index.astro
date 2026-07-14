@@ -37,6 +37,19 @@ const demoEspecialidades: Especialidad[] = [
 ];
 
 const displayEspecialidades = especialidades.length > 0 ? especialidades : demoEspecialidades;
+
+const collectionSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Especialidades Médicas - GO Centro Médico",
+  "url": "https://gogineco.com/especialidades",
+  "description": especialidadesPage?.seo?.seoDescription || especialidadesPage?.hero?.descripcion || 'Conocé todas las especialidades médicas de GO Centro Médico.',
+  "hasPart": displayEspecialidades.map((esp) => ({
+    "@type": "MedicalWebPage",
+    "name": esp.nombre,
+    "url": `https://gogineco.com/especialidades/${esp.slug}`
+  }))
+};
 ---
 
 <Layout
@@ -47,6 +60,10 @@ const displayEspecialidades = especialidades.length > 0 ? especialidades : demoE
   config={config}
   noIndex={especialidadesPage?.seo?.noIndex || false}
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(collectionSchema)} />
+  </Fragment>
+
   {/* Hero interno */}
   <section class="relative bg-text py-32 lg:py-40 overflow-hidden">
     <div class="absolute inset-0">

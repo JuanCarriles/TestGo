@@ -519,4 +519,36 @@ export const queries = {
     orden
   }`,
 
+  // ── Noticias ──
+  ultimasNoticias: `*[_type == "noticia"] | order(destacada desc, fecha desc){
+    _id,
+    titulo,
+    "slug": slug.current,
+    fecha,
+    imagenPrincipal{
+      asset->{_id,url},
+      alt
+    },
+    resumen,
+    destacada
+  }`,
+
+  noticiaBySlug: `*[_type == "noticia" && slug.current == $slug][0]{
+    _id,
+    titulo,
+    "slug": slug.current,
+    fecha,
+    imagenPrincipal{
+      asset->{_id,url},
+      alt
+    },
+    resumen,
+    contenido[]{
+      ...,
+      _type == "image" => {
+        asset->{_id,url},
+        alt
+      }
+    }
+  }`,
 };

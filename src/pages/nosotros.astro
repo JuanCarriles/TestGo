@@ -3,12 +3,14 @@ import Layout from "../layouts/Layout.astro";
 import { client } from "../lib/sanity";
 import { queries } from "../lib/queries";
 import { getImageUrl } from "../lib/images";
-import type { Configuracion, NosotrosPage, ImagenGaleria } from "../types";
+import type { Configuracion, NosotrosPage, ImagenGaleria, Noticia } from "../types";
 import GaleriaCarousel from "../components/react/GaleriaCarousel";
+import NoticiasCarousel from "../components/react/NoticiasCarousel";
 
-const [config, nosotros] = await Promise.all([
+const [config, nosotros, noticias] = await Promise.all([
   client.fetch<Configuracion | null>(queries.configuracion).catch(() => null),
   client.fetch<NosotrosPage | null>(queries.nosotrosPage).catch(() => null),
+  client.fetch<Noticia[]>(queries.ultimasNoticias).catch(() => []),
 ]);
 
 const seo = nosotros?.seo;
@@ -429,6 +431,27 @@ const galImagenes: ImagenGaleria[] = (galeria?.imagenes && galeria.imagenes.leng
       <GaleriaCarousel imagenes={galImagenes} client:visible />
     </div>
   </section>
+
+  {/* Noticias */}
+  {noticias && noticias.length > 0 && (
+    <section class="py-16 sm:py-20 lg:py-28 bg-background overflow-hidden border-t border-text/5">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12 sm:mb-16">
+          <span
+            class="inline-block text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3 sm:mb-4 font-body"
+          >
+            Novedades
+          </span>
+          <h2
+            class="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-text font-display"
+          >
+            Últimas <span class="text-gradient">Noticias</span>
+          </h2>
+        </div>
+        <NoticiasCarousel noticias={noticias} client:visible />
+      </div>
+    </section>
+  )}
 
   {/* CTA Section */}
   <section class="py-20 bg-surface/5 border-t border-text/5">

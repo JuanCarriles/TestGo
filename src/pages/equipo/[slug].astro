@@ -246,22 +246,23 @@ if (prof.whatsapp) sameAsLinks.push(`https://wa.me/${prof.whatsapp}`);
 if (prof.facebook) sameAsLinks.push(prof.facebook);
 if (prof.instagram) sameAsLinks.push(prof.instagram);
 
-const physicianSchema = {
+const personSchema = {
   "@context": "https://schema.org",
-  "@type": "Physician",
+  "@type": "Person",
   "name": prof.nombre,
   "image": fotoUrl,
   "description": prof.biografia,
   "url": `https://gogineco.com/equipo/${prof.slug}`,
-  "medicalSpecialty": especialidadesList,
+  "jobTitle": especialidadesList.length > 0 ? `Médico especialista en ${especialidadesList.join(", ")}` : "Médico",
   "address": config ? {
     "@type": "PostalAddress",
     "streetAddress": config.direccion,
     "addressLocality": "San Miguel de Tucumán",
     "addressRegion": "Tucumán",
+    "postalCode": "T4000",
     "addressCountry": "AR"
   } : undefined,
-  "telephone": config?.telefono || config?.whatsapp || prof.whatsapp || undefined,
+  "telephone": [prof.whatsapp, config?.telefono, config?.whatsapp].filter(Boolean),
   "email": config?.email || undefined,
   "worksFor": config ? {
     "@type": "MedicalOrganization",
@@ -271,16 +272,17 @@ const physicianSchema = {
       "streetAddress": config.direccion,
       "addressLocality": "San Miguel de Tucumán",
       "addressRegion": "Tucumán",
+      "postalCode": "T4000",
       "addressCountry": "AR"
     },
-    "telephone": config.telefono || config.whatsapp || undefined,
+    "telephone": [config.telefono, config.whatsapp].filter(Boolean),
     "email": config.email || undefined,
   } : undefined,
   "sameAs": sameAsLinks.length > 0 ? sameAsLinks : undefined,
 };
 
 // Remove undefined keys
-const cleanSchema = JSON.parse(JSON.stringify(physicianSchema));
+const cleanSchema = JSON.parse(JSON.stringify(personSchema));
 ---
 
 <Layout

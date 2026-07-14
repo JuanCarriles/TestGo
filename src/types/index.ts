@@ -333,3 +333,17 @@ export interface InstagramReel {
   thumbnail?: SanityImage;
   orden?: number;
 }
+
+/**
+ * Noticia para la sección de novedades
+ */
+export interface Noticia {
+  _id: string;
+  titulo: string;
+  slug: { current: string };
+  fecha: string;
+  imagenPrincipal?: SanityImage;
+  resumen: string;
+  contenido: any[];
+  destacada?: boolean;
+}

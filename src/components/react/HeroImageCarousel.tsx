@@ -47,7 +47,7 @@ export default function HeroImageCarousel({ images, children }: Props) {
               style={{ opacity: idx === active ? 1 : 0 }}
             >
               <img
-                src={`${img.asset?.url}?w=800&h=1000&fit=crop&auto=format`}
+                src={`${img.asset?.url}?w=800&h=625&fit=crop&auto=format`}
                 alt={img.alt || 'Imagen del centro médico'}
                 className="h-full w-full object-cover"
                 loading="lazy"

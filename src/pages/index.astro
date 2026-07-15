@@ -9,6 +9,7 @@ import InstagramReelsCarousel from '../components/react/InstagramReelsCarousel';
 import TestimoniosCarousel from '../components/react/TestimoniosCarousel';
 import { client } from '../lib/sanity';
 import { queries } from '../lib/queries';
+import { getImageUrl } from '../lib/images';
 import type { Configuracion, Especialidad, HomePage, InstagramReel, Testimonio } from '../types';
 
 const [config, homePage, especialidades, instagramReels] = await Promise.all([
@@ -101,6 +102,24 @@ const cleanBusinessSchema = JSON.parse(JSON.stringify(medicalBusinessSchema));
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(cleanBusinessSchema)} />
+    {homePage?.hero?.imagenFondo && (
+      <link 
+        rel="preload" 
+        as="image" 
+        href={getImageUrl(homePage.hero.imagenFondo.asset?.url, { w: 800 })} 
+        media="(max-width: 1023px)"
+        fetchpriority="high" 
+      />
+    )}
+    {homePage?.hero?.imagenesTarjeta?.[0] && (
+      <link 
+        rel="preload" 
+        as="image" 
+        href={getImageUrl(homePage.hero.imagenesTarjeta[0].asset?.url, { w: 800, h: 1000, fit: 'crop' })} 
+        media="(min-width: 1024px)"
+        fetchpriority="high" 
+      />
+    )}
   </Fragment>
   <HeroSection config={config} homePage={homePage} />
   <EspecialidadesGrid especialidades={especialidades} homePage={homePage} />

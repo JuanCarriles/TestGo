@@ -103,7 +103,7 @@ if (tituloIndex !== -1) {
               </div>
               <div>
                 <p class="text-xl md:text-2xl font-bold text-text font-display">{tarjetaNumero}</p>
-                <p class="text-xs md:text-sm text-text/50 font-body">{tarjetaEtiqueta}</p>
+                <p class="text-xs md:text-sm text-text/70 font-body">{tarjetaEtiqueta}</p>
               </div>
             </div>
           </div>
@@ -121,7 +121,7 @@ if (tituloIndex !== -1) {
           {tituloIndex !== -1 && <span class="text-gradient">{tituloDestacado}</span>}
           {tituloAfter && <span>{tituloAfter}</span>}
         </h2>
-        <p class="mt-4 md:mt-6 text-base md:text-lg text-text/50 font-body font-light leading-relaxed">
+        <p class="mt-4 md:mt-6 text-base md:text-lg text-text/70 font-body font-light leading-relaxed">
           {descripcion}
         </p>
 
@@ -132,7 +132,7 @@ if (tituloIndex !== -1) {
                 <svg class="h-6 w-6 md:h-7 md:w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" set:html={getIconoSvg(feature.icono)} />
               </div>
               <h3 class="text-base md:text-lg font-semibold text-text font-display">{feature.titulo}</h3>
-              <p class="mt-1 md:mt-2 text-sm leading-relaxed text-text/50 font-body font-light">
+              <p class="mt-1 md:mt-2 text-sm leading-relaxed text-text/70 font-body font-light">
                 {feature.descripcion}
               </p>
             </div>

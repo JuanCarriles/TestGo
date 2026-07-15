@@ -11,6 +11,7 @@ export default function ObrasSocialesCarousel({ obras }: Props) {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const ticking = useRef(false);
 
   // Fixed 8 items per block (4 columns x 2 rows)
   const ITEMS_PER_BLOCK = 8;

@@ -307,7 +307,7 @@ export const POST: APIRoute = async ({ request }) => {
     // 10. ENVÍO VIA RESEND
     // =========================================================================
     const { data, error } = await resend.emails.send({
-      from: 'GO Centro Médico <onboarding@resend.dev>',
+      from: 'GO Centro Médico <rrhh@gogineco.com>',
       to: [contactEmail],
       replyTo: safeEmail,
       subject: `Nueva postulación: ${safeNombres} ${safeApellidos} — ${safeArea}`,

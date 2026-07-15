@@ -25,12 +25,19 @@ export default function TestimoniosCarousel({ testimonios }: Props) {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollStart, setScrollStart] = useState(0);
+  const ticking = useRef(false);
 
   const checkScroll = () => {
-    const el = containerRef.current;
-    if (!el) return;
-    setCanScrollLeft(el.scrollLeft > 10);
-    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 10);
+    if (ticking.current) return;
+    ticking.current = true;
+    requestAnimationFrame(() => {
+      const el = containerRef.current;
+      if (el) {
+        setCanScrollLeft(el.scrollLeft > 10);
+        setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 10);
+      }
+      ticking.current = false;
+    });
   };
 
   useEffect(() => {

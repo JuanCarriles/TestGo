@@ -13,12 +13,19 @@ export default function InstagramReelsCarousel({ reels, instagramUrl }: Props) {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollStart, setScrollStart] = useState(0);
+  const ticking = useRef(false);
 
   const checkScroll = () => {
-    const el = containerRef.current;
-    if (!el) return;
-    setCanScrollLeft(el.scrollLeft > 10);
-    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 10);
+    if (ticking.current) return;
+    ticking.current = true;
+    requestAnimationFrame(() => {
+      const el = containerRef.current;
+      if (el) {
+        setCanScrollLeft(el.scrollLeft > 10);
+        setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 10);
+      }
+      ticking.current = false;
+    });
   };
 
   useEffect(() => {
@@ -85,7 +92,7 @@ export default function InstagramReelsCarousel({ reels, instagramUrl }: Props) {
         {/* Header */}
         <div className="flex items-end justify-between mb-10 sm:mb-14">
           <div>
-            <span className="inline-block text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-primary mb-3 sm:mb-4 font-body">
+            <span className="inline-block text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-primary-dark mb-3 sm:mb-4 font-body">
               Seguinos
             </span>
             <div className="flex items-center gap-3 sm:gap-4">
@@ -196,7 +203,7 @@ export default function InstagramReelsCarousel({ reels, instagramUrl }: Props) {
                   <p className="text-sm font-medium text-text/70 line-clamp-2 font-body leading-relaxed">
                     {reel.titulo}
                   </p>
-                  <div className="mt-3 flex items-center text-xs font-semibold text-primary font-body">
+                  <div className="mt-3 flex items-center text-xs font-semibold text-primary-dark font-body">
                     <span>Ver en Instagram</span>
                     <svg className="ml-1.5 h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />

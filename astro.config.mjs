@@ -13,6 +13,9 @@ export default defineConfig({
   site: 'https://gocentromedico.com',
   output: 'server',
   adapter: vercel(),
+  build: {
+    inlineStylesheets: 'always',
+  },
   vite: {
     optimizeDeps: {
       include: ['sanity', 'react', 'react-dom'],

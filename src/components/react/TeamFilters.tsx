@@ -97,6 +97,7 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
             />
           </div>
           <select
+            aria-label="Filtrar por especialidad"
             value={selectedEspecialidad}
             onChange={(e) => setSelectedEspecialidad(e.target.value)}
             className="rounded-2xl border-2 border-text/10 bg-surface/5 py-3.5 px-5 md:px-6 text-base text-text transition-all duration-300 focus:border-primary focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary/10 w-full sm:w-80 font-body appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20fill%3D%27none%27%20viewBox%3D%270%200%2020%2020%27%3E%3Cpath%20stroke%3D%27%23CB6767%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%20stroke-width%3D%271.5%27%20d%3D%27M6%208l4%204%204-4%27%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem_1.25rem] bg-[right_1rem_center] bg-no-repeat pr-10"
@@ -119,7 +120,7 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
       {/* Grid */}
       {filtered.length > 0 ? (
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((prof) => (
+          {filtered.map((prof, index) => (
             <div
               key={prof._id}
               className="group relative flex flex-col rounded-3xl border border-text/5 bg-white overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-primary/10 cursor-pointer"
@@ -136,10 +137,11 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
               <div className="relative h-72 overflow-hidden">
                 {prof.foto?.asset?.url ? (
                   <img
-                    src={getImageUrl(prof.foto.asset.url)}
+                    src={prof.foto.asset.url}
                     alt={prof.foto.alt || prof.nombre}
                     className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
-                    loading="lazy"
+                    loading={index === 0 ? "eager" : "lazy"}
+                    fetchPriority={index === 0 ? "high" : "auto"}
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-surface/20 to-primary/5">
@@ -167,7 +169,9 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
               {/* Content */}
               <div className="flex flex-1 flex-col p-8">
                 <h2 className="text-2xl font-semibold text-text group-hover:text-primary transition-colors duration-500 font-display">
-                  {prof.nombre}
+                  <a href={`/equipo/${prof.slug}`} className="focus:outline-none focus:ring-2 focus:ring-primary rounded-lg">
+                    {prof.nombre}
+                  </a>
                 </h2>
                 <p className="mt-3 text-sm leading-relaxed text-text/70 line-clamp-3 flex-1 font-body font-light whitespace-pre-line">
                   {prof.biografia}
@@ -175,6 +179,8 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
                 <div className="mt-6 flex flex-col gap-3">
                   <a
                     href={`/equipo/${prof.slug}`}
+                    aria-hidden="true"
+                    tabIndex={-1}
                     onClick={() => {
                       if (typeof window !== 'undefined') {
                         window.sessionStorage.setItem('equipo-scroll', String(window.scrollY));

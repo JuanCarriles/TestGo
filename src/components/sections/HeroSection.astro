@@ -208,7 +208,7 @@ const lineasProcesadas = tituloLineas.map((linea) => ({
         <HeroImageCarousel images={hero?.imagenesTarjeta || []} client:idle>
           {hero?.imagenesTarjeta?.[0] && (
             <img
-              src={getImageUrl(hero.imagenesTarjeta[0].asset?.url, { w: 800, h: 1000, fit: 'crop' })}
+              src={getImageUrl(hero.imagenesTarjeta[0].asset?.url, { w: 800, h: 625, fit: 'crop' })}
               alt={hero.imagenesTarjeta[0].alt || 'Imagen del centro médico'}
               class="h-full w-full object-cover"
               fetchpriority="high"

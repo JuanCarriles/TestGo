@@ -1,11 +1,12 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, type ReactNode } from 'react';
 import type { SanityImage } from '../../types';
 
 interface Props {
   images: SanityImage[];
+  children?: ReactNode;
 }
 
-export default function HeroImageCarousel({ images }: Props) {
+export default function HeroImageCarousel({ images, children }: Props) {
   const [active, setActive] = useState(0);
 
   const slides = images.length > 0 ? images : [];
@@ -26,20 +27,34 @@ export default function HeroImageCarousel({ images }: Props) {
     <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/10">
       {/* Slides */}
       <div className="relative h-[400px] xl:h-[500px] w-full">
-        {slides.map((img, idx) => (
+        {/* Renderizado SSR de la primera imagen */}
+        {children && (
           <div
-            key={idx}
             className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
-            style={{ opacity: idx === active ? 1 : 0 }}
+            style={{ opacity: active === 0 ? 1 : 0 }}
           >
-            <img
-              src={img.asset?.url}
-              alt={img.alt || 'Imagen del centro médico'}
-              className="h-full w-full object-cover"
-              loading={idx === 0 ? 'eager' : 'lazy'}
-            />
+            {children}
           </div>
-        ))}
+        )}
+
+        {/* Renderizado dinámico del resto */}
+        {slides.map((img, idx) => {
+          if (children && idx === 0) return null;
+          return (
+            <div
+              key={idx}
+              className="absolute inset-0 transition-opacity duration-1000 ease-in-out pointer-events-none"
+              style={{ opacity: idx === active ? 1 : 0 }}
+            >
+              <img
+                src={`${img.asset?.url}?w=800&h=1000&fit=crop&auto=format`}
+                alt={img.alt || 'Imagen del centro médico'}
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+          );
+        })}
         <div className="absolute inset-0 bg-gradient-to-t from-text/60 via-transparent to-transparent pointer-events-none" />
       </div>
 

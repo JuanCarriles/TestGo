@@ -179,6 +179,8 @@ const galImagenes: ImagenGaleria[] =
         src={heroImagen}
         alt={heroAlt}
         class="h-full w-full object-cover opacity-20 md:opacity-15"
+        fetchpriority="high"
+        loading="eager"
       />
       <div
         class="absolute inset-0 bg-gradient-to-br from-text via-text/90 to-primary/30"
@@ -218,12 +220,17 @@ const galImagenes: ImagenGaleria[] =
                   loop
                   playsinline
                   preload="auto"
+                  width="800"
+                  height="600"
                   class="aspect-[4/3] w-full object-cover"
                 />
               ) : (
                 <img
                   src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=800"
                   alt="Instalaciones"
+                  width="800"
+                  height="600"
+                  loading="lazy"
                   class="aspect-[4/3] w-full object-cover"
                 />
               )
@@ -343,6 +350,9 @@ const galImagenes: ImagenGaleria[] =
                 <img
                   src={getImageUrl(misionIcono.asset.url)}
                   alt={misionIcono.alt || misionTitulo}
+                  width="40"
+                  height="40"
+                  loading="lazy"
                   class="h-8 w-8 sm:h-10 sm:w-10 object-contain"
                 />
               </div>
@@ -466,6 +476,9 @@ const galImagenes: ImagenGaleria[] =
                 <img
                   src={getImageUrl(visionIcono.asset.url)}
                   alt={visionIcono.alt || visionTitulo}
+                  width="40"
+                  height="40"
+                  loading="lazy"
                   class="h-8 w-8 sm:h-10 sm:w-10 object-contain"
                 />
               </div>

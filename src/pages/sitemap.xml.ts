@@ -6,12 +6,15 @@ export const GET: APIRoute = async () => {
   const baseUrl = 'https://gogineco.com';
 
   // Fetch dynamic pages from Sanity
-  const [especialidades, profesionales] = await Promise.all([
+  const [especialidades, profesionales, noticias] = await Promise.all([
     client.fetch<{ slug: string; _updatedAt: string }[]>(
       `*[_type == "especialidad" && activo != false]{ "slug": slug.current, _updatedAt }`
     ).catch(() => []),
     client.fetch<{ slug: string; _updatedAt: string }[]>(
       `*[_type == "profesional"]{ "slug": slug.current, _updatedAt }`
+    ).catch(() => []),
+    client.fetch<{ slug: string; _updatedAt: string }[]>(
+      `*[_type == "noticia"]{ "slug": slug.current, _updatedAt }`
     ).catch(() => []),
   ]);
 
@@ -49,6 +52,15 @@ export const GET: APIRoute = async () => {
     <url>
       <loc>${baseUrl}/equipo/${prof.slug}</loc>
       <lastmod>${prof._updatedAt || now}</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.7</priority>
+    </url>`),
+
+    // Noticias
+    ...noticias.map((noticia) => `
+    <url>
+      <loc>${baseUrl}/noticias/${noticia.slug}</loc>
+      <lastmod>${noticia._updatedAt || now}</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.7</priority>
     </url>`),

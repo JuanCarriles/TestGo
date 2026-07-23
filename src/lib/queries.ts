@@ -121,6 +121,8 @@ export const queries = {
       "slug": slug.current
     },
     enlaceAgenda,
+    textoBotonReserva,
+    mensajeWhatsAppReserva,
     biografia,
     destacado,
     whatsapp,
@@ -157,6 +159,8 @@ export const queries = {
       "slug": slug.current
     },
     enlaceAgenda,
+    textoBotonReserva,
+    mensajeWhatsAppReserva,
     biografia,
     whatsapp,
     seo{
@@ -192,6 +196,8 @@ export const queries = {
       "slug": slug.current
     },
     enlaceAgenda,
+    textoBotonReserva,
+    mensajeWhatsAppReserva,
     biografia,
     whatsapp,
     seo{
@@ -227,6 +233,8 @@ export const queries = {
       "slug": slug.current
     },
     enlaceAgenda,
+    textoBotonReserva,
+    mensajeWhatsAppReserva,
     biografia,
     facebook,
     instagram,
@@ -492,10 +500,7 @@ export const queries = {
       numero,
       etiqueta
     },
-    formulario{
-      titulo,
-      descripcion
-    },
+
     seo{
       seoTitle,
       seoDescription,

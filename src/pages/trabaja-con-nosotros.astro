@@ -6,22 +6,28 @@ import type { Configuracion, TrabajaConNosotrosPage } from "../types";
 
 const [config, trabajaPage] = await Promise.all([
   client.fetch<Configuracion | null>(queries.configuracion).catch(() => null),
-  client.fetch<TrabajaConNosotrosPage | null>(queries.trabajaConNosotrosPage).catch(() => null),
+  client
+    .fetch<TrabajaConNosotrosPage | null>(queries.trabajaConNosotrosPage)
+    .catch(() => null),
 ]);
 
 const contactEmail = config?.email || "gogineco@gmail.com";
 
-const stats = [
-  { numero: "+50", etiqueta: "Profesionales médicos" },
+const stats = trabajaPage?.stats && trabajaPage.stats.length > 0 ? trabajaPage.stats : [
+  { numero: "+50", etiqueta: "Profesionales" },
   { numero: "+20", etiqueta: "Especialidades" },
-  { numero: "15+", etiqueta: "Años de trayectoria" },
-  { numero: "24/7", etiqueta: "Atención integral" },
+  { numero: "2+", etiqueta: "Años de trayectoria" },
+  { numero: "24/7", etiqueta: "Atención al cliente" },
 ];
 ---
 
 <Layout
-  title={trabajaPage?.seo?.seoTitle || trabajaPage?.hero?.titulo || 'Trabajá en Go'}
-  description={trabajaPage?.seo?.seoDescription || trabajaPage?.hero?.descripcion || '¿Querés formar parte de GO Centro Médico? Completá el formulario y envianos tu CV.'}
+  title={trabajaPage?.seo?.seoTitle ||
+    trabajaPage?.hero?.titulo ||
+    "Trabajá en Go"}
+  description={trabajaPage?.seo?.seoDescription ||
+    trabajaPage?.hero?.descripcion ||
+    "¿Querés formar parte de GO Centro Médico? Completá el formulario y envianos tu CV."}
   image={trabajaPage?.seo?.seoImage?.asset?.url}
   imageAlt={trabajaPage?.seo?.seoImage?.alt}
   config={config}
@@ -31,7 +37,8 @@ const stats = [
   <section class="relative bg-text py-32 lg:py-40 overflow-hidden">
     <div class="absolute inset-0">
       <img
-        src={trabajaPage?.hero?.imagenFondo?.asset?.url || "https://images.unsplash.com/photo-1581056771107-24ca5f033842?auto=format&fit=crop&q=80&w=2000"}
+        src={trabajaPage?.hero?.imagenFondo?.asset?.url ||
+          "https://images.unsplash.com/photo-1581056771107-24ca5f033842?auto=format&fit=crop&q=80&w=2000"}
         alt={trabajaPage?.hero?.imagenFondo?.alt || "Equipo médico"}
         class="h-full w-full object-cover opacity-15"
       />
@@ -452,7 +459,9 @@ const stats = [
           } else {
             // Vercel devolvió un error genérico HTML/Texto (ej: 500 A server error has occurred)
             const textError = await res.text();
-            throw new Error(`Error de servidor (${res.status}): El servidor no pudo procesar la solicitud.`);
+            throw new Error(
+              `Error de servidor (${res.status}): El servidor no pudo procesar la solicitud.`,
+            );
           }
 
           if (!res.ok) {
@@ -488,8 +497,18 @@ const stats = [
         class="group inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-500 hover:bg-primary/90 hover:shadow-glow hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 font-body"
       >
         Sobre nosotros
-        <svg class="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        <svg
+          class="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
         </svg>
       </a>
     </div>

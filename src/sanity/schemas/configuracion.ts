@@ -69,10 +69,10 @@ export default defineType({
     }),
     defineField({
       name: 'enlaceTurnos',
-      title: 'Enlace a Resultados de Estudios',
+      title: 'Enlace a Resultados de imagenes',
       type: 'url',
       group: 'turnos',
-      description: 'URL del portal de resultados de estudios (ej: MedExis)',
+      description: 'URL del portal de resultados de imagenes (ej: MedExis)',
       validation: (Rule) => Rule.required(),
     }),
     defineField({

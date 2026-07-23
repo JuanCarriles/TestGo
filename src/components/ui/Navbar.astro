@@ -1,6 +1,6 @@
 ---
-import type { Configuracion } from '../../types';
-import { getImageUrl } from '../../lib/images';
+import type { Configuracion } from "../../types";
+import { getImageUrl } from "../../lib/images";
 
 interface Props {
   config: Configuracion | null;
@@ -9,21 +9,24 @@ interface Props {
 const { config } = Astro.props;
 
 const navLinks = [
-  { href: '/', label: 'Inicio' },
-  { href: '/equipo', label: 'Nuestro Equipo' },
-  { href: '/nosotros', label: 'Nosotros' },
-  { href: '/trabaja-con-nosotros', label: 'Trabajá en Go' },
+  { href: "/", label: "Inicio" },
+  { href: "/equipo", label: "Nuestro Equipo" },
+  { href: "/nosotros", label: "Nosotros" },
+  { href: "/trabaja-con-nosotros", label: "Trabajá en Go" },
 ];
 
-const turnosUrl = config?.enlaceTurnos || '#';
-const reservarTurnoUrl = config?.enlaceReservarTurno || '/equipo';
+const turnosUrl = config?.enlaceTurnos || "#";
+const reservarTurnoUrl = config?.enlaceReservarTurno || "/equipo";
 ---
 
 <header
   id="main-header"
   class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-background/90 backdrop-blur-xl border-b border-transparent"
 >
-  <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Navegación principal">
+  <nav
+    class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
+    aria-label="Navegación principal"
+  >
     <div class="flex items-center justify-between h-20">
       {/* Logo */}
       <a
@@ -31,35 +34,49 @@ const reservarTurnoUrl = config?.enlaceReservarTurno || '/equipo';
         class="flex items-center gap-3 transition-opacity duration-300 hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
         aria-label="GO Centro Médico - Inicio"
       >
-        {config?.logo?.asset?.url ? (
-          <img
-            src={getImageUrl(config.logo.asset.url, { w: 120, h: 120, fit: 'fill' })}
-            alt={config.logo.alt || 'Logo'}
-            class="h-10 w-auto max-w-[120px] object-contain"
-            width="120"
-            height="40"
-          />
-        ) : (
-          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white font-bold text-lg font-display">
-            GO
-          </div>
-        )}
-        <span class="text-xl font-semibold text-text hidden sm:inline font-display tracking-tight">
+        {
+          config?.logo?.asset?.url ? (
+            <img
+              src={getImageUrl(config.logo.asset.url, {
+                w: 120,
+                h: 120,
+                fit: "fill",
+              })}
+              alt={config.logo.alt || "Logo"}
+              class="h-10 w-auto max-w-[120px] object-contain"
+              width="120"
+              height="40"
+            />
+          ) : (
+            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white font-bold text-lg font-display">
+              GO
+            </div>
+          )
+        }
+        <span
+          class="text-xl font-semibold text-text hidden sm:inline font-display tracking-tight"
+        >
           Centro Médico
         </span>
       </a>
 
       {/* Desktop Nav */}
       <div class="hidden md:flex items-center gap-1">
-        {navLinks.map((link) => (
-          <a
-            href={link.href}
-            class="relative px-4 py-2 text-sm font-medium text-text/70 transition-all duration-300 hover:text-primary focus:outline-none focus:text-primary rounded-lg hover:bg-primary/5 font-body"
-            onclick={link.href === '/equipo' ? "gtag('event', 'buscar_profesionales', { event_category: 'navegacion', event_label: 'navbar_desktop' })" : undefined}
-          >
-            {link.label}
-          </a>
-        ))}
+        {
+          navLinks.map((link) => (
+            <a
+              href={link.href}
+              class="relative px-4 py-2 text-sm font-medium text-text/70 transition-all duration-300 hover:text-primary focus:outline-none focus:text-primary rounded-lg hover:bg-primary/5 font-body"
+              onclick={
+                link.href === "/equipo"
+                  ? "gtag('event', 'buscar_profesionales', { event_category: 'navegacion', event_label: 'navbar_desktop' })"
+                  : undefined
+              }
+            >
+              {link.label}
+            </a>
+          ))
+        }
       </div>
 
       {/* CTA Desktop */}
@@ -69,8 +86,18 @@ const reservarTurnoUrl = config?.enlaceReservarTurno || '/equipo';
           class="group inline-flex items-center justify-center rounded-full bg-surface px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-500 hover:bg-surface/90 hover:shadow-glow hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-surface focus:ring-offset-2 font-body"
         >
           Reservar Turno
-          <svg class="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          <svg
+            class="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+            ></path>
           </svg>
         </a>
         <a
@@ -80,9 +107,19 @@ const reservarTurnoUrl = config?.enlaceReservarTurno || '/equipo';
           onclick="gtag('event', 'ver_resultados_estudios', { event_category: 'servicio', event_label: 'navbar_desktop' })"
           class="group inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-500 hover:bg-primary/90 hover:shadow-glow hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 font-body"
         >
-          Resultados de estudios
-          <svg class="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          Resultados de imagenes
+          <svg
+            class="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+            ></path>
           </svg>
         </a>
       </div>
@@ -96,8 +133,18 @@ const reservarTurnoUrl = config?.enlaceReservarTurno || '/equipo';
         aria-expanded="false"
         aria-label="Abrir menú de navegación"
       >
-        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        <svg
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
       </button>
     </div>
@@ -112,29 +159,35 @@ const reservarTurnoUrl = config?.enlaceReservarTurno || '/equipo';
     aria-label="Menú móvil"
   >
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 space-y-1">
-        {navLinks.map((link) => (
+      {
+        navLinks.map((link) => (
           <a
             href={link.href}
             class="block rounded-xl px-4 py-3 text-base font-medium text-text/70 transition-colors duration-300 hover:bg-primary/5 hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary font-body"
-            onclick={link.href === '/equipo' ? "gtag('event', 'buscar_profesionales', { event_category: 'navegacion', event_label: 'navbar_mobile' })" : undefined}
+            onclick={
+              link.href === "/equipo"
+                ? "gtag('event', 'buscar_profesionales', { event_category: 'navegacion', event_label: 'navbar_mobile' })"
+                : undefined
+            }
           >
             {link.label}
           </a>
-        ))}
+        ))
+      }
       <a
         href={reservarTurnoUrl}
         class="block w-full text-center rounded-full bg-surface px-6 py-3 text-base font-semibold text-white shadow-md transition-all duration-300 hover:bg-surface/90 focus:outline-none focus:ring-2 focus:ring-surface focus:ring-offset-2 mt-4 font-body"
       >
         Reservar Turno
       </a>
-        <a
-          href={turnosUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          onclick="gtag('event', 'ver_resultados_estudios', { event_category: 'servicio', event_label: 'navbar_mobile' })"
-          class="block w-full text-center rounded-full bg-primary px-6 py-3 text-base font-semibold text-white shadow-md transition-all duration-300 hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 mt-3 font-body"
-        >
-          Resultados de estudios
+      <a
+        href={turnosUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        onclick="gtag('event', 'ver_resultados_estudios', { event_category: 'servicio', event_label: 'navbar_mobile' })"
+        class="block w-full text-center rounded-full bg-primary px-6 py-3 text-base font-semibold text-white shadow-md transition-all duration-300 hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 mt-3 font-body"
+      >
+        Resultados de imagenes
       </a>
     </div>
   </div>
@@ -148,23 +201,23 @@ const reservarTurnoUrl = config?.enlaceReservarTurno || '/equipo';
     var navbarInitialized = false;
 
     function initNavbar() {
-      var header = document.getElementById('main-header');
+      var header = document.getElementById("main-header");
       if (!header) return;
 
       // Scroll shadow effect
       function onScroll() {
         if (window.scrollY > 10) {
-          header.classList.add('shadow-lg', 'border-text/5');
-          header.classList.remove('border-transparent');
+          header.classList.add("shadow-lg", "border-text/5");
+          header.classList.remove("border-transparent");
         } else {
-          header.classList.remove('shadow-lg', 'border-text/5');
-          header.classList.add('border-transparent');
+          header.classList.remove("shadow-lg", "border-text/5");
+          header.classList.add("border-transparent");
         }
       }
 
       // Only attach scroll listener once globally
       if (!navbarInitialized) {
-        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener("scroll", onScroll, { passive: true });
         navbarInitialized = true;
       }
       onScroll();
@@ -172,29 +225,29 @@ const reservarTurnoUrl = config?.enlaceReservarTurno || '/equipo';
 
     // Event delegation for mobile menu toggle (survives DOM swaps)
     function onBodyClick(e) {
-      var btn = e.target.closest && e.target.closest('#mobile-menu-btn');
+      var btn = e.target.closest && e.target.closest("#mobile-menu-btn");
       if (!btn) return;
 
-      var menu = document.getElementById('mobile-menu');
+      var menu = document.getElementById("mobile-menu");
       if (!menu) return;
 
-      var isOpen = !menu.classList.contains('hidden');
+      var isOpen = !menu.classList.contains("hidden");
       if (isOpen) {
-        menu.classList.add('hidden');
-        btn.setAttribute('aria-expanded', 'false');
-        btn.setAttribute('aria-label', 'Abrir menú de navegación');
+        menu.classList.add("hidden");
+        btn.setAttribute("aria-expanded", "false");
+        btn.setAttribute("aria-label", "Abrir menú de navegación");
       } else {
-        menu.classList.remove('hidden');
-        btn.setAttribute('aria-expanded', 'true');
-        btn.setAttribute('aria-label', 'Cerrar menú de navegación');
+        menu.classList.remove("hidden");
+        btn.setAttribute("aria-expanded", "true");
+        btn.setAttribute("aria-label", "Cerrar menú de navegación");
       }
     }
 
     // Attach delegated listener to document (survives Astro view transitions)
-    document.addEventListener('click', onBodyClick);
+    document.addEventListener("click", onBodyClick);
 
     // Run on first load and after every Astro transition
     initNavbar();
-    document.addEventListener('astro:page-load', initNavbar);
+    document.addEventListener("astro:page-load", initNavbar);
   })();
 </script>

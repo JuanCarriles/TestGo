@@ -34,6 +34,8 @@ export interface Profesional {
   especialidad?: Pick<Especialidad, '_id' | 'nombre' | 'slug'>;
   especialidades?: Pick<Especialidad, '_id' | 'nombre' | 'slug'>[];
   enlaceAgenda: string;
+  textoBotonReserva?: string;
+  mensajeWhatsAppReserva?: string;
   biografia: string;
   destacado?: boolean;
   facebook?: string;
@@ -306,10 +308,7 @@ export interface TrabajaConNosotrosPage {
     numero?: string;
     etiqueta?: string;
   }[];
-  formulario?: {
-    titulo?: string;
-    descripcion?: string;
-  };
+
   seo?: Seo;
 }
 

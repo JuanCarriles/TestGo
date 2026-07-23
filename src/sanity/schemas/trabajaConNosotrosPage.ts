@@ -81,26 +81,7 @@ export default defineType({
       ],
       description: 'Estadísticas que se muestran en la sección de stats.',
     }),
-    defineField({
-      name: 'formulario',
-      title: 'Formulario',
-      type: 'object',
-      fields: [
-        defineField({
-          name: 'titulo',
-          title: 'Título',
-          type: 'string',
-          initialValue: 'Postulate',
-        }),
-        defineField({
-          name: 'descripcion',
-          title: 'Descripción',
-          type: 'text',
-          rows: 3,
-          initialValue: 'Completá el formulario y nos pondremos en contacto con vos.',
-        }),
-      ],
-    }),
+
     defineField({
       name: 'seo',
       title: 'SEO',

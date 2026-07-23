@@ -195,7 +195,7 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
                     Ver Perfil
                   </a>
                   <a
-                    href={prof.enlaceAgenda && prof.enlaceAgenda !== '#' ? prof.enlaceAgenda : prof.whatsapp ? `https://wa.me/${prof.whatsapp}?text=${encodeURIComponent(`Hola, quiero reservar un turno con el Dr/a. ${prof.nombre}.\n\nPara asignar y cotizar el turno, completá los siguientes datos:\n\nNombre completo:\nDNI:\nObra social:\n\nAdjuntar foto del pedido médico.\n\nGracias!`)}` : '#'}
+                    href={prof.enlaceAgenda && prof.enlaceAgenda !== '#' ? prof.enlaceAgenda : prof.whatsapp ? `https://wa.me/${prof.whatsapp}?text=${encodeURIComponent(prof.mensajeWhatsAppReserva || `Hola, quiero reservar un turno con el Dr/a. ${prof.nombre}.\n\nPara asignar y cotizar el turno, completá los siguientes datos:\n\nNombre completo:\nDNI:\nObra social:\n\nAdjuntar foto del pedido médico.\n\nGracias!`)}` : '#'}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => trackEvent('reservar_turno', { event_category: 'conversion', event_label: 'grid_equipo', doctor_name: prof.nombre })}
@@ -204,7 +204,7 @@ export default function TeamFilters({ profesionales, especialidades }: Props) {
                     <svg className="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    Agendar Turno
+                    {prof.textoBotonReserva || 'Reservar Turno'}
                   </a>
                 </div>
               </div>

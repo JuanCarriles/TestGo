@@ -1,16 +1,22 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import HeroSection from '../components/sections/HeroSection.astro';
-import EspecialidadesGrid from '../components/sections/EspecialidadesGrid.astro';
-import PorQueElegirnos from '../components/sections/PorQueElegirnos.astro';
-import ObrasSociales from '../components/sections/ObrasSociales.astro';
-import ContactoSection from '../components/sections/ContactoSection.astro';
-import InstagramReelsCarousel from '../components/react/InstagramReelsCarousel';
-import TestimoniosCarousel from '../components/react/TestimoniosCarousel';
-import { client } from '../lib/sanity';
-import { queries } from '../lib/queries';
-import { getImageUrl } from '../lib/images';
-import type { Configuracion, Especialidad, HomePage, InstagramReel, Testimonio } from '../types';
+import Layout from "../layouts/Layout.astro";
+import HeroSection from "../components/sections/HeroSection.astro";
+import EspecialidadesGrid from "../components/sections/EspecialidadesGrid.astro";
+import PorQueElegirnos from "../components/sections/PorQueElegirnos.astro";
+import ObrasSociales from "../components/sections/ObrasSociales.astro";
+import ContactoSection from "../components/sections/ContactoSection.astro";
+import InstagramReelsCarousel from "../components/react/InstagramReelsCarousel";
+import TestimoniosCarousel from "../components/react/TestimoniosCarousel";
+import { client } from "../lib/sanity";
+import { queries } from "../lib/queries";
+import { getImageUrl } from "../lib/images";
+import type {
+  Configuracion,
+  Especialidad,
+  HomePage,
+  InstagramReel,
+  Testimonio,
+} from "../types";
 
 const [config, homePage, especialidades, instagramReels] = await Promise.all([
   client.fetch<Configuracion | null>(queries.configuracion).catch(() => null),
@@ -19,73 +25,105 @@ const [config, homePage, especialidades, instagramReels] = await Promise.all([
   client.fetch<InstagramReel[]>(queries.instagramReels).catch(() => []),
 ]);
 
-const metaDescription = homePage?.seo?.seoDescription || config?.metaDescription || 'GO Centro Médico - Excelencia médica con atención personalizada las 24 horas. Reservá tu turno online con los mejores especialistas.';
-const metaTitle = homePage?.seo?.seoTitle || 'Inicio';
+const metaDescription =
+  homePage?.seo?.seoDescription ||
+  config?.metaDescription ||
+  "GO Centro Médico - Excelencia médica con atención personalizada. Reservá tu turno online con los mejores especialistas.";
+const metaTitle = homePage?.seo?.seoTitle || "Inicio";
 const ogImage = homePage?.seo?.seoImage?.asset?.url;
 const noIndex = homePage?.seo?.noIndex || false;
-const instagramUrl = config?.redesSociales?.find((r) => r.nombre === 'instagram')?.url || '';
+const instagramUrl =
+  config?.redesSociales?.find((r) => r.nombre === "instagram")?.url || "";
 
 // Demo testimonials when no data
 const demoTestimonios: Testimonio[] = [
-  { nombre: 'María González', texto: 'La atención en GO Centro Médico es excepcional. Desde que llegué me sentí cuidada y escuchada. Los médicos son verdaderos profesionales.', estrellas: 5, fecha: '2024-03-15' },
-  { nombre: 'Carlos Rodríguez', texto: 'Excelente servicio y modernas instalaciones. Pude agendar mi turno online sin problemas y la consulta fue muy completa.', estrellas: 5, fecha: '2024-02-20' },
-  { nombre: 'Laura Martínez', texto: 'Llevé a mis hijos a la pediatría y quedé encantada con el trato. Un equipo humano y profesional que transmite confianza.', estrellas: 5, fecha: '2024-01-10' },
+  {
+    nombre: "María González",
+    texto:
+      "La atención en GO Centro Médico es excepcional. Desde que llegué me sentí cuidada y escuchada. Los médicos son verdaderos profesionales.",
+    estrellas: 5,
+    fecha: "2024-03-15",
+  },
+  {
+    nombre: "Carlos Rodríguez",
+    texto:
+      "Excelente servicio y modernas instalaciones. Pude agendar mi turno online sin problemas y la consulta fue muy completa.",
+    estrellas: 5,
+    fecha: "2024-02-20",
+  },
+  {
+    nombre: "Laura Martínez",
+    texto:
+      "Llevé a mis hijos a la pediatría y quedé encantada con el trato. Un equipo humano y profesional que transmite confianza.",
+    estrellas: 5,
+    fecha: "2024-01-10",
+  },
 ];
 
-const displayTestimonios = homePage?.testimonios?.length ? homePage.testimonios : demoTestimonios;
+const displayTestimonios = homePage?.testimonios?.length
+  ? homePage.testimonios
+  : demoTestimonios;
 
 // Aggregate rating from testimonials
-const avgRating = displayTestimonios.length > 0
-  ? (displayTestimonios.reduce((sum, t) => sum + (t.estrellas || 5), 0) / displayTestimonios.length)
-  : 5;
+const avgRating =
+  displayTestimonios.length > 0
+    ? displayTestimonios.reduce((sum, t) => sum + (t.estrellas || 5), 0) /
+      displayTestimonios.length
+    : 5;
 
 // MedicalBusiness schema for the homepage
 // Usa Configuración Global (nombre/desc del negocio) con fallback descriptivo
 const businessName = config?.metaTitle?.trim() || "GO Centro Médico";
-const businessDescription = config?.metaDescription?.trim() || "Centro médico de excelencia en San Miguel de Tucumán. Atención médica integral con los mejores especialistas.";
+const businessDescription =
+  config?.metaDescription?.trim() ||
+  "Centro médico de excelencia en San Miguel de Tucumán. Atención médica integral con los mejores especialistas.";
 
 const medicalBusinessSchema: Record<string, any> = {
   "@context": "https://schema.org",
   "@type": ["MedicalBusiness", "LocalBusiness"],
-  "name": businessName,
-  "description": businessDescription,
-  "url": "https://gogineco.com",
-  "logo": config?.logo?.asset?.url,
-  "image": ogImage || config?.ogImage?.asset?.url,
-  "telephone": [config?.telefono, config?.whatsapp].filter(Boolean),
-  "email": config?.email,
-  "address": {
+  name: businessName,
+  description: businessDescription,
+  url: "https://gogineco.com",
+  logo: config?.logo?.asset?.url,
+  image: ogImage || config?.ogImage?.asset?.url,
+  telephone: [config?.telefono, config?.whatsapp].filter(Boolean),
+  email: config?.email,
+  address: {
     "@type": "PostalAddress",
-    "streetAddress": config?.direccion,
-    "addressLocality": "San Miguel de Tucumán",
-    "addressRegion": "Tucumán",
-    "postalCode": "T4000",
-    "addressCountry": "AR"
+    streetAddress: config?.direccion,
+    addressLocality: "San Miguel de Tucumán",
+    addressRegion: "Tucumán",
+    postalCode: "T4000",
+    addressCountry: "AR",
   },
-  "priceRange": "$$",
-  "aggregateRating": {
+  priceRange: "$$",
+  aggregateRating: {
     "@type": "AggregateRating",
-    "ratingValue": avgRating.toFixed(1),
-    "reviewCount": displayTestimonios.length.toString()
-  }
+    ratingValue: avgRating.toFixed(1),
+    reviewCount: displayTestimonios.length.toString(),
+  },
 };
 
 if (config?.localBusiness) {
   medicalBusinessSchema.geo = {
     "@type": "GeoCoordinates",
-    "latitude": config.localBusiness.latitud,
-    "longitude": config.localBusiness.longitud
+    latitude: config.localBusiness.latitud,
+    longitude: config.localBusiness.longitud,
   };
   if (config.localBusiness.mapaUrlPublica) {
     medicalBusinessSchema.hasMap = config.localBusiness.mapaUrlPublica;
   }
-  if (config.localBusiness.horarios && config.localBusiness.horarios.length > 0) {
-    medicalBusinessSchema.openingHoursSpecification = config.localBusiness.horarios.map((h) => ({
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": h.dias.split(',').map((d) => d.trim()),
-      "opens": h.abre,
-      "closes": h.cierra
-    }));
+  if (
+    config.localBusiness.horarios &&
+    config.localBusiness.horarios.length > 0
+  ) {
+    medicalBusinessSchema.openingHoursSpecification =
+      config.localBusiness.horarios.map((h) => ({
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: h.dias.split(",").map((d) => d.trim()),
+        opens: h.abre,
+        closes: h.cierra,
+      }));
   }
 }
 
@@ -101,49 +139,72 @@ const cleanBusinessSchema = JSON.parse(JSON.stringify(medicalBusinessSchema));
   noIndex={noIndex}
 >
   <Fragment slot="head">
-    <script type="application/ld+json" set:html={JSON.stringify(cleanBusinessSchema)} />
-    {homePage?.hero?.imagenFondo && (
-      <link 
-        rel="preload" 
-        as="image" 
-        href={getImageUrl(homePage.hero.imagenFondo.asset?.url, { w: 800 })} 
-        media="(max-width: 1023px)"
-        fetchpriority="high" 
-      />
-    )}
-    {homePage?.hero?.imagenesTarjeta?.[0] && (
-      <link 
-        rel="preload" 
-        as="image" 
-        href={getImageUrl(homePage.hero.imagenesTarjeta[0].asset?.url, { w: 800, h: 625, fit: 'crop' })} 
-        media="(min-width: 1024px)"
-        fetchpriority="high" 
-      />
-    )}
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(cleanBusinessSchema)}
+    />
+    {
+      homePage?.hero?.imagenFondo && (
+        <link
+          rel="preload"
+          as="image"
+          href={getImageUrl(homePage.hero.imagenFondo.asset?.url, { w: 800 })}
+          media="(max-width: 1023px)"
+          fetchpriority="high"
+        />
+      )
+    }
+    {
+      homePage?.hero?.imagenesTarjeta?.[0] && (
+        <link
+          rel="preload"
+          as="image"
+          href={getImageUrl(homePage.hero.imagenesTarjeta[0].asset?.url, {
+            w: 800,
+            h: 625,
+            fit: "crop",
+          })}
+          media="(min-width: 1024px)"
+          fetchpriority="high"
+        />
+      )
+    }
   </Fragment>
   <HeroSection config={config} homePage={homePage} />
   <EspecialidadesGrid especialidades={especialidades} homePage={homePage} />
   <PorQueElegirnos homePage={homePage} />
   <ObrasSociales homePage={homePage} />
-  {instagramReels.length > 0 && (
-    <InstagramReelsCarousel reels={instagramReels} instagramUrl={instagramUrl} client:visible />
-  )}
+  {
+    instagramReels.length > 0 && (
+      <InstagramReelsCarousel
+        reels={instagramReels}
+        instagramUrl={instagramUrl}
+        client:visible
+      />
+    )
+  }
   <TestimoniosCarousel testimonios={displayTestimonios} client:visible />
   <ContactoSection homePage={homePage} />
 
   <script is:inline>
-    (function() {
+    (function () {
       var sent = false;
       function checkScroll() {
         if (sent) return;
-        if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight - 100) {
+        if (
+          window.innerHeight + window.scrollY >=
+          document.body.scrollHeight - 100
+        ) {
           sent = true;
-          if (typeof gtag !== 'undefined') {
-            gtag('event', 'scroll_final', { event_category: 'engagement', event_label: 'home' });
+          if (typeof gtag !== "undefined") {
+            gtag("event", "scroll_final", {
+              event_category: "engagement",
+              event_label: "home",
+            });
           }
         }
       }
-      window.addEventListener('scroll', checkScroll, { passive: true });
+      window.addEventListener("scroll", checkScroll, { passive: true });
       checkScroll();
     })();
   </script>

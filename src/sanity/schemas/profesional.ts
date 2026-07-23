@@ -69,6 +69,19 @@ export default defineType({
       description: 'URL del sistema de turnos para este profesional (opcional). Si no se completa y hay WhatsApp, el botón "Reservar Turno" abrirá el chat.',
     }),
     defineField({
+      name: 'textoBotonReserva',
+      title: 'Texto del botón de reserva',
+      type: 'string',
+      description: 'Opcional. Permite cambiar el texto del botón "Reservar Turno". Si se deja vacío, dirá "Reservar Turno".',
+    }),
+    defineField({
+      name: 'mensajeWhatsAppReserva',
+      title: 'Mensaje personalizado de WhatsApp',
+      type: 'text',
+      rows: 4,
+      description: 'Opcional. Permite personalizar el mensaje predeterminado que se envía por WhatsApp al reservar turno. Si se deja vacío, se usará el mensaje por defecto.',
+    }),
+    defineField({
       name: 'biografia',
       title: 'Biografía breve',
       type: 'text',
